@@ -1,0 +1,101 @@
+<?php include "head.phtml"; ?>
+
+<div id="loading" class="pos-fixed z-fullscreen bg-white d-flex flex-align-center flex-justify-center" style="top: 0; left: 0; width: 100%; height: 100%"></div>
+
+<div class="container-fluid pos-fixed fixed-top z-top bg-light border-bottom bd-default pl-0 pr-0">
+    <header class="app-bar pos-relative" data-role="appbar" data-expand-point="md">
+        <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
+        <div class="app-bar-container" id="code-title-label">
+            <span class="brand text-bold enlarge-2 no-hover" id="code_title_label"><?php echo $code['title'] ?></span>
+            <button class="button square" onclick="Sandbox.openTitleEditor()"><span class="mif-pencil"></span></button>
+        </div>
+        <div class="app-bar-container" id="code-title-editor" style="display: none">
+            <input type="text" data-role="input" value="<?php echo $code['title'] ?>" id="code_title">
+            <button class="button square success" onclick="Sandbox.saveTitle()"><span class="mif-floppy-disk"></span></button>
+        </div>
+        <div class="app-bar-container ml-auto pr-2">
+
+            <div class="split-button mr-1">
+                <button class="button info" onclick="Sandbox.go('/code?template=default')">New</button>
+                <button class="split dropdown-toggle bg-darkCyan fg-white marker-light"></button>
+                <ul class="d-menu" data-role="dropdown">
+                    <li><a href="#" onclick="Sandbox.go('/code?template=vue')">VueJS</a></li>
+                    <li class="disabled"><a href="#" onclick="Sandbox.go('/code?template=angular')">Angular</a></li>
+                    <li class="disabled"><a href="#" onclick="Sandbox.go('/code?template=react')">React</a></li>
+                </ul>
+            </div>
+
+            <button class="button success mr-1" onclick="Sandbox.saveCode(true)"><span class="mif-floppy-disk mr-2"></span>Save</button>
+            <button class="button warning mr-1"><span class="mif-flow-tree mr-2"></span>Fork</button>
+            <button class="button secondary mr-1"><span class="mif-cog mr-2"></span>Settings</button>
+            <div class="dropdown-button">
+                <button class="button square no-border"><img data-role="gravatar" data-email="sergey@pimenov.com.ua" style="height: 36px"></button>
+                <ul class="d-menu place-right" data-role="dropdown">
+                    <li><a href="#"><span class="icon mif-dashboard"></span>Dashboard</a></li>
+                    <li><a href="#"><span class="icon mif-user"></span>Profile</a></li>
+                    <li><a href="#"><span class="icon mif-cogs"></span>Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><span class="icon mif-exit"></span>Log out</a></li>
+                </ul>
+            </div>
+
+
+            <!--<span class="c-pointer app-bar-item">Log in</span>-->
+            <!--<span class="c-pointer app-bar-item">Sign up</span>-->
+        </div>
+    </header>
+</div>
+
+<div data-role="splitter" data-split-sizes="60, 40" class="h-100">
+    <div id="browser" data-role="splitter" data-split-sizes="80, 20" data-split-mode="vertical">
+        <div class="iframe-wrapper">
+            <div id="iframe_reload" class="pos-absolute pos-top-right z-2" style="width: 100px; display: none">
+                <div data-role="activity" data-type="metro" data-style="color"></div>
+            </div>
+            <iframe src="<?php echo $code['iframe'] ?>"
+                    id="iframe"
+                    allowfullscreen
+                    allowtransparency
+                    sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"
+                    frameborder="0"
+                    class="z-1"
+            ></iframe>
+        </div>
+        <div>
+            <div class="wrapper-header">Console</div>
+            <div class="output-wrapper" id="console-output"></div>
+        </div>
+    </div>
+    <div>
+        <form action="javascript:" id="editor_form">
+            <input type="hidden" name="code_id" id="code_id" value="<?php echo $code['id'] ?>">
+            <input type="hidden" name="code_hash" id="code_hash" value="<?php echo $code['hash'] ?>">
+            <input type="hidden" name="template" id="template" value="<?php echo $code['template'] ?>">
+            <input type="hidden" name="temp_file" id="temp_file" value="<?php echo $code['temp_file'] ?>">
+            <input type="hidden" name="saved" id="saved" value="<?php echo $code['saved'] ?>">
+
+            <div data-role="splitter" data-split-mode="vertical">
+                <div id="html-code">
+                    <div class="wrapper-header">HTML</div>
+                    <div class="code-wrapper">
+                        <textarea name="html_editor" id="html_editor" placeholder="HTML code goes here..."><?php echo $code['html'] ?></textarea>
+                    </div>
+                </div>
+                <div id="css-code">
+                    <div class="wrapper-header">CSS</div>
+                    <div class="code-wrapper">
+                        <textarea name="css_editor" id="css_editor" placeholder="CSS code goes here..."><?php echo $code['css'] ?></textarea>
+                    </div>
+                </div>
+                <div id="js-code">
+                    <div class="wrapper-header">JavaScript</div>
+                    <div class="code-wrapper">
+                        <textarea name="js_editor" id="js_editor" placeholder="JavaScript code goes here..."><?php echo $code['js'] ?></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php include "foot.phtml"; ?>

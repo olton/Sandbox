@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+
+    <meta name="twitter:site" content="@metroui">
+    <meta name="twitter:creator" content="@pimenov_sergey">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Metro 4 Sandbox">
+    <meta name="twitter:description" content="Metro 4 is an open source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.">
+    <meta name="twitter:image" content="https://metroui.org.ua/images/m4-logo-social.png">
+
+    <meta property="og:url" content="https://metroui.org.ua/v4/index.html">
+    <meta property="og:title" content="Metro 4 Sandbox">
+    <meta property="og:description" content="Metro 4 is an open source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://metroui.org.ua/images/m4-logo-social.png">
+    <meta property="og:image:secure_url" content="https://metroui.org.ua/images/m4-logo-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="968">
+    <meta property="og:image:height" content="504">
+
+    <meta name="author" content="Sergey Pimenov">
+    <meta name="description" content="Are you tired of Bootstrap? Get started with Metro 4, the popular framework for building responsive, mobile-first sites in Metro style, with the Metro CDN and a template starter page. The most popular HTML, CSS, and JS library in Metro style.">
+    <meta name="keywords" content="HTML, CSS, JS, Metro, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="<?php echo VIEW_PATH ?>vendors/metro/css/metro-all.css?ver=@@b-version" rel="stylesheet">
+    <link href="<?php echo VIEW_PATH ?>css/sandbox.css" rel="stylesheet">
+
+    <?php if (isset($head_styles)) foreach ($head_styles as $key=>$val) {?>
+        <link data-script="<?php echo $key?>" href="<?php echo $val?>" rel="stylesheet">
+    <?php }?>
+
+    <?php if (isset($head_scripts)) foreach ($head_scripts as $key=>$val) {?>
+        <script data-script="<?php echo $key?>" src="<?php echo $val?>"></script>
+    <?php }?>
+
+    <script>
+        window['on_page_functions'] = [];
+    </script>
+
+    <title><?php echo $page_title ?></title>
+</head>
+<body class="<?php echo isset($body_class) ? $body_class : "" ?>">

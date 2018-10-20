@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="//cdn.metroui.org.ua/v4/css/metro-all.min.css">
+    <title>Demo 1</title>
+
+    <style>
+        h1 {
+  color: red; 
+}
+    </style>
+</head>
+<body>
+
+<h1 class="text-center mt-10">
+  Hellow from Metro 4 Sandbox!
+</h1>
+
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+<script>
+    console.log = function(){
+        parent.postMessage(Array.prototype.slice.call(arguments, 0), "*");
+    };
+
+    window.onerror = function (message, url, row, col, err) {
+        //Metro.infobox.create("<h3>Error!</h3><div>"+message+"</div>");
+    }
+</script>
+<script>
+    (function(){
+
+        console.log("Hello world!");
+
+    })();
+</script>
+</body>
+</html>

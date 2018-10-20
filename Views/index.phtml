@@ -1,0 +1,128 @@
+<?php include "head.phtml"?>
+<body>
+<div class="container-fluid bg-darkMagenta fg-white pos-fixed fixed-top z-top">
+    <header class="app-bar container bg-darkMagenta fg-white pos-relative" data-role="appbar" data-expand-point="md">
+        <a href="index.html" class="d-block d-none-md brand fg-white no-hover"><span class="border bd-white border-radius p-2">m<sup>4</sup></span></a>
+        <a href="index.html" class="d-none d-block-md brand fg-white no-hover">Metro 4 Sandbox</a>
+        <ul class="app-bar-menu ml-auto">
+            <li><a href="/code">New</a></li>
+            <li><a href="#">log in</a></li>
+            <li><a href="#">Sign up</a></li>
+        </ul>
+    </header>
+</div>
+
+<div class="hero text-center add-neb">
+    <img src="<?php echo VIEW_PATH ?>images/sandbox.svg" style="width: 160px">
+    <p class="h1 fg-white"><span class="reduce-1 enlarge-1-md">Metro 4 Sandbox</span><small class="fg-yellow"> alpha</small></p>
+    <p class="text-leader2 fg-light text-light mt-4"><span class="reduce-1 enlarge-1-md">Create your <strong>code</strong> in the sandbox<br>and get help from the author and community</span></p>
+</div>
+
+<div class="container-fluid bg-white pt-10 pb-20 about add-neb">
+    <div class="container text-center">
+        <div class="h2 m-10"><span class="reduce-1 enlarge-1-md">What is it?</span></div>
+        <div class="text-leader">
+            <p class="reduce-1 enlarge-1-md pl-5-fs pr-5-fs pl-20-md pr-20-md">
+                Metro 4 Sandbox is a tool for prototyping, testing code and getting support with your problems.
+                You write code in the browser and see the results of it as you build.
+                The sandbox is intended for testing code created using the <a href="https://metroui.org.ua" class="fg-cyan no-decor">Metro 4</a> components library.
+            </p>
+        </div>
+
+        <div class="row mt-10">
+            <div class="cell-md-4">
+                <div class="info-panel rounded no-overflow shadow-3 h-100">
+                    <div class="info-panel-header bg-green fg-white">Free for ALL</div>
+                    <div class="info-panel-content">
+                        <div class="mx-10 my-6"><span class="mif-security mif-8x fg-green"></span></div>
+                        <span class="text-leader2">All code, created in Metro 4 Sandbox free, open source and have MIT license</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cell-md-4">
+                <div class="info-panel rounded no-overflow shadow-3 h-100">
+                    <div class="info-panel-header bg-steel fg-white">Easy to use</div>
+                    <div class="info-panel-content">
+                        <div class="mx-10 my-6"><span class="mif-checkmark mif-8x fg-steel"></span></div>
+                        <span class="text-leader2">You do not need to worry about the correct connection of the necessary files, the sandbox will do it itself.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cell-md-4">
+                <div class="info-panel rounded no-overflow shadow-3 h-100">
+                    <div class="info-panel-header bg-orange fg-white">Special templates</div>
+                    <div class="info-panel-content">
+                        <div class="mx-10 my-6"><span class="mif-insert-template mif-8x fg-orange"></span></div>
+                        <span class="text-leader2">Include special templates for popular frameworks such as VueJS, Angular, etc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-white bg-light fg-dark">
+    <div class="container pt-10 pb-20">
+        <div class="h2 mt-20 text-center"><span class="reduce-1 enlarge-1-md">Special thanks to</span></div>
+
+        <div class="row special-thanks">
+            <div class="cell-md-2">
+                <a href="https://olshansky.ua/"><img src="<?php echo VIEW_PATH ?>images/olshansky.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.imena.ua/"><img src="<?php echo VIEW_PATH ?>images/imena_logo.png"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://mirohost.net/"><img src="<?php echo VIEW_PATH ?>images/mirohost_logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.keycdn.com/"><img src="<?php echo VIEW_PATH ?>images/keycdn-logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.jetbrains.com/"><img src="<?php echo VIEW_PATH ?>images/jetbrains.svg"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-bg">
+    <div class="container pt-20 pb-20">
+        <div class="text-center">
+            <ul class="inline-list reduce-1" id="social-menu">
+                <li><a href="https://www.facebook.com/metrouicss/"><span class="mif-facebook"></span></a></li>
+                <li><a href="https://twitter.com/MetroUI"><span class="mif-twitter"></span></a></li>
+                <li><a href="#"><span class="mif-youtube"></span></a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS"><span class="mif-github"></span></a></li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-10">
+            <ul class="inline-list reduce-1" id="footer-menu">
+                <li><a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">License</a></li>
+                <li><a href="mailto:sergey@pimenov.com.ua">Author</a></li>
+                <li><a href="https://forum.metroui.org.ua">Forum</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/issues">Issues</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/releases">Releases</a></li>
+            </ul>
+        </div>
+
+        <div class="text-center m-10">
+            <span class="h2"><span class="fg-cyan">Made in </span><span class="fg-yellow">Ukraine</span></span>
+        </div>
+
+        <div class="text-center mt-10 reduce-1">
+            Metro 4 (Metro UI CSS) &copy; 2012-2018 by <a href="mailto:sergey@pimenov.com.ua" class="no-wrap">Sergey Pimenov</a>.
+            <br />
+            <span class="no-wrap">Domain by <a href="https://imena.ua/">Imena.ua</a>.</span>
+            <span class="no-wrap">Hosting by <a href="https://mirohost.net/">Mirohost</a>.</span>
+            <br/>
+            <span class="no-wrap">Metro CDN by <a href="https://www.keycdn.com/">KeyCDN</a>.</span>
+            <br/>
+            <span class="no-wrap">IDE PhpStorm by <a href="https://www.jetbrains.com/">JetBrains</a>.</span>
+            <br />
+            Currently <span class="version-number-full"></span>. Code licensed <a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">MIT</a>, docs <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+        </div>
+    </div>
+</footer>
+
+<?php include "foot.phtml";?>
