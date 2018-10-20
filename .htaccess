@@ -1,7 +1,7 @@
 RewriteEngine on
 
 #RewriteCond %{HTTPS} !^on$
-#RewriteRule (.*) https://dnmarket.com/$1 [R,L]
+#RewriteRule (.*) https://sandbox.metroui.org.ua/$1 [R,L]
 
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
