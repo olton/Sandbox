@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.26 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.26 build 704 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -17478,6 +17478,7 @@ pre code {
   }
 }
 .container,
+.container2,
 .container-fluid,
 section,
 header,
@@ -17488,6 +17489,7 @@ aside {
   margin: 0 auto;
 }
 .container::after,
+.container2::after,
 .container-fluid::after,
 section::after,
 header::after,
@@ -17498,6 +17500,7 @@ aside::after {
   content: "";
 }
 .container::after,
+.container2::after,
 .container-fluid::after,
 section::after,
 header::after,
@@ -17507,7 +17510,8 @@ aside::after {
   clear: both;
   content: "";
 }
-.container {
+.container,
+.container2 {
   width: 100%;
   padding-right: 12px;
   padding-left: 12px;
@@ -17522,6 +17526,9 @@ aside::after {
   .container {
     max-width: 540px;
   }
+  .container2 {
+    max-width: 90%;
+  }
 }
 @media (min-width: 768px) {
   .container {
@@ -17529,17 +17536,20 @@ aside::after {
   }
 }
 @media (min-width: 992px) {
-  .container {
+  .container,
+  .container2 {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container {
+  .container,
+  .container2 {
     max-width: 1140px;
   }
 }
 @media (min-width: 1452px) {
-  .container {
+  .container,
+  .container2 {
     max-width: 1360px;
   }
 }
@@ -22056,6 +22066,7 @@ textarea {
   background-color: transparent;
   color: #1d1d1d;
   height: 34px;
+  min-width: 34px;
 }
 .input .button:focus {
   -webkit-box-shadow: none;
@@ -22114,6 +22125,19 @@ textarea {
 }
 .input .autocomplete-list .item + .item {
   border-top: 1px solid #dfdfdf;
+}
+.input.input-large {
+  height: 50px;
+}
+.input.input-large input {
+  height: 48px;
+  font-size: 1.3rem;
+  padding: 0 10px;
+  line-height: 48px;
+}
+.input.input-large .button {
+  height: 48px;
+  min-width: 48px;
 }
 .tag-input {
   display: -webkit-box;

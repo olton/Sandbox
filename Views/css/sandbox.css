@@ -2,14 +2,14 @@ body {
   padding-top: 50px;
 }
 .hero {
-  background: #8c004b;
-  background: -moz-linear-gradient(top, #8c004b 0%, #d934c3 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, #8c004b), color-stop(100%, #d934c3));
-  background: -webkit-linear-gradient(top, #8c004b 0%, #d934c3 100%);
-  background: -o-linear-gradient(top, #8c004b 0%, #d934c3 100%);
-  background: -ms-linear-gradient(top, #8c004b 0%, #d934c3 100%);
-  background: linear-gradient(to bottom, #8c004b 0%, #d934c3 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8c004b', endColorstr='#d934c3', GradientType=0);
+  background: #7700b3;
+  background: -moz-linear-gradient(top, #7700b3 0%, #c44dff 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, #7700b3), color-stop(100%, #c44dff));
+  background: -webkit-linear-gradient(top, #7700b3 0%, #c44dff 100%);
+  background: -o-linear-gradient(top, #7700b3 0%, #c44dff 100%);
+  background: -ms-linear-gradient(top, #7700b3 0%, #c44dff 100%);
+  background: linear-gradient(to bottom, #7700b3 0%, #c44dff 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7700B3', endColorstr='#AC5AD9', GradientType=0);
 }
 .add-neb::after {
   display: block;
@@ -25,7 +25,7 @@ body {
   z-index: 1;
 }
 .hero.add-neb::after {
-  border-color: #d934c3 transparent transparent transparent;
+  border-color: #c44dff transparent transparent transparent;
 }
 .about.add-neb::after {
   border-color: #ffffff transparent transparent transparent;
@@ -93,5 +93,76 @@ footer a:hover {
   font-size: 12px;
   padding: 2px 24px;
   border-bottom: 1px solid #f8f8f8;
+}
+.login-box-left {
+  display: block;
+  position: relative;
+  width: 55%;
+  padding-right: 60px;
+}
+.login-box-right {
+  display: block;
+  position: relative;
+  width: 45%;
+  padding-left: 60px;
+}
+.login-box-divider {
+  display: flex;
+  flex-flow: row nowrap;
+  min-height: 46px;
+}
+.login-box-divider .bar {
+  height: 2px;
+  width: calc(50% - 34px);
+  position: absolute;
+  background: #c44dff;
+  margin-top: -1px;
+  top: 50%;
+}
+.login-box-divider .bar.top {
+  left: 12px;
+}
+.login-box-divider .bar.bottom {
+  right: 12px;
+}
+.login-box-divider .or {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  left: 50%;
+  margin-left: -23px;
+  border: 2px solid #c44dff;
+  top: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  line-height: 30px;
+  color: #ffffff;
+}
+@media screen and (min-width: 768px) {
+  .login-box-divider {
+    flex-flow: column nowrap;
+  }
+  .login-box-divider .bar {
+    height: calc(50% - 22px);
+    width: 2px;
+    left: 50%;
+    margin-left: -1px;
+  }
+  .login-box-divider .bar.top {
+    top: 0;
+    left: 50%;
+  }
+  .login-box-divider .bar.bottom {
+    bottom: 0;
+    top: auto;
+  }
+  .login-box-divider .or {
+    left: 50%;
+    margin-left: -23px;
+    top: 41%;
+  }
 }
 /*# sourceMappingURL=sandbox.css.map */

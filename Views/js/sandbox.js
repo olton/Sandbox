@@ -98,6 +98,7 @@ var Sandbox = {
             };
 
             that.sendData(data, "/code/save", null, function(response){
+                $('#console-output').html("");
                 $('#code_title').val(response.data.title);
                 $('#code_title_label').text(response.data.title);
 

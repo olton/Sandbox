@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.26 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.26 build 704 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -92,8 +92,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "@@version",
-    versionFull: "@@version.@@build @@status",
+    version: "4.2.26",
+    versionFull: "4.2.26.704 ",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -14378,9 +14378,15 @@ var Popover = {
 
     createPopover: function(){
         var that = this, elem = this.elem, element = this.element, o = this.options;
-        var popover = $("<div>").addClass("popover neb").addClass(o.clsPopover).html(o.popoverText);
+        var popover;
         var neb_pos;
         var id = Utils.elementId("popover");
+
+        if (this.popovered) {
+            return ;
+        }
+
+        popover = $("<div>").addClass("popover neb").addClass(o.clsPopover).html(o.popoverText);
 
         popover.attr("id", id);
 
@@ -17110,7 +17116,7 @@ var Splitter = {
                 }
             } else {
                 $.each(children, function(){
-                    this.style.setProperty('min-height', String(o.minSizes).contains("%") ? o.minSizes : String(o.minSizes).replace("px", "")+"px", 'important');
+                    this.style.setProperty('min-'+resizeProp, String(o.minSizes).contains("%") ? o.minSizes : String(o.minSizes).replace("px", "")+"px", 'important');
                 });
             }
         }

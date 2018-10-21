@@ -6,15 +6,14 @@ body {
 }
 
 .hero {
-
-    background: rgba(140,0,75,1);
-    background: -moz-linear-gradient(top, rgba(140,0,75,1) 0%, rgba(217,52,195,1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(140,0,75,1)), color-stop(100%, rgba(217,52,195,1)));
-    background: -webkit-linear-gradient(top, rgba(140,0,75,1) 0%, rgba(217,52,195,1) 100%);
-    background: -o-linear-gradient(top, rgba(140,0,75,1) 0%, rgba(217,52,195,1) 100%);
-    background: -ms-linear-gradient(top, rgba(140,0,75,1) 0%, rgba(217,52,195,1) 100%);
-    background: linear-gradient(to bottom, rgba(140,0,75,1) 0%, rgba(217,52,195,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8c004b', endColorstr='#d934c3', GradientType=0 );
+    background: rgba(119, 0, 179, 1);
+    background: -moz-linear-gradient(top, rgba(119, 0, 179, 1) 0%, rgb(196, 77, 255) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(119, 0, 179, 1)), color-stop(100%, rgb(196, 77, 255)));
+    background: -webkit-linear-gradient(top, rgba(119, 0, 179, 1) 0%, rgb(196, 77, 255) 100%);
+    background: -o-linear-gradient(top, rgba(119, 0, 179, 1) 0%, rgb(196, 77, 255) 100%);
+    background: -ms-linear-gradient(top, rgba(119, 0, 179, 1) 0%, rgb(196, 77, 255) 100%);
+    background: linear-gradient(to bottom, rgba(119, 0, 179, 1) 0%, rgb(196, 77, 255) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7700B3', endColorstr='#AC5AD9', GradientType=0 );
 }
 
 .add-neb {
@@ -35,7 +34,7 @@ body {
 
 
 .hero.add-neb::after {
-    border-color: rgba(217,52,195,1) transparent transparent transparent;
+    border-color: rgb(196, 77, 255) transparent transparent transparent;
 }
 
 .about.add-neb::after {
@@ -118,4 +117,85 @@ footer a:hover {
 }
 
 .log-item + .log-item {
+}
+
+.login-box-left {
+    display: block;
+    position: relative;
+    width: 55%;
+    padding-right: 60px;
+}
+
+.login-box-right {
+    display: block;
+    position: relative;
+    width: 45%;
+    padding-left: 60px;
+}
+
+.login-box-divider {
+
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 46px;
+
+    .bar {
+        height: 2px;
+        width: ~"calc(50% - 34px)";
+        position: absolute;
+        background: @lightViolet;
+        margin-top: -1px;
+        top: 50%;
+
+        &.top {
+            left: 12px;
+        }
+        &.bottom {
+            right: 12px;
+        }
+    }
+    .or {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        left: 50%;
+        margin-left: -23px;
+        border: 2px solid @lightViolet;
+        top: 0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        line-height: 30px;
+        color: @white;
+    }
+}
+
+@media screen and (min-width: @md){
+    .login-box-divider {
+
+        flex-flow: column nowrap;
+
+        .bar {
+            height: ~"calc(50% - 22px)";
+            width: 2px;
+            left: 50%;
+            margin-left: -1px;
+
+            &.top {
+                top: 0;
+                left: 50%;
+            }
+            &.bottom {
+                bottom: 0;
+                top: auto;
+            }
+        }
+        .or {
+            left: 50%;
+            margin-left: -23px;
+            top: 41%;
+        }
+    }
 }
