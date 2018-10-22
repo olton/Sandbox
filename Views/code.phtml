@@ -13,36 +13,32 @@
             <input type="text" data-role="input" value="<?php echo $code['title'] ?>" id="code_title">
             <button class="button square success" onclick="Sandbox.saveTitle()"><span class="mif-floppy-disk"></span></button>
         </div>
-        <div class="app-bar-container ml-auto pr-2">
 
-            <div class="split-button mr-1">
-                <button class="button info" onclick="Sandbox.go('/code?template=default')">New</button>
-                <button class="split dropdown-toggle bg-darkCyan fg-white marker-light"></button>
+        <ul class="app-bar-menu ml-auto">
+            <li>
+                <a href="" class="dropdown-toggle">New</a>
                 <ul class="d-menu" data-role="dropdown">
-                    <li><a href="#" onclick="Sandbox.go('/code?template=vue')">VueJS</a></li>
-                    <li class="disabled"><a href="#" onclick="Sandbox.go('/code?template=angular')">Angular</a></li>
+                    <li><a href="#" onclick="Sandbox.go('/code?template=default')"><img class="icon" src="<?php echo VIEW_PATH ?>images/ms.svg">Default</a></li>
+                    <li><a href="#" onclick="Sandbox.go('/code?template=vue')"><img class="icon" src="<?php echo VIEW_PATH ?>images/vue.svg">VueJS</a></li>
+                    <li class="disabled"><a href="#" onclick="Sandbox.go('/code?template=angular')"><img class="icon" src="<?php echo VIEW_PATH ?>images/angular.svg">Angular</a></li>
                     <li class="disabled"><a href="#" onclick="Sandbox.go('/code?template=react')">React</a></li>
                 </ul>
-            </div>
-
-            <button class="button success mr-1" onclick="Sandbox.saveCode(true)"><span class="mif-floppy-disk mr-2"></span>Save</button>
-            <button class="button warning mr-1"><span class="mif-flow-tree mr-2"></span>Fork</button>
-            <button class="button secondary mr-1"><span class="mif-cog mr-2"></span>Settings</button>
-            <div class="dropdown-button">
-                <button class="button square no-border"><img data-role="gravatar" data-email="sergey@pimenov.com.ua" style="height: 36px"></button>
+            </li>
+            <li data-role="hint" data-hint-position="bottom" data-hint-text="Save code" data-cls-hint="bg-dark fg-white"><a href="#" onclick="Sandbox.saveCode(true)"><span class="mif-floppy-disk icon d-none d-block-md"></span><span class="d-none-md">Save code</span></a></li>
+            <li data-role="hint" data-hint-position="bottom" data-hint-text="Fork code" data-cls-hint="bg-dark fg-white"><a href=""><span class="mif-flow-branch icon d-none d-block-md"></span><span class="d-none-md">Fork code</span></a></li>
+            <li data-role="hint" data-hint-position="bottom" data-hint-text="Code settings" data-cls-hint="bg-dark fg-white"><a href=""><span class="mif-cogs icon d-none d-block-md"></span><span class="d-none-md">Code settings</span></a></li>
+            <li>
+                <a href="" class="dropdown-toggle"><?php echo $_SESSION['user']['name']?></a>
                 <ul class="d-menu place-right" data-role="dropdown">
-                    <li><a href="#"><span class="icon mif-dashboard"></span>Dashboard</a></li>
-                    <li><a href="#"><span class="icon mif-user"></span>Profile</a></li>
-                    <li><a href="#"><span class="icon mif-cogs"></span>Settings</a></li>
+                    <li><a href="#"><span class="mif-dashboard icon"></span>Dashboard</a></li>
+                    <li><a href="#"><span class="mif-user icon"></span>Profile</a></li>
+                    <li><a href="#"><span class="mif-cog icon"></span>Settings</a></li>
                     <li class="divider"></li>
-                    <li><a href="#"><span class="icon mif-exit"></span>Log out</a></li>
+                    <li><a href="/logout"><span class="mif-exit icon"></span>Log out</a></li>
                 </ul>
-            </div>
+            </li>
+        </ul>
 
-
-            <!--<span class="c-pointer app-bar-item">Log in</span>-->
-            <!--<span class="c-pointer app-bar-item">Sign up</span>-->
-        </div>
     </header>
 </div>
 

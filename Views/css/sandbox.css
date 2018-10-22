@@ -141,6 +141,28 @@ footer a:hover {
   line-height: 30px;
   color: #ffffff;
 }
+.signup-box-divider {
+  display: flex;
+  flex-flow: row nowrap;
+  min-height: 46px;
+}
+.signup-box-divider .bar {
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  background: #c44dff;
+  margin-top: -1px;
+  top: 50%;
+  left: 12px;
+}
+.login-box .invalid_feedback,
+.signup-box .invalid_feedback {
+  color: #ffffff;
+}
+.login-box .invalid::after,
+.signup-box .invalid::after {
+  color: #ffffff;
+}
 @media screen and (min-width: 768px) {
   .login-box-divider {
     flex-flow: column nowrap;
@@ -163,6 +185,16 @@ footer a:hover {
     left: 50%;
     margin-left: -23px;
     top: 41%;
+  }
+  .signup-box-divider {
+    flex-flow: column nowrap;
+  }
+  .signup-box-divider .bar {
+    height: 100%;
+    width: 2px;
+    left: 50%;
+    margin-left: -1px;
+    top: 0;
   }
 }
 /*# sourceMappingURL=sandbox.css.map */

@@ -11,6 +11,10 @@ var Sandbox = {
         return this.version;
     },
 
+    info: function(title, message, type){
+        Metro.infobox.create("<h3>"+title+"</h3><div>"+message+"</div>", type);
+    },
+
     message: function(title, text){
         Metro.dialog.create({
             title: title,
@@ -40,14 +44,11 @@ var Sandbox = {
 
     sendData: function(data, route, next, cb_ok, cb_error){
         var that = this;
-        // Show activity;
         $.post(
             route,
             data,
             function(response){
-                // Hide activity
                 if (!response.result) {
-                    that.message("Внимание", response.message);
                     Metro.utils.exec(cb_error, [response]);
                     return false;
                 }
@@ -120,7 +121,38 @@ var Sandbox = {
                 $("#iframe_reload").hide();
             });
         });
+    },
 
+    login: function(f){
+        var that = this;
+        var form = $(f);
+        $("#activity").css("visibility", "visible");
+        form.addClass("disabled");
+        setTimeout(function(){
+            that.sendForm(f, "/login/process", "/", null, function(response){
+                form.removeClass("disabled");
+                $("#activity").css("visibility", "hidden");
+                that.info("Error!", response.message);
+            })
+        }, 100);
+    },
+
+    signup: function(f){
+        var that = this;
+        var form = $(f);
+        $("#activity").css("visibility", "visible");
+        form.addClass("disabled");
+        setTimeout(function(){
+            that.sendForm(f, "/signup/process", "/", null, function(response){
+                form.removeClass("disabled");
+                $("#activity").css("visibility", "hidden");
+                that.info("Error!", response.message);
+            })
+        }, 100);
+    },
+
+    logout: function(){
+        this.go("/logout/process");
     }
 };
 

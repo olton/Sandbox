@@ -1,0 +1,144 @@
+<?php include "head.phtml"?>
+<body>
+<div class="container-fluid bg-darkViolet fg-white pos-fixed fixed-top z-top">
+    <header class="app-bar container bg-darkViolet fg-white pos-relative" data-role="appbar" data-expand-point="md">
+        <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
+        <span class="app-bar-item no-hover"><span class="enlarge-4">Metro 4 Sandbox</span></span>
+        <ul class="app-bar-menu ml-auto">
+            <li>
+                <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
+                <ul data-role="dropdown" class="d-menu">
+                    <li><a href="/code?template=default">Default</a></li>
+                    <li><a href="/code?template=vue">VueJS</a></li>
+                    <li class="disabled"><a href="/code?template=angular">Angular</a></li>
+                    <li class="disabled"><a href="/code?template=react">React</a></li>
+                </ul>
+            </li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </header>
+</div>
+
+<div class="hero fg-white pt-20 pb-20 pl-0 pr-0">
+    <div class="container2">
+        <div class="row">
+            <div class="cell-md-12">
+                <div class="login-header">
+                    <h1 class="pl-2"><span class="enlarge-5">Sign up</span><small class="no-wrap fg-gray"> or <a class="fg-yellow" href="/login">Log in now!</a></small></h1>
+                    <div data-role="activity" data-type="metro" id="activity" style="visibility: hidden"></div>
+                </div>
+
+                <hr class="mt-6 thin bg-transparent">
+
+                <div class="signup-box row ml-0 mr-0 mt-4 flex-column flex-row-md">
+                    <div class="cell-md-6">
+                        <form action="javascript:" data-role="validator" onsubmit="Sandbox.signup(this); return false;">
+                            <div class="form-group">
+                                <label>USERNAME</label>
+                                <input class="input-large" type="text" data-role="input" name="name" data-validate="required minlength=3">
+                                <span class="invalid_feedback">Min length for name must be an 3 symbols</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>EMAIL</label>
+                                <input class="input-large" type="text" data-role="input" name="email" data-validate="required email">
+                                <span class="invalid_feedback">Enter a valid email address</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>PASSWORD</label>
+                                <input class="input-large" type="password" data-role="input" name="password" data-validate="required minlength=8">
+                                <span class="invalid_feedback">Min length for password must be an 8 symbols</span>
+                            </div>
+
+                            <div class="form-actions mt-8">
+                                <button class="button success large pl-8 pr-8">Sign up</button>
+                                <span class="ml-4">Do you have an account? <a class="fg-yellow" href="/login">Log in now!</a></span>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="cell-md-2 signup-box-divider">
+                        <div class="bar"></div>
+                    </div>
+
+                    <div class="cell-md-4">
+                        <div class="text-leader">
+                            <p class="reduce-1 enlarge-1-md">
+                                Metro 4 Sandbox is a tool for prototyping, testing code and getting support with your problems.
+                                You write code in the browser and see the results of it as you build.
+                                The sandbox is intended for testing code created using the <a href="https://metroui.org.ua" class="fg-yellow">Metro 4</a> components library.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-white bg-light fg-dark">
+    <div class="container pt-10 pb-20">
+        <div class="h2 mt-10 text-center"><span class="reduce-1 enlarge-1-md">Special thanks to</span></div>
+
+        <div class="row special-thanks">
+            <div class="cell-md-2">
+                <a href="https://olshansky.ua/"><img src="<?php echo VIEW_PATH ?>images/olshansky.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.imena.ua/"><img src="<?php echo VIEW_PATH ?>images/imena_logo.png"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://mirohost.net/"><img src="<?php echo VIEW_PATH ?>images/mirohost_logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.keycdn.com/"><img src="<?php echo VIEW_PATH ?>images/keycdn-logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.jetbrains.com/"><img src="<?php echo VIEW_PATH ?>images/jetbrains.svg"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-bg">
+    <div class="container pt-20 pb-20">
+        <div class="text-center">
+            <ul class="inline-list reduce-1" id="social-menu">
+                <li><a href="https://www.facebook.com/metrouicss/"><span class="mif-facebook"></span></a></li>
+                <li><a href="https://twitter.com/MetroUI"><span class="mif-twitter"></span></a></li>
+                <li><a href="#"><span class="mif-youtube"></span></a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS"><span class="mif-github"></span></a></li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-10">
+            <ul class="inline-list reduce-1" id="footer-menu">
+                <li><a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">License</a></li>
+                <li><a href="mailto:sergey@pimenov.com.ua">Author</a></li>
+                <li><a href="https://forum.metroui.org.ua">Forum</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/issues">Issues</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/releases">Releases</a></li>
+            </ul>
+        </div>
+
+        <div class="text-center m-10">
+            <span class="h2"><span class="fg-cyan">Made in </span><span class="fg-yellow">Ukraine</span></span>
+        </div>
+
+        <div class="text-center mt-10 reduce-1">
+            Metro 4 (Metro UI CSS) &copy; 2012-2018 by <a href="mailto:sergey@pimenov.com.ua" class="no-wrap">Sergey Pimenov</a>.
+            <br />
+            <span class="no-wrap">Domain by <a href="https://imena.ua/">Imena.ua</a>.</span>
+            <span class="no-wrap">Hosting by <a href="https://mirohost.net/">Mirohost</a>.</span>
+            <br/>
+            <span class="no-wrap">Metro CDN by <a href="https://www.keycdn.com/">KeyCDN</a>.</span>
+            <br/>
+            <span class="no-wrap">IDE PhpStorm by <a href="https://www.jetbrains.com/">JetBrains</a>.</span>
+            <br />
+            Currently <span class="version-number-full"></span>. Code licensed <a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">MIT</a>, docs <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+        </div>
+    </div>
+</footer>
+
+<?php include "foot.phtml";?>

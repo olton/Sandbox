@@ -107,7 +107,7 @@ class CodeController extends Controller {
         echo $view->Render("code.phtml", $params);
     }
 
-    public function Save(){
+    public function SaveProcess(){
         global $POST;
 
         $id = intval($POST['id']);
@@ -149,6 +149,6 @@ class CodeController extends Controller {
                 "title" => $title,
                 "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file
             ]);
-        }
+        } 
     }
 }

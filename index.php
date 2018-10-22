@@ -27,7 +27,6 @@ include('bootstrap.php');
 
 use Classes\Application;
 use Classes\Security;
-use Classes\Url;
 
 $config = array(
     'database'   => include(CONFIG_PATH.'database.php'),
@@ -36,8 +35,10 @@ $config = array(
     'salt' => 'Борода не делает козла раввином'
 );
 
-$_SESSION['current'] = 1;
-$_SESSION['user']['name'] = 'olton';
+if (!isset($_SESSION['current']) || $_SESSION['current'] == -1) {
+    $_SESSION['user']['name'] = 'anon';
+    $_SESSION['user']['email'] = 'anon@sandbox.metroui.org.ua';
+}
 
 $GET = Security::XSS($_GET, ENT_QUOTES);
 $POST = Security::XSS($_POST, ENT_QUOTES);

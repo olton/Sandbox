@@ -5,7 +5,16 @@
         <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
         <span class="app-bar-item no-hover"><span class="enlarge-4">Metro 4 Sandbox</span></span>
         <ul class="app-bar-menu ml-auto">
-            <li><a href="#">Sign up</a></li>
+            <li>
+                <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
+                <ul data-role="dropdown" class="d-menu">
+                    <li><a href="/code?template=default">Default</a></li>
+                    <li><a href="/code?template=vue">VueJS</a></li>
+                    <li class="disabled"><a href="/code?template=angular">Angular</a></li>
+                    <li class="disabled"><a href="/code?template=react">React</a></li>
+                </ul>
+            </li>
+            <li><a href="/signup">Sign up</a></li>
         </ul>
     </header>
 </div>
@@ -14,8 +23,9 @@
     <div class="container2">
         <div class="row">
             <div class="cell-md-12">
-                <div class="login-header row ml-0 mr-0">
-                    <h1 class="order-2 order-md-1 pl-2"><span class="enlarge-5">Log in</span><small class="no-wrap fg-gray"> or <a class="fg-yellow" href="/signup">Sign up now!</a></small></h1>
+                <div class="login-header">
+                    <h1 class="pl-2"><span class="enlarge-5">Log in</span><small class="no-wrap fg-gray"> or <a class="fg-yellow" href="/signup">Sign up now!</a></small></h1>
+                    <div data-role="activity" data-type="metro" id="activity" style="visibility: hidden"></div>
                 </div>
 
                 <hr class="mt-6 thin bg-transparent">
@@ -25,16 +35,16 @@
                         <form>
                             <div class="form-group">
                                 <label>USERNAME OR EMAIL</label>
-                                <input class="input-large" type="text" data-role="input" name="email">
+                                <input class="input-large" type="text" data-role="input" name="name">
                             </div>
 
-                            <div class="form-group mt-2">
+                            <div class="form-group">
                                 <label>PASSWORD</label>
                                 <input class="input-large" type="password" data-role="input" name="password">
                             </div>
                             <div class="form-actions mt-8">
-                                <button class="button success large pl-8 pr-8">Log in</button>
-                                <button class="button link fg-lightTeal">Forgot password?</button>
+                                <button type="button" onclick="Sandbox.login(this.form)" class="button success large pl-8 pr-8">Log in</button>
+                                <button type="button" class="button link fg-lightTeal">Forgot password?</button>
                             </div>
                         </form>
                     </div>
