@@ -50,6 +50,7 @@ var Sandbox = {
             function(response){
                 if (!response.result) {
                     Metro.utils.exec(cb_error, [response]);
+                    Sandbox.info("Error", response.message);
                     return false;
                 }
 
@@ -109,6 +110,7 @@ var Sandbox = {
                     $('#code_hash').val(response.data.hash);
                     $('#temp_file').val(response.data.temp_file);
                     $('#saved').val(1);
+                    Editors.saved = true;
                 }
 
                 iframe.src = response.data.iframe;
@@ -153,6 +155,15 @@ var Sandbox = {
 
     logout: function(){
         this.go("/logout/process");
+    },
+
+    open: function(url, target){
+        var win = window.open(url, target);
+        win.focus();
+    },
+
+    delete: function(hash){
+
     }
 };
 

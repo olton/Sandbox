@@ -1,4 +1,7 @@
 var Editors = {
+
+    saved: false,
+
     init: function(options){
         this.options = $.extend( {}, this.options, options );
         if (Metro.utils.isValue(options) && Metro.utils.isValue(options.editor)) {
@@ -48,6 +51,10 @@ var Editors = {
         var that = this, o = this.options;
         var editor_options = $.extend( {}, this.editor_options, options );
         this[editor] = CodeMirror.fromTextArea(document.getElementById(editor), editor_options);
+        this[editor].setSize("100%", "100%");
+        this[editor].on("beforeChange", function(instance, changeObj){
+            Editors.saved = false;
+        });
         this[editor].on("change", function(instance, changeObj){
             clearTimeout(that.edit_timer);
             that.edit_timer = setTimeout(function () {
@@ -55,10 +62,18 @@ var Editors = {
                 Metro.utils.exec(o.editTimerCallback, null, that[editor]);
             }, that.edit_timer_threshold);
         });
+
     },
 
     getEditorValue: function(editor){
         return this[editor].getValue();
+    },
+
+    refreshAll: function(){
+        var that = this;
+        $.each(['html_editor', 'css_editor', 'js_editor'], function(){
+            that[this].refresh();
+        })
     }
 
 };
@@ -66,3 +81,9 @@ var Editors = {
 Editors.init({
     editTimerCallback: Sandbox.editTimer
 });
+
+window.onbeforeunload = function(e){
+    if (Editors.saved === false) {
+        $.post("/code/unsaved");
+    }
+};

@@ -1,0 +1,143 @@
+<?php include "head.phtml"?>
+<body>
+<div class="container-fluid bg-darkViolet fg-white pos-fixed fixed-top z-top">
+    <header class="app-bar container bg-darkViolet fg-white pos-relative" data-role="appbar" data-expand-point="md">
+        <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
+        <span class="app-bar-item no-hover"><span class="enlarge-4">Dashboard</span></span>
+        <ul class="app-bar-menu ml-auto">
+            <li>
+                <a href="" class="dropdown-toggle marker-light"><?php echo $_SESSION['user']['name']?></a>
+                <ul class="d-menu bg-darkViolet fg-white" data-role="dropdown" style="box-shadow: none">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </li>
+            <li><a href="/logout"><span class="mif-exit mif-2x va-middle"></span></a></li>
+        </ul>
+    </header>
+</div>
+
+<div class="hero text-center add-neb" style="padding-top: 40px; padding-bottom: 40px">
+    <h1 class="fg-white">Quick templates</h1>
+    <div class="d-flex flex-justify-center mt-10">
+        <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+            <div class="code-template" onclick="Sandbox.go('/code?template=<?php echo $template['name']?>')">
+                <img src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>">
+                <span class="name"><?php echo $template['title']?></span>
+            </div>
+        <?php }?>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-10 pb-20 about add-neb">
+    <div class="container">
+        <div class="d-flex flex-justify-between flex-align-center">
+            <p class="text-medium">Recent codes</p>
+            <div class="ml-auto">
+                <div class="dropdown-button">
+                    <button class="button dropdown-toggle"><span class="mif-import-export mif-2x"></span></button>
+                    <ul class="d-menu place-right" data-role="dropdown">
+                        <li><a href="#">By name</a></li>
+                        <li><a href="#">By creating date</a></li>
+                        <li><a href="#">By updated</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <ul class="code-items" data-role="list">
+            <?php if (isset($codes) && $codes != false) foreach ($codes as $code) {?>
+                <li class="code-item">
+                    <div class="icon"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>"></div>
+                    <div class="name"><a href="/<?php echo $code['user_name'] . "/code/" . $code['hash']?>"><?php echo $code['title']?></a></div>
+                    <div class="date d-none d-block-md" style="padding-top: 14px">
+                        <div style="font-size: 9px">
+                            <div class="place-right" style="right: 29px;"><?php echo date("H:i:s", strtotime($code['updated']))?></div>
+                            <span class="fg-cyan">updated</span>
+                        </div>
+                        <?php echo date("d-m-Y", strtotime($code['updated']))?>
+                    </div>
+                    <div class="date d-none d-block-md" style="padding-top: 14px">
+                        <div style="font-size: 9px">
+                            <div class="place-right" style="right: 29px;"><?php echo date("H:i:s", strtotime($code['created']))?></div>
+                            <span class="fg-teal">created</span>
+                        </div>
+                        <?php echo date("d-m-Y", strtotime($code['created']))?>
+                    </div>
+                    <div class="buttons d-flex flex-align-center flex-justify-end" style="width: 100px;">
+                        <button title="Share" class="button square info" onclick="Sandbox.go('<?php echo $code['user_name'] . "/share/" . $code['hash']?>')"><span class="mif-share"></span></button>
+                        <button title="Debug" class="button square warning" onclick="Sandbox.open('<?php echo "/".$code['user_name'] . "/debug/" . $code['hash']?>', '_blank')"><span class="mif-bug"></span></button>
+                        <button title="Delete" class="button square alert" onclick="Sandbox.go('<?php echo $code['user_name'] . "/delete/" . $code['hash']?>')"><span class="mif-bin"></span></button>
+                    </div>
+                </li>
+            <?php }?>
+        </ul>
+    </div>
+</div>
+
+<div class="container-fluid bg-white bg-light fg-dark">
+    <div class="container pt-10 pb-20">
+        <div class="h2 mt-4 text-center"><span class="reduce-1 enlarge-1-md">Special thanks to</span></div>
+
+        <div class="row special-thanks">
+            <div class="cell-md-2">
+                <a href="https://olshansky.ua/"><img src="<?php echo VIEW_PATH ?>images/olshansky.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.imena.ua/"><img src="<?php echo VIEW_PATH ?>images/imena_logo.png"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://mirohost.net/"><img src="<?php echo VIEW_PATH ?>images/mirohost_logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.keycdn.com/"><img src="<?php echo VIEW_PATH ?>images/keycdn-logo.svg"></a>
+            </div>
+            <div class="cell-md-2">
+                <a href="https://www.jetbrains.com/"><img src="<?php echo VIEW_PATH ?>images/jetbrains.svg"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-bg">
+    <div class="container pt-20 pb-20">
+        <div class="text-center">
+            <ul class="inline-list reduce-1" id="social-menu">
+                <li><a href="https://www.facebook.com/metrouicss/"><span class="mif-facebook"></span></a></li>
+                <li><a href="https://twitter.com/MetroUI"><span class="mif-twitter"></span></a></li>
+                <li><a href="#"><span class="mif-youtube"></span></a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS"><span class="mif-github"></span></a></li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-10">
+            <ul class="inline-list reduce-1" id="footer-menu">
+                <li><a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">License</a></li>
+                <li><a href="mailto:sergey@pimenov.com.ua">Author</a></li>
+                <li><a href="https://forum.metroui.org.ua">Forum</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/issues">Issues</a></li>
+                <li><a href="https://github.com/olton/Metro-UI-CSS/releases">Releases</a></li>
+            </ul>
+        </div>
+
+        <div class="text-center m-10">
+            <span class="h2"><span class="fg-cyan">Made in </span><span class="fg-yellow">Ukraine</span></span>
+        </div>
+
+        <div class="text-center mt-10 reduce-1">
+            Metro 4 (Metro UI CSS) &copy; 2012-2018 by <a href="mailto:sergey@pimenov.com.ua" class="no-wrap">Sergey Pimenov</a>.
+            <br />
+            <span class="no-wrap">Domain by <a href="https://imena.ua/">Imena.ua</a>.</span>
+            <span class="no-wrap">Hosting by <a href="https://mirohost.net/">Mirohost</a>.</span>
+            <br/>
+            <span class="no-wrap">Metro CDN by <a href="https://www.keycdn.com/">KeyCDN</a>.</span>
+            <br/>
+            <span class="no-wrap">IDE PhpStorm by <a href="https://www.jetbrains.com/">JetBrains</a>.</span>
+            <br />
+            Currently <span class="version-number-full"></span>. Code licensed <a href="https://github.com/olton/Metro-UI-CSS/blob/master/LICENSE">MIT</a>, docs <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+        </div>
+    </div>
+</footer>
+
+<?php include "foot.phtml";?>

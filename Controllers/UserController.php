@@ -81,6 +81,10 @@ class UserController extends Controller {
             $this->ReturnJSON(false, "Email exists", ['email'=>$email]);
         }
 
+        if (!file_exists(SANDBOX_PATH . $name)) {
+            mkdir(SANDBOX_PATH . $name, 0755, true);
+        }
+
         $result = $this->model->Save(-1, $name, $email);
         $this->model->SetPassword($result, $pass);
         $this->model->Logged($result);

@@ -8,10 +8,10 @@
             <li>
                 <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
                 <ul data-role="dropdown" class="d-menu">
-                    <li><a href="/code?template=default">Default</a></li>
-                    <li><a href="/code?template=vue">VueJS</a></li>
-                    <li class="disabled"><a href="/code?template=angular">Angular</a></li>
-                    <li class="disabled"><a href="/code?template=react">React</a></li>
+                    <li><a href="/code?template=default"><img class="icon" src="<?php echo VIEW_PATH ?>images/ms.svg">Metro 4</a></li>
+                    <li><a href="/code?template=metro4_vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/m4-vue.png">Metro 4 + VueJS</a></li>
+                    <li><a href="/code?template=vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/vue.svg">VueJS</a></li>
+                    <li><a href="/code?template=html"><img class="icon" src="<?php echo VIEW_PATH ?>images/html.png">HTML</a></li>
                 </ul>
             </li>
             <li><a href="/login">Login</a></li>
@@ -35,8 +35,8 @@
                         <form action="javascript:" data-role="validator" onsubmit="Sandbox.signup(this); return false;">
                             <div class="form-group">
                                 <label>USERNAME</label>
-                                <input class="input-large" type="text" data-role="input" name="name" data-validate="required minlength=3">
-                                <span class="invalid_feedback">Min length for name must be an 3 symbols</span>
+                                <input class="input-large" type="text" data-role="input" name="name" data-validate="required minlength=3 pattern=^[a-zA-Z]+$">
+                                <span class="invalid_feedback">Min length for name must be an 3 symbols and contains only letters</span>
                             </div>
 
                             <div class="form-group">

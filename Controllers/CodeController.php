@@ -66,7 +66,7 @@ class CodeController extends Controller {
         fclose($file);
     }
 
-    public function Blank($template = "default"){
+    public function Blank($template = "metro4"){
         $tpl = $this->model->Template($template);
         $temp_file_name = uniqid("m4-sandbox-").".html";
         $code = $this->model->Code(-1);
@@ -77,8 +77,20 @@ class CodeController extends Controller {
         $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
         $code['temp_file'] = $temp_file_name;
         $code['saved'] = 0;
+        $code['template_id'] = $tpl['id'];
+        $code['template_icon'] = $tpl['icon'];
+        $code['template_libs'] = $tpl['libs'];
+        $code['template_name'] = $tpl['name'];
+        $code['template_html'] = $tpl['html'];
+        $code['template_css'] = $tpl['css'];
+        $code['template_js'] = $tpl['js'];
+        $code['template_title'] = $tpl['title'];
+
+        $_SESSION['temp_file'] = $temp_file_name;
 
         $this->CreateFile($temp_file_name, $template, $code['title'], $code['css'], $code['html'], $code['js'], true);
+
+        $this->model->AddTempFile($temp_file_name, $_SESSION['current']);
 
         $params = [
             "page_title" => "Metro 4 Sandbox",
@@ -129,9 +141,12 @@ class CodeController extends Controller {
                 $this->model->UpdateHash($result, $hash);
                 $id = $result;
             }
+            unset($_SESSION['temp_file']);
             if ($temp_file !== "") unlink(SANDBOX_PATH . "temp" . DSP . $temp_file);
+            if ($temp_file !== "") $this->model->DeleteTempFile($temp_file);
             $regular_file= $hash . ".html";
-            $this->CreateFile($regular_file, $template, $title, $css, $html, $js, false);
+            $tpl = $this->model->TemplateByID($template);
+            $this->CreateFile($regular_file, $tpl['name'], $title, $css, $html, $js, false);
             $this->ReturnJSON(true, "OK", [
                 "mode" => "regular",
                 "title" => $title,
@@ -143,7 +158,8 @@ class CodeController extends Controller {
                 "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/".$_SESSION['user']['name']."/".$regular_file
             ]);
         } else {
-            $this->CreateFile($temp_file, $template, $title, $css, $html, $js, true);
+            $tpl = $this->model->TemplateByID($template);
+            $this->CreateFile($temp_file, $tpl['name'], $title, $css, $html, $js, true);
             $this->ReturnJSON(true, "OK", [
                 "mode" => "temp",
                 "title" => $title,
@@ -151,4 +167,22 @@ class CodeController extends Controller {
             ]);
         } 
     }
+
+    public function UnsavedProcess(){
+        if (isset($_SESSION['temp_file'])) {
+            @unlink(SANDBOX_PATH . "temp" . DSP . $_SESSION['temp_file']);
+            $this->model->DeleteTempFile($_SESSION['temp_file']);
+        }
+    }
+
+    public function List(){
+        $list = $this->model->List($_SESSION['current']);
+        return $list;
+    }
+
+    public function Debug($user, $hash){
+        $view = new Viewer("Sandbox/".$user."/");
+        echo $view->Render($hash.".html", []);
+    }
+
 }

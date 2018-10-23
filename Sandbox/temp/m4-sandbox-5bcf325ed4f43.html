@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>_title_</title>
+
+    <link rel="stylesheet" href="//cdn.metroui.org.ua/v4/css/metro-all.min.css">
+
+    <title>Untitled code</title>
 
     <style>
-        _css_
+        
     </style>
+
     <script>
         console.log = function(){
             parent.postMessage(Array.prototype.slice.call(arguments, 0), "*");
@@ -19,13 +23,24 @@
 </head>
 <body>
 
-_html_
+<div id="app">
+
+</div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script>
     (function(){
 
-        _js_
+        var app = new Vue({
+    el: '#app',
+    data: {
+    },
+    mounted: function () {
+        Metro.init();
+    }
+});
 
     })();
 </script>

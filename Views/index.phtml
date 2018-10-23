@@ -2,20 +2,20 @@
 <body>
 <div class="container-fluid bg-darkViolet fg-white pos-fixed fixed-top z-top">
     <header class="app-bar container bg-darkViolet fg-white pos-relative" data-role="appbar" data-expand-point="md">
-        <a href="index.html" class="d-block d-none-md brand fg-white no-hover"><span class="border bd-white border-radius p-2">m<sup>4</sup></span></a>
-        <a href="index.html" class="d-none d-block-md brand fg-white no-hover">Metro 4 Sandbox</a>
+        <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
+        <span class="app-bar-item no-hover"><span class="enlarge-4">Metro 4 Sandbox</span></span>
         <ul class="app-bar-menu ml-auto">
             <li>
                 <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
                 <ul data-role="dropdown" class="d-menu">
-                    <li><a href="/code?template=default">Default</a></li>
-                    <li><a href="/code?template=vue">VueJS</a></li>
-                    <li class="disabled"><a href="/code?template=angular">Angular</a></li>
-                    <li class="disabled"><a href="/code?template=react">React</a></li>
+                    <li><a href="/code?template=metro4"><img class="icon" src="<?php echo VIEW_PATH ?>images/ms.svg">Metro 4</a></li>
+                    <li><a href="/code?template=metro4_vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/m4-vue.png">Metro 4 + VueJS</a></li>
+                    <li><a href="/code?template=vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/vue.svg">VueJS</a></li>
+                    <li><a href="/code?template=html"><img class="icon" src="<?php echo VIEW_PATH ?>images/html.png">HTML</a></li>
                 </ul>
             </li>
             <?php if ($_SESSION['current'] == -1) {?>
-            <li><a href="/login">log in</a></li>
+            <li><a href="/login">Log in</a></li>
             <li><a href="/signup">Sign up</a></li>
             <?php } else {?>
             <li><a href="/logout">Logout</a></li>
