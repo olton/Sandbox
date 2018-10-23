@@ -1,4 +1,10 @@
 var Sandbox = {
+
+    sortCodes: {
+        field: "name",
+        dir: "asc"
+    },
+
     init: function(){
         this.version = "1.0.0";
 
@@ -158,12 +164,30 @@ var Sandbox = {
     },
 
     open: function(url, target){
+        if (!Metro.utils.isValue(target)) {
+            target = "_self";
+        }
         var win = window.open(url, target);
         win.focus();
     },
 
     delete: function(hash){
 
+    },
+
+    sortList: function(obj, col){
+        if (Sandbox.sortCodes.field === col) {
+            if (Sandbox.sortCodes.dir === "asc") {
+                Sandbox.sortCodes.dir = "desc";
+            } else {
+                Sandbox.sortCodes.dir = "asc";
+            }
+        } else {
+            Sandbox.sortCodes.field = col;
+            Sandbox.sortCodes.dir = "asc";
+        }
+        $("#sort-by").text(String(col).capitalize());
+        $(obj).data("list").sorting(Sandbox.sortCodes.field, Sandbox.sortCodes.dir, true);
     }
 };
 

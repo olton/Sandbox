@@ -35,22 +35,27 @@
         <div class="d-flex flex-justify-between flex-align-center">
             <p class="text-medium">Recent codes</p>
             <div class="ml-auto">
+                <span class="text-muted text-small">Sort by: </span><span class="mr-2 text-bold reduce-1" id="sort-by">Name</span>
                 <div class="dropdown-button">
                     <button class="button dropdown-toggle"><span class="mif-import-export mif-2x"></span></button>
                     <ul class="d-menu place-right" data-role="dropdown">
-                        <li><a href="#">By name</a></li>
-                        <li><a href="#">By creating date</a></li>
-                        <li><a href="#">By updated</a></li>
+                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'name')">By name</a></li>
+                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'created')">By created</a></li>
+                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'updated')">By updated</a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <ul class="code-items" data-role="list">
+        <ul class="code-items" data-role="list" data-sort-class="name" data-sort-dir="asc">
             <?php if (isset($codes) && $codes != false) foreach ($codes as $code) {?>
                 <li class="code-item">
                     <div class="icon"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>"></div>
                     <div class="name"><a href="/<?php echo $code['user_name'] . "/code/" . $code['hash']?>"><?php echo $code['title']?></a></div>
+
+                    <div class="d-none updated"><?php echo strtotime($code['updated'])?></div>
+                    <div class="d-none created"><?php echo strtotime($code['created'])?></div>
+
                     <div class="date d-none d-block-md" style="padding-top: 14px">
                         <div style="font-size: 9px">
                             <div class="place-right" style="right: 29px;"><?php echo date("H:i:s", strtotime($code['updated']))?></div>
