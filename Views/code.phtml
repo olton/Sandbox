@@ -1,8 +1,105 @@
 <?php include "head.phtml"; ?>
 
-<div id="loading" class="pos-fixed z-fullscreen bg-white d-flex flex-align-center flex-justify-center" style="top: 0; left: 0; width: 100%; height: 100%"></div>
+<div data-role="dialog" id="code-settings" data-to-top="true" data-on-show="$(this).addClass('open')" data-on-close="$(this).removeClass('open')">
+    <div class="dialog-title">Code settings</div>
+    <div class="dialog-content">
 
-<div class="container-fluid pos-fixed fixed-top z-top bg-light border-bottom bd-default pl-0 pr-0">
+        <ul data-role="tabs" data-expand="true">
+            <li><a href="#code-settings-html">HTML</a></li>
+            <li><a href="#code-settings-css">CSS</a></li>
+            <li><a href="#code-settings-js">JavaScript</a></li>
+            <li><a href="#code-settings-details">Details</a></li>
+        </ul>
+
+        <div class="mt-4">
+            <div id="code-settings-html">
+                <div class="form-group">
+                    <label class="text-medium reduce-1">HTML processor</label>
+                    <select id="html_processor" name="html_processor" data-role="select"data-filter="false">
+                        <option value="none">None</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Add classes to &lt;html&gt;</label>
+                    <input type="text" id="html_classes" name="html_classes" data-role="input" value="<?php echo $code['html_classes']?>">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Add classes to &lt;body&gt;</label>
+                    <input type="text" id="body_classes" name="body_classes" data-role="input" value="<?php echo $code['body_classes']?>">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Staff for &lt;head&gt;</label>
+                    <textarea id="html_head" name="html_head" data-role="textarea" placeholder="<meta>, <link>, <script>"><?php echo $code['html_head']?></textarea>
+
+                    <label class="text-medium reduce-1">Add tags: </label>
+
+                    <button class="button mini" onclick="Sandbox.addMetaTag('viewport')">viewport</button>
+                    <button class="button mini" onclick="Sandbox.addMetaTag('metro4:init')">metro4:init</button>
+                    <button class="button mini" onclick="Sandbox.addMetaTag('metro4:locale')">metro4:locale</button>
+                    <button class="button mini" onclick="Sandbox.addMetaTag('metro4:week_start')">metro4:week_start</button>
+                    <button class="button mini" onclick="Sandbox.addMetaTag('metro4:cloak')">metro4:cloak</button>
+                    <button class="button mini" onclick="Sandbox.addMetaTag('metro4:cloak_duration')">metro4:cloak_duration</button>
+                </div>
+            </div>
+
+            <div id="code-settings-css">
+                <div class="form-group">
+                    <label class="text-medium reduce-1">CSS processor</label>
+                    <select id="css_processor" name="css_processor" data-role="select" data-filter="false">
+                        <option value="none">None</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Add external stylesheets</label>
+                    <textarea id="css_external" name="css_external" data-role="textarea" placeholder="https://yourwebsite.com/style.css"></textarea>
+                </div>
+            </div>
+
+            <div id="code-settings-js">
+                <div class="form-group">
+                    <label class="text-medium reduce-1">JS processor</label>
+                    <select id="js_processor" name="js_processor" data-role="select" data-filter="false">
+                        <option value="none">None</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Add external javascript</label>
+                    <textarea id="js_external" name="js_external" data-role="textarea" placeholder="https://yourwebsite.com/javascript.js"></textarea>
+                </div>
+            </div>
+            <div id="code-settings-details">
+                <div class="form-group">
+                    <label class="text-medium reduce-1">Code description</label>
+                    <textarea id="desc" name="desc" data-role="textarea"><?php echo $code['desc']?></textarea>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">Code tags</label>
+                    <input type="text" id="tags" name="tags" data-role="taginput" data-max-tags="5" value="<?php echo $code['tags']?>">
+                    <span class="text-small text-muted">Input comma separated tags for your code. Maximum 5 tags.</span>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="text-medium reduce-1">This is template</label>
+                    <div>
+                        <input type="checkbox" id="code_type" name="code_type" value="code" data-role="switch" disabled data-caption="Yes">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-actions">
+        <button type="button" class="button success js-dialog-close" onclick="Sandbox.saveCode(true)">Save</button>
+        <button type="button" class="button link js-dialog-close">Cancel</button>
+    </div>
+</div>
+
+<div class="container-fluid pos-fixed fixed-top z-fixed bg-light border-bottom bd-default pl-0 pr-0">
     <header class="app-bar pos-relative" data-role="appbar" data-expand-point="md">
         <a class="app-bar-item no-hover pr-0" href="/"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>" title="<?php echo $code['template_title']?>" style="height: 24px"></a>
         <div class="app-bar-container" id="code-title-label">
@@ -22,12 +119,14 @@
                     <li><a href="/code?template=metro4_vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/m4-vue.png">Metro 4 + VueJS</a></li>
                     <li><a href="/code?template=vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/vue.svg">VueJS</a></li>
                     <li><a href="/code?template=html"><img class="icon" src="<?php echo VIEW_PATH ?>images/html.png">HTML</a></li>
+                    <li><a href="/code?template=jquery"><img class="icon" src="<?php echo VIEW_PATH ?>images/jquery.png">jQuery</a></li>
                 </ul>
             </li>
+
             <li><a href="#" onclick="Sandbox.saveCode(true)"><span class="mif-floppy-disk icon d-none d-block-md"></span><span class="d-none-md">Save code</span></a></li>
-            <li><a href="#" onclick="Sandbox.open('<?php echo "/".$code['user_name'] . "/debug/" . $code['hash']?>', '_blank')"><span class="mif-bug icon d-none d-block-md"></span><span class="d-none-md">Debug</span></a></li>
-            <li><a href=""><span class="mif-flow-branch icon d-none d-block-md"></span><span class="d-none-md">Fork code</span></a></li>
-            <li><a href=""><span class="mif-cogs icon d-none d-block-md"></span><span class="d-none-md">Code settings</span></a></li>
+            <li style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span class="mif-bug icon d-none d-block-md"></span><span class="d-none-md">Debug</span></a></li>
+            <li style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span class="mif-flow-branch icon d-none d-block-md"></span><span class="d-none-md">Fork code</span></a></li>
+            <li><a href="#" onclick="Metro.dialog.open('#code-settings')"><span class="mif-cogs icon d-none d-block-md"></span><span class="d-none-md">Code settings</span></a></li>
 
             <?php if ($_SESSION['current'] != -1) {?>
             <li>

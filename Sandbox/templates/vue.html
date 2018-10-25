@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="_html_classes_">
 <head>
     <meta charset="UTF-8">
+
+    _html_head_
+
+    <meta name="keywords" content="_tags_">
+    <meta name="description" content="_desc_">
+
+    _css_external_
+
     <title>_title_</title>
 
     <style>
-        _css_
+        _style_
     </style>
+
     <script>
         console.log = function(){
             parent.postMessage(Array.prototype.slice.call(arguments, 0), "*");
@@ -17,11 +26,14 @@
         };
     </script>
 </head>
-<body>
+<body class="_body_classes_">
 
 _html_
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vue"></script>
+
+_javascript_external_
+
 <script>
     (function(){
 

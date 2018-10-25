@@ -325,3 +325,19 @@ footer a:hover {
 .code-item + .code-item {
     border-top: 1px solid @borderColor;
 }
+
+#code-settings {
+    top: 0!important;
+    transition: @transition-transform;
+    .translateY(-100%);
+
+    textarea {
+        min-height: 100px;
+        font-size: 14px;
+    }
+
+    &.open {
+        transition: @transition-transform;
+        .translateY(0);
+    }
+}

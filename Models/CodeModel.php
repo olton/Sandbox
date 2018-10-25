@@ -43,16 +43,21 @@ class CodeModel extends Model {
         if ($id === -1) {
             return [
                 "id" => -1,
+                "title" => "Untitled code",
                 "user" => -1,
                 "html" => "",
                 "css" => "",
                 "js" => "",
                 "hash" => "new",
-                "title" => "Untitled code",
                 "template" => 1,
                 "html_head" => "",
                 "html_processor" => "none",
+                "html_classes" => "",
+                "body_classes" => "",
                 "css_processor" => "none",
+                "css_external" => "",
+                "js_processor" => "none",
+                "js_external" => "",
                 "desc" => "",
                 "tags" => "",
                 "code_type" => "code"
@@ -77,7 +82,8 @@ class CodeModel extends Model {
         return $code;
     }
 
-    public function Save($id, $user, $title, $html, $css, $js, $template, $hash, $html_head = "", $html_processor = "none", $css_processor = "none", $desc = "", $tags = "", $code_type = "code"){
+    public function Save($id, $user, $title, $html, $css, $js, $template, $hash,
+                         $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code"){
         $data = [
             "user" => $user,
             "title" => $title,
@@ -88,8 +94,13 @@ class CodeModel extends Model {
             "hash" => $hash,
             "created" => date("Y-m-d h:i:s"),
             "html_head" => $html_head,
+            "html_classes" => $html_classes,
+            "body_classes" => $body_classes,
             "html_processor" => $html_processor,
             "css_processor" => $css_processor,
+            "css_external" => $css_external,
+            "js_processor" => $js_processor,
+            "js_external" => $js_external,
             "desc" => $desc,
             "tags" => $tags,
             "code_type" => $code_type

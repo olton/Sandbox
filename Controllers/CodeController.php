@@ -57,26 +57,40 @@ class CodeController extends Controller {
         $this->model = new CodeModel();
     }
 
-    private function CreateFile($file_name, $template, $title, $css, $html, $js, $temp = false) {
+    private function CreateFile($file_name, $template, $code, $temp = false) {
         $template_content = file_get_contents(SANDBOX_PATH . "templates" . DSP . "{$template}.html");
-        $template_content = str_replace(['_title_', '_css_', '_html_', '_js_'], [$title, $css, $html, $js], $template_content);
+        $template_content = str_replace(
+            ['_title_', '_html_head_', '_html_classes_', '_body_classes_', '_css_external_', '_style_', '_html_', '_js_', '_javascript_external_', '_tags_', '_desc_'],
+            [$code['title'], $code['html_head'], $code['html_classes'], $code['body_classes'], $code['css_external'], $code['css'], $code['html'], $code['js'], $code['js_external'], $code['tags'], $code['desc']],
+            $template_content
+        );
 
-        $file = fopen(SANDBOX_PATH . ($temp ? "temp" . DSP : $_SESSION['user']['name'] . DSP ) . $file_name, 'w');
-        fwrite($file, html_entity_decode($template_content, ENT_QUOTES));
-        fclose($file);
+        $file = null;
+        $result = false;
+
+        try {
+            $file = fopen(SANDBOX_PATH . ($temp ? "temp" . DSP : $_SESSION['user']['name'] . DSP ) . $file_name, 'w');
+            fwrite($file, html_entity_decode($template_content, ENT_QUOTES));
+            $result = true;
+        } catch (\Exception $e) {
+            //
+        } finally {
+            @fclose($file);
+        }
+        return $result;
     }
 
     public function Blank($template = "metro4"){
         $tpl = $this->model->Template($template);
-        $temp_file_name = uniqid("m4-sandbox-").".html";
+        $temp_file_name = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
         $code = $this->model->Code(-1);
 
         $code['html'] = $tpl['html'];
         $code['css'] = $tpl['css'];
         $code['js'] = $tpl['js'];
-        $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
         $code['temp_file'] = $temp_file_name;
         $code['saved'] = 0;
+        $code['template'] = $tpl['id'];
         $code['template_id'] = $tpl['id'];
         $code['template_icon'] = $tpl['icon'];
         $code['template_libs'] = $tpl['libs'];
@@ -88,7 +102,9 @@ class CodeController extends Controller {
 
         $_SESSION['temp_file'] = $temp_file_name;
 
-        $this->CreateFile($temp_file_name, $template, $code['title'], $code['css'], $code['html'], $code['js'], true);
+        $this->CreateFile($temp_file_name, $template, $code, true);
+
+        $code['iframe'] = is_file(SANDBOX_PATH . "temp" . DSP . $temp_file_name ) ? "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name : "";
 
         $this->model->AddTempFile($temp_file_name, $_SESSION['current']);
 
@@ -130,39 +146,103 @@ class CodeController extends Controller {
         $template = $POST['template'];
         $temp_file = $POST['temp_file'];
         $hash = $POST['hash'];
+        $html_head = $POST['html_head'];
+        $html_processor = $POST['html_processor'];
+        $css_processor = $POST['css_processor'];
+        $js_processor = $POST['js_processor'];
+        $html_classes = $POST['html_classes'];
+        $body_classes = $POST['body_classes'];
+        $desc = $POST['desc'];
+        $tags = $POST['tags'];
+        $code_type = $POST['code_type'];
+        $css_external = $POST['css_external'];
+        $js_external = $POST['js_external'];
+
         $saved = intval($POST['saved']) === 1;
         $can_save = $POST['can_save'] != "false";
 
         if (($can_save && !$saved) || $saved) {
-            $result = $this->model->Save($id, $_SESSION['current'], $title, $html, $css, $js, $template, $hash);
+
+            $result = $this->model->Save(
+                $id,
+                $_SESSION['current'],
+                $title,
+                $html,
+                $css,
+                $js,
+                $template,
+                $hash,
+                $html_head,
+                $html_processor,
+                $html_classes,
+                $body_classes,
+                $css_processor,
+                $css_external,
+                $js_processor,
+                $js_external,
+                $desc,
+                $tags,
+                $code_type
+            );
+
             if (($can_save && !$saved)) {
                 $hash_gen = new Hashids(HASH_SALT, 10);
                 $hash = $hash_gen->encode($result);
                 $this->model->UpdateHash($result, $hash);
                 $id = $result;
             }
+
             unset($_SESSION['temp_file']);
             if ($temp_file !== "") unlink(SANDBOX_PATH . "temp" . DSP . $temp_file);
             if ($temp_file !== "") $this->model->DeleteTempFile($temp_file);
             $regular_file= $hash . ".html";
             $tpl = $this->model->TemplateByID($template);
-            $this->CreateFile($regular_file, $tpl['name'], $title, $css, $html, $js, false);
+
+            $code = $this->model->Code($id);
+
+            $this->CreateFile(
+                $regular_file,
+                $tpl['name'],
+                $code,
+                false
+            );
+
             $this->ReturnJSON(true, "OK", [
                 "mode" => "regular",
-                "title" => $title,
-                "id" => $id,
-                "hash" => $hash,
                 "temp_file" => "",
                 "saved" => 1,
                 "url" => "/".$_SESSION['user']['name']."/code/".$hash,
-                "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/".$_SESSION['user']['name']."/".$regular_file
+                "debug_url" => "/".$_SESSION['user']['name']."/debug/".$hash,
+                "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/".$_SESSION['user']['name']."/".$regular_file,
+                "code" => $code
             ]);
         } else {
             $tpl = $this->model->TemplateByID($template);
-            $this->CreateFile($temp_file, $tpl['name'], $title, $css, $html, $js, true);
+            $code = [
+                "id" => -1,
+                "title" => $title,
+                "user" => $_SESSION['current'],
+                "html" => $html,
+                "css" => $css,
+                "js" => $js,
+                "hash" => "new",
+                "template" => $template,
+                "html_head" => $html_head,
+                "html_processor" => $html_processor,
+                "html_classes" => $html_classes,
+                "body_classes" => $body_classes,
+                "css_processor" => $css_processor,
+                "css_external" => $css_external,
+                "js_processor" => $js_processor,
+                "js_external" => $js_external,
+                "desc" => $desc,
+                "tags" => $tags,
+                "code_type" => $code_type
+            ];
+            $this->CreateFile($temp_file, $tpl['name'], $code, true);
             $this->ReturnJSON(true, "OK", [
                 "mode" => "temp",
-                "title" => $title,
+                "code" => $code,
                 "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file
             ]);
         } 

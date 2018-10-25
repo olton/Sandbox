@@ -36,6 +36,7 @@ $config = array(
 );
 
 if (!isset($_SESSION['current']) || $_SESSION['current'] == -1) {
+    $_SESSION['current'] = -1;
     $_SESSION['user']['name'] = 'anon';
     $_SESSION['user']['email'] = 'anon@sandbox.metroui.org.ua';
 }

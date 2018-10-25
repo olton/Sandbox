@@ -283,4 +283,17 @@ footer a:hover {
 .code-item + .code-item {
   border-top: 1px solid #dfdfdf;
 }
+#code-settings {
+  top: 0!important;
+  transition: transform 0.3s ease;
+  transform: translateY(-100%);
+}
+#code-settings textarea {
+  min-height: 100px;
+  font-size: 14px;
+}
+#code-settings.open {
+  transition: transform 0.3s ease;
+  transform: translateY(0);
+}
 /*# sourceMappingURL=sandbox.css.map */

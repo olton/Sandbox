@@ -95,6 +95,7 @@ var Sandbox = {
                 id: $('#code_id').val(),
                 title: $('#code_title').val(),
                 hash: $('#code_hash').val(),
+
                 template: $('#template').val(),
                 temp_file: $('#temp_file').val(),
                 saved: $('#saved').val(),
@@ -102,21 +103,44 @@ var Sandbox = {
 
                 html: Editors.getEditorValue('html_editor'),
                 css: Editors.getEditorValue('css_editor'),
-                js: Editors.getEditorValue('js_editor')
+                js: Editors.getEditorValue('js_editor'),
+
+                html_head: $('#html_head').val(),
+                html_classes: $('#html_classes').val(),
+                body_classes: $('#body_classes').val(),
+                html_processor: $('#html_processor').val(),
+                css_processor: $('#css_processor').val(),
+                js_processor: $('#js_processor').val(),
+                js_external: $('#js_external').val(),
+                css_external: $('#css_external').val(),
+                desc: $('#desc').val(),
+                tags: $('#tags').val(),
+                code_type: $('#code_type').val()
             };
 
             that.sendData(data, "/code/save", null, function(response){
+
+                var data = response.data;
+                var code = data.code;
+
                 $('#console-output').html("");
-                $('#code_title').val(response.data.title);
-                $('#code_title_label').text(response.data.title);
+                $('#code_title').val(code.title);
+                $('#code_title_label').text(code.title);
 
                 if (response.data.mode !== "temp") {
-                    history.pushState({},"Goto saved code", response.data.url);
-                    $('#code_id').val(response.data.id);
-                    $('#code_hash').val(response.data.hash);
-                    $('#temp_file').val(response.data.temp_file);
+
+                    history.pushState({},"Goto saved code", data.url);
+
+                    $('#code_id').val(code.id);
+                    $('#code_hash').val(code.hash);
+                    $('#temp_file').val(data.temp_file);
                     $('#saved').val(1);
+                    $('#code_page-debug_button').parent().show();
+                    $('#code_page-fork_button').parent().show();
+                    $('#code_page-debug_button').attr("href", data.debug_url);
                     Editors.saved = true;
+                } else {
+
                 }
 
                 iframe.src = response.data.iframe;
@@ -175,6 +199,10 @@ var Sandbox = {
 
     },
 
+    fork: function(hash){
+
+    },
+
     sortList: function(obj, col){
         if (Sandbox.sortCodes.field === col) {
             if (Sandbox.sortCodes.dir === "asc") {
@@ -188,6 +216,19 @@ var Sandbox = {
         }
         $("#sort-by").text(String(col).capitalize());
         $(obj).data("list").sorting(Sandbox.sortCodes.field, Sandbox.sortCodes.dir, true);
+    },
+
+    addMetaTag: function(tag){
+        var tags = {
+            'viewport': '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">',
+            'metro4:init': '<meta name="metro4:init" content="true">',
+            'metro4:locale': '<meta name="metro4:locale" content="en-US">',
+            'metro4:week_start': '<meta name="metro4:week_start" content="1">',
+            'metro4:cloak': '<meta name="metro4:cloak" content="fade">',
+            'metro4:cloak_duration': '<meta name="metro4:cloak_duration" content="500">'
+        };
+        var head = $("#html_head");
+        head.val(head.val()+tags[tag]+"\n");
     }
 };
 
