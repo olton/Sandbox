@@ -99,6 +99,7 @@ class CodeController extends Controller {
         $code['template_css'] = $tpl['css'];
         $code['template_js'] = $tpl['js'];
         $code['template_title'] = $tpl['title'];
+        $code['alien'] = 0;
 
         $_SESSION['temp_file'] = $temp_file_name;
 
@@ -120,10 +121,13 @@ class CodeController extends Controller {
     }
 
     public function Editor($user, $hash){
+        $alien = $_SESSION['user']['name'] != $user ? 1 : 0;
+
         $code = $this->model->Code($hash);
         $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/$user/$hash.html";
         $code['temp_file'] = "";
         $code['saved'] = 1;
+        $code['alien'] = $alien;
         $params = [
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
@@ -157,11 +161,12 @@ class CodeController extends Controller {
         $code_type = $POST['code_type'];
         $css_external = $POST['css_external'];
         $js_external = $POST['js_external'];
+        $alien = intval($POST['alien']) === 1;
 
         $saved = intval($POST['saved']) === 1;
         $can_save = $POST['can_save'] != "false";
 
-        if (($can_save && !$saved) || $saved) {
+        if ((!$alien && $hash != 'new') && (($can_save && !$saved) || $saved) ) {
 
             $result = $this->model->Save(
                 $id,
@@ -239,6 +244,9 @@ class CodeController extends Controller {
                 "tags" => $tags,
                 "code_type" => $code_type
             ];
+            if ($alien) {
+                $temp_file = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
+            }
             $this->CreateFile($temp_file, $tpl['name'], $code, true);
             $this->ReturnJSON(true, "OK", [
                 "mode" => "temp",

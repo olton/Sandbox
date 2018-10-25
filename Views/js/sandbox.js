@@ -99,6 +99,7 @@ var Sandbox = {
                 template: $('#template').val(),
                 temp_file: $('#temp_file').val(),
                 saved: $('#saved').val(),
+                alien: $('#alien').val(),
                 can_save: save_button,
 
                 html: Editors.getEditorValue('html_editor'),
