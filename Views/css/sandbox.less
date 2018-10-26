@@ -94,6 +94,27 @@ footer a:hover {
     padding: 8px 8px 8px 40px;
     background: @light;
     user-select: none;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.console-wrapper {
+    .wrapper-header {
+        padding-left: 8px;
+    }
+
+    .input {
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+
+        input {
+            font-size: 14px;
+        }
+    }
 }
 
 .code-wrapper {

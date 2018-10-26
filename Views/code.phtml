@@ -169,7 +169,7 @@
                         class="z-1"
                 ></iframe>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column console-wrapper">
                 <div class="wrapper-header">Console</div>
                 <div class="output-wrapper" id="console-output"></div>
                 <input type="text" data-role="input" data-cls-component="mt-auto" data-prepend="<span class='mif-chevron-right'>" data-history="true" data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
@@ -177,19 +177,37 @@
         </div>
         <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40">
             <div id="html-code">
-                <div class="wrapper-header">HTML</div>
+                <div class="wrapper-header">
+                    <span>HTML</span>
+                    <div class="ml-auto">
+                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('html')"></span></button>
+                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('html')"></span></button>
+                    </div>
+                </div>
                 <div class="code-wrapper">
                     <textarea name="html_editor" id="html_editor" placeholder="HTML code goes here..."><?php echo $code['html'] ?></textarea>
                 </div>
             </div>
             <div id="css-code">
-                <div class="wrapper-header">CSS</div>
+                <div class="wrapper-header">
+                    <span>CSS</span>
+                    <div class="ml-auto">
+                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('css')"></span></button>
+                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('css')"></span></button>
+                    </div>
+                </div>
                 <div class="code-wrapper">
                     <textarea name="css_editor" id="css_editor" placeholder="CSS code goes here..."><?php echo $code['css'] ?></textarea>
                 </div>
             </div>
             <div id="js-code">
-                <div class="wrapper-header">JavaScript</div>
+                <div class="wrapper-header">
+                    <span>JavaScript</span>
+                    <div class="ml-auto">
+                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('js')"></span></button>
+                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('js')"></span></button>
+                    </div>
+                </div>
                 <div class="code-wrapper">
                     <textarea name="js_editor" id="js_editor" placeholder="JavaScript code goes here..."><?php echo $code['js'] ?></textarea>
                 </div>

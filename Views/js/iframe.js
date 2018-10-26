@@ -1,4 +1,5 @@
 function console_out(messages, console_element, clear){
+    var i;
     var console_print = function(output, val){
         output.innerHTML += '<div class="log-item"><span class="text-small text-muted">['+((new Date()).format('%H:%M:%S'))+']</span> ' + val + '</div>';
     };
@@ -11,7 +12,7 @@ function console_out(messages, console_element, clear){
         messages = [messages];
     }
 
-    for(var i = 0; i < messages.length; i++) {
+    for(i = 0; i < messages.length; i++) {
         var m = messages[i], r = "";
 
         if (m === undefined || m === 'undefined') {

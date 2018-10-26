@@ -244,6 +244,42 @@ var Sandbox = {
 
     sendMessageToIframe: function(iframe, msg){
         iframe.contentWindow.postMessage(msg, '*');
+    },
+
+    expandBlock: function(el){
+        if (el === 'html') {
+            $('#html-code').css("flex-basis", "calc(100% - 8px)");
+            $('#js-code').css("flex-basis", 0);
+            $('#css-code').css("flex-basis", 0);
+        }
+        if (el === 'css') {
+            $('#css-code').css("flex-basis", "calc(100% - 8px)");
+            $('#js-code').css("flex-basis", 0);
+            $('#html-code').css("flex-basis", 0);
+        }
+        if (el === 'js') {
+            $('#js-code').css("flex-basis", "calc(100% - 8px)");
+            $('#css-code').css("flex-basis", 0);
+            $('#html-code').css("flex-basis", 0);
+        }
+    },
+
+    collapseBlock: function(el){
+        if (el === 'html') {
+            $('#html-code').css("flex-basis", 0);
+            $('#js-code').css("flex-basis", "calc(50% - 8px)");
+            $('#css-code').css("flex-basis", "calc(50% - 8px)");
+        }
+        if (el === 'css') {
+            $('#css-code').css("flex-basis", 0);
+            $('#js-code').css("flex-basis", "calc(50% - 8px)");
+            $('#html-code').css("flex-basis", "calc(50% - 8px)");
+        }
+        if (el === 'js') {
+            $('#js-code').css("flex-basis", 0);
+            $('#css-code').css("flex-basis", "calc(50% - 8px)");
+            $('#html-code').css("flex-basis", "calc(50% - 8px)");
+        }
     }
 };
 

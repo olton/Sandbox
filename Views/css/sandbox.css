@@ -74,6 +74,22 @@ footer a:hover {
   padding: 8px 8px 8px 40px;
   background: #f8f8f8;
   user-select: none;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+.console-wrapper .wrapper-header {
+  padding-left: 8px;
+}
+.console-wrapper .input {
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+.console-wrapper .input input {
+  font-size: 14px;
 }
 .code-wrapper {
   height: calc(100% - 40px);
