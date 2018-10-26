@@ -124,6 +124,10 @@ var Sandbox = {
                 var data = response.data;
                 var code = data.code;
 
+                if (!Metro.utils.isObject(data)) {
+                    Sandbox.message("Server error!", data);
+                }
+
                 $('#console-output').html("");
                 $('#code_title').val(code.title);
                 $('#code_title_label').text(code.title);
@@ -201,7 +205,13 @@ var Sandbox = {
     },
 
     fork: function(hash){
+        Sandbox.sendData({
+            hash: hash
+        }, "/code/fork/", null, function(response){
 
+        }, function(response){
+
+        });
     },
 
     sortList: function(obj, col){

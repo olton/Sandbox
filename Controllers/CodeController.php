@@ -6,6 +6,7 @@ namespace Controllers;
 
 use Classes\Controller;
 use Classes\Hashids;
+use Classes\Url;
 use Classes\Viewer;
 use Models\CodeModel;
 
@@ -81,6 +82,12 @@ class CodeController extends Controller {
     }
 
     public function Blank($template = "metro4"){
+
+        if ($_SESSION['current'] == -1) {
+            Url::Redirect("/");
+            exit(0);
+        }
+
         $tpl = $this->model->Template($template);
         $temp_file_name = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
         $code = $this->model->Code(-1);
@@ -166,7 +173,53 @@ class CodeController extends Controller {
         $saved = intval($POST['saved']) === 1;
         $can_save = $POST['can_save'] != "false";
 
-        if ((!$alien && $hash != 'new') && (($can_save && !$saved) || $saved) ) {
+        if ($_SESSION['current'] == -1 || ($can_save == false && $saved == false)) {
+
+            if ($can_save == true) {
+                $this->ReturnJSON(false, "Auth required", []);
+            }
+
+            $tpl = $this->model->TemplateByID($template);
+            $code = [
+                "id" => -1,
+                "title" => $title,
+                "user" => $_SESSION['current'],
+                "html" => $html,
+                "css" => $css,
+                "js" => $js,
+                "hash" => "new",
+                "template" => $template,
+                "html_head" => $html_head,
+                "html_processor" => $html_processor,
+                "html_classes" => $html_classes,
+                "body_classes" => $body_classes,
+                "css_processor" => $css_processor,
+                "css_external" => $css_external,
+                "js_processor" => $js_processor,
+                "js_external" => $js_external,
+                "desc" => $desc,
+                "tags" => $tags,
+                "code_type" => $code_type
+            ];
+            if ($temp_file == '') {
+                $temp_file = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
+            }
+            $this->CreateFile($temp_file, $tpl['name'], $code, true);
+            $this->ReturnJSON(true, "OK", [
+                "mode" => "temp",
+                "code" => $code,
+                "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file
+            ]);
+
+        } else if ($can_save && $_SESSION['current'] == -1) {
+
+            $this->ReturnJSON(false, "Auth required", []);
+
+        } else {
+
+            if ($alien) {
+                $id = $this->model->Fork($hash, $_SESSION['current']);
+            }
 
             $result = $this->model->Save(
                 $id,
@@ -221,39 +274,7 @@ class CodeController extends Controller {
                 "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/".$_SESSION['user']['name']."/".$regular_file,
                 "code" => $code
             ]);
-        } else {
-            $tpl = $this->model->TemplateByID($template);
-            $code = [
-                "id" => -1,
-                "title" => $title,
-                "user" => $_SESSION['current'],
-                "html" => $html,
-                "css" => $css,
-                "js" => $js,
-                "hash" => "new",
-                "template" => $template,
-                "html_head" => $html_head,
-                "html_processor" => $html_processor,
-                "html_classes" => $html_classes,
-                "body_classes" => $body_classes,
-                "css_processor" => $css_processor,
-                "css_external" => $css_external,
-                "js_processor" => $js_processor,
-                "js_external" => $js_external,
-                "desc" => $desc,
-                "tags" => $tags,
-                "code_type" => $code_type
-            ];
-            if ($alien) {
-                $temp_file = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
-            }
-            $this->CreateFile($temp_file, $tpl['name'], $code, true);
-            $this->ReturnJSON(true, "OK", [
-                "mode" => "temp",
-                "code" => $code,
-                "iframe" => "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file
-            ]);
-        } 
+        }
     }
 
     public function UnsavedProcess(){
@@ -273,4 +294,10 @@ class CodeController extends Controller {
         echo $view->Render($hash.".html", []);
     }
 
+    public function Fork(){
+        global $POST;
+
+        $hash = $POST['hash'];
+        $code = $this->model->Fork($hash, $_SESSION['current']);
+    }
 }

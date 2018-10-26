@@ -10,6 +10,7 @@ return [
     ['GET',  "/logout", ["controller" => "UserController", "action" => "LogoutProcess"]],
 
     ['GET',  "/code", ["controller" => "CodeController", "action" => "Blank"], ["template"=>"[\w]+"]], /* /code or /code?template=default */
+    ['GET',  "/code/fork", ["controller" => "CodeController", "action" => "Fork"]],
     ['GET',  "/code/list", ["controller" => "CodeController", "action" => "List"]],
     ['POST', "/code/save", ["controller" => "CodeController", "action" => "SaveProcess"]],
     ['POST', "/code/unsaved", ["controller" => "CodeController", "action" => "UnsavedProcess"]],

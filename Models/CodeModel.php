@@ -154,4 +154,13 @@ class CodeModel extends Model {
         }
         return $codes;
     }
+
+    public function Fork($hash, $user_id) {
+        $user_id = $this->_e($user_id);
+        $this->Select("
+            insert into code (title, `user`, html, css, js, created, template, `hash`, html_head, html_processor, html_classes, css_processor, `desc`, tags, code_type, js_processor, css_external, js_external, body_classes)
+            select title, {$user_id}, html, css, js, now(), template, 'new', html_head, html_processor, html_classes, css_processor, `desc`, tags, code_type, js_processor, css_external, js_external, body_classes 
+            from code where hash = " . $this->_e($hash));
+        return $this->ID();
+    }
 }
