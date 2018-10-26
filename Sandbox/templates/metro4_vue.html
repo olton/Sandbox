@@ -25,6 +25,11 @@
             parent.postMessage(Array.prototype.slice.call(arguments, 0), "*");
         };
 
+        window.addEventListener("message", function(e){
+            console.log(e.data);
+            eval(e.data);
+        }, false);
+
         window.onerror = function (message, url, row, col, err) {
             console.log(message);
         };

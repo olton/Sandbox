@@ -29934,6 +29934,18 @@ html.metro-touch-device .streamer .stream.focused .stream-icon {
 .popover > * {
   max-width: 100%;
 }
+.popover .popover-content {
+  display: block;
+  position: relative;
+  z-index: 50;
+}
+.popover .popover-close-button {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 24px;
+}
 .media-player {
   display: block;
   position: relative;

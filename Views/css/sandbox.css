@@ -75,9 +75,11 @@ footer a:hover {
   background: #f8f8f8;
   user-select: none;
 }
-.output-wrapper,
 .code-wrapper {
   height: calc(100% - 40px);
+}
+.output-wrapper {
+  height: calc(100% - 76px);
 }
 #console-output {
   overflow: auto;

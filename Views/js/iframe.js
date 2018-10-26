@@ -11,19 +11,30 @@ function console_out(messages, console_element, clear){
         messages = [messages];
     }
 
-    $.each(messages, function(){
-        var m = this, r = "";
+    for(var i = 0; i < messages.length; i++) {
+        var m = messages[i], r = "";
+
+        if (m === undefined || m === 'undefined') {
+            console_print(console_element, "undefined");
+            continue;
+        }
+        if (m === null || m === 'null') {
+            console_print(console_element, "null");
+            continue;
+        }
 
         if (m instanceof Error) {
             r = "<span class='fg-red'>Error:</span> "+m.message;
         } else {
-            if (typeof m === 'string' || m instanceof String) {
+            if (m instanceof String || m instanceof Number) {
                 r = m.toString();
             } else {
                 if (typeof m === 'object') {
                     $.each(m, function(key, val){
                         console_print(console_element, "<span class='text-bold'>"+key+"</span>" + ":" + " " + (Metro.utils.isValue(val) ? val.toString() : ""));
                     });
+                } else if (!isNaN(m)) {
+                    r = String(m);
                 } else {
                     r = JSON.stringify(m);
                 }
@@ -31,7 +42,7 @@ function console_out(messages, console_element, clear){
         }
 
         console_print(console_element, r);
-    });
+    }
 }
 
 function receiveMessage(e){

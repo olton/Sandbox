@@ -240,6 +240,10 @@ var Sandbox = {
         };
         var head = $("#html_head");
         head.val(head.val()+tags[tag]+"\n");
+    },
+
+    sendMessageToIframe: function(iframe, msg){
+        iframe.contentWindow.postMessage(msg, '*');
     }
 };
 

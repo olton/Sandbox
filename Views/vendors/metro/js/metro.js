@@ -9437,9 +9437,12 @@ var Dialog = {
 
     setPosition: function(){
         var element = this.element, o = this.options;
-        var top, left, bottom;
+        var top, bottom;
         if (o.toTop !== true && o.toBottom !== true) {
             top = ( $(window).height() - element.outerHeight() ) / 2;
+            if (top < 0) {
+                top = 0;
+            }
             bottom = "auto";
         } else {
             if (o.toTop === true) {
@@ -9491,7 +9494,6 @@ var Dialog = {
         var that = this, element = this.element, o = this.options;
 
         if (!Utils.bool(o.leaveOverlayOnClose)) {
-            console.log("ku");
             $('body').find('.overlay').remove();
         }
 
@@ -11565,6 +11567,7 @@ var Input = {
         onClearClick: Metro.noop,
         onRevealClick: Metro.noop,
         onSearchButtonClick: Metro.noop,
+        onEnterClick: Metro.noop,
         onInputCreate: Metro.noop
     },
 
@@ -11781,6 +11784,12 @@ var Input = {
                     that.historyIndex = that.history.length - 1;
                 }
                 e.preventDefault();
+            }
+        });
+
+        element.on(Metro.events.keydown, function(e){
+            if (e.keyCode === Metro.keyCode.ENTER) {
+                Utils.exec(o.onEnterClick, [element.val()], element[0]);
             }
         });
 
@@ -14307,9 +14316,12 @@ var Popover = {
         popoverTrigger: Metro.popoverEvents.HOVER,
         popoverPosition: Metro.position.TOP,
         hideOnLeave: false,
+        closeButton: true,
         clsPopover: "",
+        clsPopoverContent: "",
         onPopoverShow: Metro.noop,
-        onPopoverHide: Metro.noop
+        onPopoverHide: Metro.noop,
+        onPopoverCreate: Metro.noop
     },
 
     _setOptionsFromDOM: function(){
@@ -14357,7 +14369,7 @@ var Popover = {
             }, o.popoverTimeout);
         });
 
-        if (o.hideOnLeave === true && !Utils.isTouchDevice()) {
+        if (o.hideOnLeave === true) {
             element.on(Metro.events.leave, function(){
                 that.removePopover();
             });
@@ -14409,9 +14421,14 @@ var Popover = {
             return ;
         }
 
-        popover = $("<div>").addClass("popover neb").addClass(o.clsPopover).html(o.popoverText);
-
+        popover = $("<div>").addClass("popover neb").addClass(o.clsPopover);
         popover.attr("id", id);
+
+        $("<div>").addClass("popover-content").addClass(o.clsPopoverContent).html(o.popoverText).appendTo(popover);
+
+        if (o.popoverHide === 0 && o.closeButton === true) {
+            $("<button>").addClass("button square small popover-close-button bg-white").html("&times;").appendTo(popover);
+        }
 
         switch (o.popoverPosition) {
             case Metro.position.TOP: neb_pos = "neb-s"; break;
@@ -14440,33 +14457,40 @@ var Popover = {
 
         this.popovered = true;
 
-        Utils.exec(o.onPopoverShow, [popover, element]);
+        Utils.exec(o.onPopoverCreate, [popover], element[0]);
     },
 
     removePopover: function(){
         var that = this;
         var timeout = this.options.onPopoverHide === Metro.noop ? 0 : 300;
         var popover = this.popover;
-        if (popover !== null) {
-            Utils.exec(this.options.onPopoverHide, [popover, this.element]);
-            setTimeout(function(){
-                popover.hide(0, function(){
-                    popover.remove();
-                    that.popover = null;
-                    that.popovered = false;
-                });
-            }, timeout);
+
+        if (!popovered) {
+            return ;
         }
+
+        Utils.exec(this.options.onPopoverHide, [popover], this.elem);
+
+        setTimeout(function(){
+            popover.hide(0, function(){
+                popover.remove();
+                that.popover = null;
+                that.popovered = false;
+            });
+        }, timeout);
     },
 
     show: function(){
-        var that = this, o = this.options;
+        var that = this, element = this.element, o = this.options;
         if (this.popovered === true) {
             return ;
         }
 
         setTimeout(function(){
             that.createPopover();
+
+            Utils.exec(o.onPopoverShow, [popover], element[0]);
+
             if (o.popoverHide > 0) {
                 setTimeout(function(){
                     that.removePopover();
@@ -14479,17 +14503,23 @@ var Popover = {
         this.removePopover();
     },
 
-    changeText: function(){
-        this.options.popoverText = this.element.attr("data-popover-text");
-    },
-
-    changePosition: function(){
-        this.options.popoverPosition = this.element.attr("data-popover-position");
-    },
-
     changeAttribute: function(attributeName){
+        var that = this, element = this.element, o = this.options;
+
+        var changeText = function(){
+            o.popoverText = element.attr("data-popover-text");
+            this.popover.find(".popover-content").html(o.popoverText);
+            that.setPosition();
+        };
+
+        var changePosition = function(){
+            o.popoverPosition = element.attr("data-popover-position");
+            that.setPosition();
+        };
+
         switch (attributeName) {
-            case "data-popover-text": this.changeText(); break;
+            case "data-popover-text": changeText(); break;
+            case "data-popover-position": changePosition(); break;
         }
     }
 };

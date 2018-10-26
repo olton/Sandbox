@@ -169,9 +169,10 @@
                         class="z-1"
                 ></iframe>
             </div>
-            <div>
+            <div class="d-flex flex-column">
                 <div class="wrapper-header">Console</div>
                 <div class="output-wrapper" id="console-output"></div>
+                <input type="text" data-role="input" data-cls-component="mt-auto" data-prepend="<span class='mif-chevron-right'>" data-history="true" data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
             </div>
         </div>
         <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40">
@@ -198,3 +199,8 @@
 </form>
 
 <?php include "foot.phtml"; ?>
+
+<script>
+    var a = 1;
+    console.log(a);
+</script>
