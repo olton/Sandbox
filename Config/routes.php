@@ -21,5 +21,5 @@ return [
     ['GET',  "/:user/debug/:code", ["controller" => "CodeController", "action" => "Debug"], ["user"=>'[\w]+', "code"=>'[\w]{10}']], /* /olton/debug/wEAK85evGp */
 
     ['GET',  "/oauth/github/login", ["controller" => "GithubOAuthController", "action" => "Login"]],
-    ['GET',  "/oauth/github/return", ["controller" => "GithubOAuthController", "action" => "Return"]],
+    ['GET',  "/oauth/github/return", ["controller" => "GithubOAuthController", "action" => "Return"]]
 ];
