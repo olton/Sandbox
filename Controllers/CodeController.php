@@ -335,6 +335,7 @@ class CodeController extends Controller {
         if ($code['user'] !== $_SESSION['current']) {
             $this->ReturnJSON(false, "No permissions for delete code with hash " . $hash, ["hash"=>$hash]);
         }
+        @unlink(SANDBOX_PATH . $_SESSION['user']['name'] . DSP . "$hash.html");
         $this->model->DeleteCode($hash);
         $this->ReturnJSON(true, "OK", ["hash"=>$hash]);
     }
