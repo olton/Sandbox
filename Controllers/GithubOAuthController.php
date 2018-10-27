@@ -70,12 +70,15 @@ class GithubOAuthController extends Controller {
         $user_model = new UserModel();
         $user_data = $user_model->UserByName($user->login);
 
-        if ($user_data != false && $user->email == $user_data['email']) {
-            $_SESSION['current'] = $user_data['id'];
-            $_SESSION['user']['name'] = $user_data['name'];
-            $_SESSION['user']['email'] = $user_data['email'];
-            $_SESSION['user']['oauth'] = 'github';
+        if (!$user_data) {
+            $id = $user_model->Save(-1, $user->login, $user->email, "github");
+            $user_data = $user_model->User($id);
         }
+
+        $_SESSION['current'] = $user_data['id'];
+        $_SESSION['user']['name'] = $user_data['name'];
+        $_SESSION['user']['email'] = $user_data['email'];
+        $_SESSION['user']['oauth'] = 'github';
 
         header('Location: ' . "/");
     }

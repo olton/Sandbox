@@ -44,10 +44,11 @@ class UserModel extends Model {
         return $this->Rows($h) > 0;
     }
 
-    public function Save($id, $name, $email){
+    public function Save($id, $name, $email, $oauth = 'none'){
         $data = [
             "name" => $name,
-            "email" => $email
+            "email" => $email,
+            "oauth" => $oauth
         ];
         if ($id == -1) {
             $data['created'] = date("Y-m-d H:i:s");
