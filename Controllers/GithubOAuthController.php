@@ -14,6 +14,11 @@ class GithubOAuthController extends Controller {
     private $apiURLBase = 'https://api.github.com/';
     private $clientID = "66e591bdf1bbf36247fe";
     private $clientSecret = "d4f736391a78349fd10033d6e9ed32183a6fc863";
+    private $protocol;
+
+    public function __construct(){
+        $this->protocol = $_SERVER['SERVER_NAME'] == 'sandbox.local' ? 'http://' : 'https://';
+    }
 
     private function apiRequest($url, $post=FALSE, $headers=array()) {
         $ch = curl_init($url);
@@ -32,7 +37,7 @@ class GithubOAuthController extends Controller {
         unset($_SESSION['access_token']);
         $params = array(
             'client_id' => $this->clientID,
-            'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . "/oauth/github/return",
+            'redirect_uri' => $this->protocol . $_SERVER['SERVER_NAME'] . "/oauth/github/return",
             'scope' => 'user',
             'state' => $_SESSION['state']
         );
@@ -50,7 +55,7 @@ class GithubOAuthController extends Controller {
         $token = $this->apiRequest($this->tokenURL, array(
             'client_id' => $this->clientID,
             'client_secret' => $this->clientSecret,
-            'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . "/oauth/github/return",
+            'redirect_uri' => $this->protocol . $_SERVER['SERVER_NAME'] . "/oauth/github/return",
             'state' => $_SESSION['state'],
             'code' => $code
         ));
