@@ -318,6 +318,24 @@ class CodeController extends Controller {
         global $POST;
 
         $hash = $POST['hash'];
-        $code = $this->model->Fork($hash, $_SESSION['current']);
+        $id = $this->model->Fork($hash, $_SESSION['current']);
+
+        $hash_gen = new Hashids(HASH_SALT, 10);
+        $hash = $hash_gen->encode($id);
+        $this->model->UpdateHash($id, $hash);
+
+        $this->ReturnJSON(true, "OK", ["redirect"=>$_SESSION['current']."/code/".$hash]);
+    }
+
+    public function Delete(){
+        global  $POST;
+
+        $hash = $POST['hash'];
+        $code = $this->model->Code($hash);
+        if ($code['user'] !== $_SESSION['current']) {
+            $this->ReturnJSON(false, "No permissions for delete code with hash " . $hash, ["hash"=>$hash]);
+        }
+        $this->model->DeleteCode($hash);
+        $this->ReturnJSON(true, "OK", ["hash"=>$hash]);
     }
 }

@@ -201,16 +201,29 @@ var Sandbox = {
     },
 
     delete: function(hash){
-
+        Sandbox.sendData({
+            hash: hash
+        }, "/code/delete", null, function(response){
+            var i, item, items = $("#code-items").children("li");
+            for(i = 0; i < items.length; i++) {
+                item = $(items[i]);
+                if (item.data('hash') === response.data.hash) {
+                    items.remove();
+                    break;
+                }
+            }
+        }, function(response){
+            Sandbox.info("Fork error!", response instanceof String ? response : response.message);
+        });
     },
 
     fork: function(hash){
         Sandbox.sendData({
             hash: hash
         }, "/code/fork/", null, function(response){
-
+            Sandbox.go(response.data.redirect);
         }, function(response){
-
+            Sandbox.info("Fork error!", response instanceof String ? response : response.message);
         });
     },
 

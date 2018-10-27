@@ -163,4 +163,9 @@ class CodeModel extends Model {
             from code where hash = " . $this->_e($hash));
         return $this->ID();
     }
+
+    public function DeleteCode($id){
+        $h = $this->Delete("code", "id = " . $this->_e($id) . " or hash = " . $this->_e($id));
+        return $this->Rows($h);
+    }
 }

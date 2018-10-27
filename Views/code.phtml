@@ -135,17 +135,17 @@
             <li title="Save code" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.saveCode(true)"><button class="button square success"><span class="mif-floppy-disk icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.saveCode(true)"><span>Save code</span></a></li>
 
-            <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square warning"><span class="mif-bug icon"></span></button></a></li>
+            <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square warning"><span class="mif-bug icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span>Debug code</span></a></li>
 
-            <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
+            <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span>Fork code</span></a></li>
 
             <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Metro.dialog.open('#code-settings')"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Metro.dialog.open('#code-settings')"><span>Code settings</span></a></li>
 
             <?php if ($_SESSION['current'] != -1) {?>
-            <li class="ml-1 d-none d-block-md no-hover">
+            <li title="User options" class="ml-1 d-none d-block-md no-hover">
                 <div class="dropdown-button">
                     <button class="button p-0"><img class="h-100" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
                     <ul class="t-menu compact vertical pos-absolute" data-role="dropdown" style="top: 100%;">
@@ -165,7 +165,7 @@
                 </ul>
             </li>
 
-            <li class="ml-1 mr-1 d-none d-block-md no-hover"><a class="p-0" href="/logout"><button class="button square"><span class="mif-exit icon"></span></button></a></li>
+            <li title="Logout" class="ml-1 mr-1 d-none d-block-md no-hover"><a class="p-0" href="/logout"><button class="button square"><span class="mif-exit icon"></span></button></a></li>
             <li class="d-none-md"><a href="/logout"></span><span>Logout</span></a></li>
 
             <?php } else {?>

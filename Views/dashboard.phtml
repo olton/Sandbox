@@ -47,9 +47,9 @@
             </div>
         </div>
 
-        <ul class="code-items" data-role="list" data-sort-class="name" data-sort-dir="asc">
+        <ul class="code-items" data-role="list" data-sort-class="name" data-sort-dir="asc" id="code-items">
             <?php if (isset($codes) && $codes != false) foreach ($codes as $code) {?>
-                <li class="code-item">
+                <li class="code-item" data-hash="<?php echo $code['hash']?>">
                     <div class="icon"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>"></div>
                     <div class="name"><a href="/<?php echo $code['user_name'] . "/code/" . $code['hash']?>"><?php echo $code['title']?></a></div>
 
@@ -73,7 +73,7 @@
                     <div class="buttons d-flex flex-align-center flex-justify-end" style="width: 100px;">
                         <button title="Share" class="button square info" onclick="Sandbox.go('<?php echo $code['user_name'] . "/share/" . $code['hash']?>')"><span class="mif-share"></span></button>
                         <button title="Debug" class="button square warning" onclick="Sandbox.open('<?php echo "/".$code['user_name'] . "/debug/" . $code['hash']?>', '_blank')"><span class="mif-bug"></span></button>
-                        <button title="Delete" class="button square alert" onclick="Sandbox.go('<?php echo $code['user_name'] . "/delete/" . $code['hash']?>')"><span class="mif-bin"></span></button>
+                        <button title="Delete" class="button square alert" onclick="Sandbox.delete('<?php echo $code['hash']?>')"><span class="mif-bin"></span></button>
                     </div>
                 </li>
             <?php }?>
