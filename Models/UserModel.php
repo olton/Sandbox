@@ -7,8 +7,17 @@ namespace Models;
 use Classes\Model;
 
 class UserModel extends Model {
+    public function UserByName($name){
+        $h = $this->Select("select id, name, email, created, updated, last_logged from user where name = " . $this->_e($name));
+        if ($this->Rows($h) === 0) {
+            return false;
+        }
+        $user = $this->FetchArray($h);
+        return $user;
+    }
+
     public function User($id){
-        $h = $this->Select("select name, email, created, updated, last_logged from user where id = " . $this->_e($id));
+        $h = $this->Select("select id, name, email, created, updated, last_logged from user where id = " . $this->_e($id));
         if ($this->Rows($h) === 0) {
             return false;
         }

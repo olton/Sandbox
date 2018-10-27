@@ -5,7 +5,7 @@
         <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
         <a class="app-bar-item no-hover" href="/"><span class="enlarge-4">Metro 4 Sandbox</span></a>
         <ul class="app-bar-menu ml-auto">
-            <li>
+            <li class="d-none">
                 <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
                 <ul data-role="dropdown" class="d-menu">
                     <li><a href="/code?template=default"><img class="icon" src="<?php echo VIEW_PATH ?>images/ms.svg">Metro 4</a></li>
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="cell-md-4 pt-5">
-                        <button class="button bg-github fg-white w-100 text-left mt-1"><span class="mif-github va-middle mr-2"></span> Login with GitHub</button>
+                        <button class="button bg-github fg-white w-100 text-left mt-1" onclick="Sandbox.go('/oauth/github/login')"><span class="mif-github va-middle mr-2"></span> Login with GitHub</button>
                         <button class="button bg-facebook fg-white w-100 text-left mt-1"><span class="mif-facebook2 va-middle mr-2"></span> Login with Facebook</button>
                         <button class="button bg-twitter fg-white w-100 text-left mt-1"><span class="mif-twitter va-middle mr-2"></span> Login with Twitter</button>
                     </div>
