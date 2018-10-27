@@ -56,9 +56,15 @@
                     </div>
 
                     <div class="cell-md-4 pt-5">
-                        <button class="shortcut bg-github fg-white" onclick="Sandbox.go('/oauth/github/login')">
+                        <button class="shortcut bg-github fg-white m-1" onclick="Sandbox.go('/oauth/github/login')">
                             <span class="caption">GitHub</span>
                             <span class="mif-github icon"></span>
+                        </button>
+                        <button class="shortcut bg-green fg-white m-1">
+                        </button>
+                        <button class="shortcut bg-twitter fg-white m-1">
+                        </button>
+                        <button class="shortcut bg-orange fg-white m-1">
                         </button>
                     </div>
                 </div>
@@ -67,29 +73,7 @@
     </div>
 </div>
 
-<div class="container-fluid bg-white bg-light fg-dark">
-    <div class="container pt-10 pb-20">
-        <div class="h2 mt-10 text-center"><span class="reduce-1 enlarge-1-md">Special thanks to</span></div>
-
-        <div class="row special-thanks">
-            <div class="cell-md-2">
-                <a href="https://olshansky.ua/"><img src="<?php echo VIEW_PATH ?>images/olshansky.svg"></a>
-            </div>
-            <div class="cell-md-2">
-                <a href="https://www.imena.ua/"><img src="<?php echo VIEW_PATH ?>images/imena_logo.png"></a>
-            </div>
-            <div class="cell-md-2">
-                <a href="https://mirohost.net/"><img src="<?php echo VIEW_PATH ?>images/mirohost_logo.svg"></a>
-            </div>
-            <div class="cell-md-2">
-                <a href="https://www.keycdn.com/"><img src="<?php echo VIEW_PATH ?>images/keycdn-logo.svg"></a>
-            </div>
-            <div class="cell-md-2">
-                <a href="https://www.jetbrains.com/"><img src="<?php echo VIEW_PATH ?>images/jetbrains.svg"></a>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="container-fluid bg-white bg-light fg-dark" data-role="htmlcontainer" data-html-source="/Views/thanks.phtml"></div>
 
 <footer class="footer-bg">
     <div class="container pt-20 pb-20">
