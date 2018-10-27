@@ -112,32 +112,62 @@
         </div>
 
         <ul class="app-bar-menu ml-auto">
-            <li>
+            <li class="d-none d-block-md no-hover mr-1">
+                <div class="dropdown-button">
+                    <button class="button info marker-light dropdown-toggle"><span class="mif-add"></span></button>
+                    <ul class="d-menu" data-role="dropdown">
+                        <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+                            <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
+                        <?php }?>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="d-none-md">
                 <a href="" class="dropdown-toggle">New</a>
                 <ul class="d-menu" data-role="dropdown">
-                    <li><a href="/code?template=metro4"><img class="icon" src="<?php echo VIEW_PATH ?>images/ms.svg">Metro 4</a></li>
-                    <li><a href="/code?template=metro4_vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/m4-vue.png">Metro 4 + VueJS</a></li>
-                    <li><a href="/code?template=vue"><img class="icon" src="<?php echo VIEW_PATH ?>images/vue.svg">VueJS</a></li>
-                    <li><a href="/code?template=html"><img class="icon" src="<?php echo VIEW_PATH ?>images/html.png">HTML</a></li>
-                    <li><a href="/code?template=jquery"><img class="icon" src="<?php echo VIEW_PATH ?>images/jquery.png">jQuery</a></li>
+                    <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+                        <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
+                    <?php }?>
                 </ul>
             </li>
 
-            <li><a href="#" onclick="Sandbox.saveCode(true)"><span class="mif-floppy-disk icon d-none d-block-md"></span><span class="d-none-md">Save code</span></a></li>
-            <li style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span class="mif-bug icon d-none d-block-md"></span><span class="d-none-md">Debug</span></a></li>
-            <li style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span class="mif-flow-branch icon d-none d-block-md"></span><span class="d-none-md">Fork code</span></a></li>
-            <li><a href="#" onclick="Metro.dialog.open('#code-settings')"><span class="mif-cogs icon d-none d-block-md"></span><span class="d-none-md">Code settings</span></a></li>
+            <li title="Save code" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.saveCode(true)"><button class="button square success"><span class="mif-floppy-disk icon"></span></button></a></li>
+            <li class="d-none-md"><a href="#" onclick="Sandbox.saveCode(true)"><span>Save code</span></a></li>
+
+            <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square warning"><span class="mif-bug icon"></span></button></a></li>
+            <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span>Debug code</span></a></li>
+
+            <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
+            <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span>Fork code</span></a></li>
+
+            <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Metro.dialog.open('#code-settings')"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
+            <li class="d-none-md"><a href="#" onclick="Metro.dialog.open('#code-settings')"><span>Code settings</span></a></li>
 
             <?php if ($_SESSION['current'] != -1) {?>
-            <li>
+            <li class="ml-1 d-none d-block-md no-hover">
+                <div class="dropdown-button">
+                    <button class="button p-0"><img class="h-100" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
+                    <ul class="t-menu compact vertical pos-absolute" data-role="dropdown" style="top: 100%;">
+                        <li><a href="/"><span class="mif-dashboard"></span></a></li>
+                        <li><a href="/profile"><span class="mif-profile"></span></a></li>
+                        <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="d-none-md">
                 <a class="dropdown-toggle"><?php echo $_SESSION['user']['name']?></a>
                 <ul class="d-menu place-right" data-role="dropdown">
-                    <li><a href="/"><span class="mif-dashboard icon"></span>Dashboard</a></li>
-                    <li><a href="/profile"><span class="mif-user icon"></span>Profile</a></li>
-                    <li><a href="/settings"><span class="mif-cog icon"></span>Settings</a></li>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </li>
-            <li><a href="/logout"><span class="mif-exit icon d-none d-block-md"></span><span class="d-none-md">Logout</span></a></li>
+
+            <li class="ml-1 mr-1 d-none d-block-md no-hover"><a class="p-0" href="/logout"><button class="button square"><span class="mif-exit icon"></span></button></a></li>
+            <li class="d-none-md"><a href="/logout"></span><span>Logout</span></a></li>
+
             <?php } else {?>
                 <li><a href="/login">Log in</a></li>
             <?php } ?>
@@ -217,8 +247,3 @@
 </form>
 
 <?php include "foot.phtml"; ?>
-
-<script>
-    var a = 1;
-    console.log(a);
-</script>

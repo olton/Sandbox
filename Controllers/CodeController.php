@@ -61,10 +61,24 @@ class CodeController extends Controller {
     private function CreateFile($file_name, $template, $code, $temp = false) {
         $template_content = file_get_contents(SANDBOX_PATH . "templates" . DSP . "{$template}.html");
         $template_content = str_replace(
-            ['_title_', '_html_head_', '_html_classes_', '_body_classes_', '_css_external_', '_style_', '_html_', '_js_', '_javascript_external_', '_tags_', '_desc_'],
-            [$code['title'], $code['html_head'], $code['html_classes'], $code['body_classes'], $code['css_external'], $code['css'], $code['html'], $code['js'], $code['js_external'], $code['tags'], $code['desc']],
+            ['_title_', '_html_head_', '_html_classes_', '_body_classes_', '_style_', '_html_', '_js_', '_tags_', '_desc_'],
+            [$code['title'], $code['html_head'], $code['html_classes'], $code['body_classes'], $code['css'], $code['html'], $code['js'], $code['tags'], $code['desc']],
             $template_content
         );
+
+        $css_external_array = explode("\n", $code['css_external']);
+        $css_external = "";
+        if  (count($css_external_array) > 0) foreach ($css_external_array as $css) {
+            $css_external .= "<link rel='stylesheet' href='$css'>\n";
+        }
+        $template_content = str_replace("_css_external_", $css_external, $template_content);
+
+        $js_external_array = explode("\n", $code['js_external']);
+        $js_external = "";
+        if  (count($js_external_array) > 0) foreach ($js_external_array as $js) {
+            $js_external .= "<script src='$js'></script>\n";
+        }
+        $template_content = str_replace("_javascript_external_", $js_external, $template_content);
 
         $file = null;
         $result = false;
@@ -87,6 +101,8 @@ class CodeController extends Controller {
             Url::Redirect("/");
             exit(0);
         }
+
+        $templates = $this->model->Templates();
 
         $tpl = $this->model->Template($template);
         $temp_file_name = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
@@ -120,6 +136,7 @@ class CodeController extends Controller {
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
             "code" => $code,
+            "templates" => $templates,
             "head_styles" => $this->head['styles'],
             "foot_scripts" => $this->foot['scripts'],
         ];
@@ -130,6 +147,8 @@ class CodeController extends Controller {
     public function Editor($user, $hash){
         $alien = $_SESSION['user']['name'] != $user ? 1 : 0;
 
+        $templates = $this->model->Templates();
+
         $code = $this->model->Code($hash);
         $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/$user/$hash.html";
         $code['temp_file'] = "";
@@ -139,6 +158,7 @@ class CodeController extends Controller {
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
             "code" => $code,
+            "templates" => $templates,
             "head_styles" => $this->head['styles'],
             "foot_scripts" => $this->foot['scripts'],
         ];

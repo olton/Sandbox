@@ -9,7 +9,7 @@ use Classes\Model;
 class CodeModel extends Model {
 
     public function Templates(){
-        $h = $this->Select("select * from templates");
+        $h = $this->Select("select * from templates order by id");
         if ($this->Rows($h) === 0) {
             return false;
         }
