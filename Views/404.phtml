@@ -1,7 +1,36 @@
-<?php include "head.phtml" ?>
+<?php include "head.phtml"?>
 
-<div class="text-center">
-    <h1>404</h1>
+<div class="container-fluid bg-darkViolet fg-white pos-fixed fixed-top z-top">
+    <header class="app-bar container bg-darkViolet fg-white pos-relative" data-role="appbar" data-expand-point="md">
+        <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
+        <a class="app-bar-item no-hover" href="/"><span class="enlarge-4">Metro 4 Sandbox</span></a>
+        <ul class="app-bar-menu ml-auto">
+            <li class="<?php echo $_SESSION['current'] == -1 ? 'd-none' : ''?>">
+                <a href="#" class="dropdown-toggle marker-light"><span class="mif-plus"></span></a>
+                <ul data-role="dropdown" class="d-menu bg-darkViolet fg-white">
+                    <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+                        <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
+                    <?php }?>
+                </ul>
+            </li>
+            <?php if ($_SESSION['current'] == -1) {?>
+            <li><a href="/login">Log in</a></li>
+            <li><a href="/signup">Sign up</a></li>
+            <?php } else {?>
+            <li><a href="/logout">Logout</a></li>
+            <?php } ?>
+        </ul>
+    </header>
 </div>
 
-<?php include "foot.phtml" ?>
+<div class="hero text-center add-neb">
+    <img src="<?php echo VIEW_PATH ?>images/sandbox.svg" style="width: 160px">
+    <p class="h1 fg-white"><span class="reduce-1 enlarge-1-md">404</span><small class="fg-yellow"> not found</small></p>
+    <p class="text-leader2 fg-light text-light mt-4"><span class="reduce-1 enlarge-1-md">OOPS! Page not found</span></p>
+</div>
+
+<div class="container-fluid bg-white bg-light fg-dark" data-role="htmlcontainer" data-html-source="/Views/thanks.phtml"></div>
+
+<footer class="footer-bg" data-role="htmlcontainer" data-html-source="/Views/footer.phtml"></footer>
+
+<?php include "foot.phtml";?>

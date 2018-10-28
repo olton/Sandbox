@@ -7,13 +7,16 @@ namespace Controllers;
 use Classes\Controller;
 use Classes\Viewer;
 use Models\CodeModel;
+use Models\UserModel;
 
 class DefaultController extends Controller {
 
     private $code_model;
+    private $user_model;
 
     public function __construct() {
         $this->code_model = new CodeModel();
+        $this->user_model = new UserModel();
     }
 
     public function Index(){
@@ -46,8 +49,12 @@ class DefaultController extends Controller {
     }
 
     public function PageNotFound(){
+
+        $templates = $this->code_model->Templates();
+
         $params = array(
             "page_title" => "404 - Page not found!",
+            "templates" => $templates,
             "foot_scripts" => [
                 "sandbox" => VIEW_PATH."js/sandbox.js"
             ]
