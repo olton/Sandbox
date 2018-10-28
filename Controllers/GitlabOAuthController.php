@@ -30,7 +30,6 @@ class GitlabOAuthController extends Controller {
         if($post) curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $headers[] = 'Accept: application/json';
         $headers[] = 'User-Agent: Metro 4 Sandbox';
-//        if($_SESSION['access_token']) $headers[] = 'Authorization: Bearer ' . $_SESSION['access_token'];
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $response = curl_exec($ch);
         return json_decode($response);
