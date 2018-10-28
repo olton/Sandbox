@@ -14,8 +14,8 @@ class GithubOAuthController extends Controller {
     private $authorizeURL = 'https://github.com/login/oauth/authorize';
     private $tokenURL = 'https://github.com/login/oauth/access_token';
     private $apiURLBase = 'https://api.github.com/';
-    private $clientID = "66e591bdf1bbf36247fe";
-    private $clientSecret = "d4f736391a78349fd10033d6e9ed32183a6fc863";
+    private $clientID = GITHUB_OAUTH_CLIENT_ID;
+    private $clientSecret = GITHUB_OAUTH_CLIENT_SECRET;
     private $protocol;
     private $return_url;
 
