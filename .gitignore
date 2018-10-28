@@ -65,3 +65,4 @@ node_modules
 #project files
 Config/database.php
 Controllers/GithubOAuthConfig.php
+Controllers/GitlabOAuthConfig.php
