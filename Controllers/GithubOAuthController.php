@@ -7,6 +7,8 @@ namespace Controllers;
 use Classes\Controller;
 use Models\UserModel;
 
+require_once "GithubOAuthConfig.php";
+
 class GithubOAuthController extends Controller {
 
     private $authorizeURL = 'https://github.com/login/oauth/authorize';
@@ -85,7 +87,7 @@ class GithubOAuthController extends Controller {
         header('Location: ' . "/");
     }
 
-    public function User(){
+    private function User(){
         if (!isset($_SESSION['access_token'])) {
             return false;
         }

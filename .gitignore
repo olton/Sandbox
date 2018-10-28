@@ -61,3 +61,7 @@ node_modules
 # Special files
 *.ftpauth
 *.nupkg
+
+#project files
+Config/database.php
+Controllers/GithubOAuthConfig.php

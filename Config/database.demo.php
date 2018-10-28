@@ -5,8 +5,8 @@ $db_config = array(
     'host' => 'localhost',
     'port' => '3306',
     'schema' => 'metro_sandbox',
-    'user' => 'u_metro_sa',
-    'password' => 'R4w01nkV'
+    'user' => '',
+    'password' => ''
 );
 
 return $db_config;
