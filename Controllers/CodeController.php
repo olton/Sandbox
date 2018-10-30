@@ -144,11 +144,25 @@ class CodeController extends Controller {
     }
 
     public function Editor($user, $hash){
+
+        if (!is_file(SANDBOX_PATH . "$user/$hash.html")) {
+            $this->model->DeleteCode($hash);
+            Url::Redirect("/");
+            exit(0);
+        }
+
         $alien = $_SESSION['user']['name'] != $user ? 1 : 0;
 
         $templates = $this->model->Templates();
 
         $code = $this->model->Code($hash);
+
+        if ($code === false) {
+            @unlink(SANDBOX_PATH . "$user/$hash.html");
+            Url::Redirect("/");
+            exit(0);
+        }
+
         $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/$user/$hash.html";
         $code['temp_file'] = "";
         $code['saved'] = 1;
