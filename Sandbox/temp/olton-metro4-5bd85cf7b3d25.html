@@ -6,8 +6,6 @@
 
     
 
-    <meta name="metro4:init" content="false">
-
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -29,7 +27,7 @@
 
         window.addEventListener("message", function(e){
             console.log(e.data);
-            eval(e.data);
+            window.eval(e.data);
         }, false);
 
         window.onerror = function (message, url, row, col, err) {
@@ -39,11 +37,8 @@
 </head>
 <body class="">
 
-<div id="app">
-{{ message }}
-</div>
 
-<script src="//cdn.jsdelivr.net/npm/vue"></script>
+
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="//cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
@@ -53,15 +48,7 @@
 <script>
     (function(){
 
-        var app = new Vue({
-    el: '#app',
-    data: {
-        message: 'Hello Metro 4 + Vue!'
-    },
-    mounted: function () {
-        Metro.init();
-    }
-});
+        
 
     })();
 </script>

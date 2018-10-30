@@ -26,7 +26,7 @@
 
         window.addEventListener("message", function(e){
             console.log(e.data);
-            eval(e.data);
+            window.eval(e.data);
         }, false);
 
         window.onerror = function (message, url, row, col, err) {

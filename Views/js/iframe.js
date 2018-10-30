@@ -1,7 +1,9 @@
 function console_out(messages, console_element, clear){
     var i;
     var console_print = function(output, val){
-        output.innerHTML += '<div class="log-item"><span class="text-small text-muted">['+((new Date()).format('%H:%M:%S'))+']</span> ' + val.replace(/"/g, "") + '</div>';
+        val = val.replace(/(^")|("$)/g, '');
+        val = val.replace(/\\"/g, '"');
+        output.innerHTML += '<div class="log-item"><span class="text-small text-muted">['+((new Date()).format('%H:%M:%S'))+']</span> ' + val + '</div>';
         output.scrollTo(0, output.scrollHeight);
     };
 
@@ -38,6 +40,7 @@ function console_out(messages, console_element, clear){
                 } else if (!isNaN(m)) {
                     r = String(m);
                 } else {
+                    console.log("ku");
                     r = JSON.stringify(m);
                 }
             }
