@@ -190,7 +190,7 @@ class CodeController extends Controller {
         $alien = intval($POST['alien']) === 1;
 
         $saved = intval($POST['saved']) === 1;
-        $can_save = $POST['can_save'] != "false";
+        $can_save = isset($POST['can_save']) ? $POST['can_save'] != "false" : "false";
 
         if ($_SESSION['current'] == -1 || ($can_save == false && $saved == false)) {
 

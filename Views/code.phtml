@@ -198,6 +198,13 @@
                         frameborder="0"
                         class="z-1"
                 ></iframe>
+                <script>
+                    window.on_page_functions.push(function(){
+                        var iframe = document.getElementById("iframe");
+                        console.log($(iframe.contentWindow.document).text().contains("Empty, need reload"));
+                        if ($(iframe.contentWindow.document).text().contains("Empty, need reload")) Sandbox.saveCode(false);
+                    });
+                </script>
             </div>
             <div class="d-flex flex-column console-wrapper">
                 <div class="wrapper-header">Console</div>

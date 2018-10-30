@@ -40,7 +40,6 @@ function console_out(messages, console_element, clear){
                 } else if (!isNaN(m)) {
                     r = String(m);
                 } else {
-                    console.log("ku");
                     r = JSON.stringify(m);
                 }
             }

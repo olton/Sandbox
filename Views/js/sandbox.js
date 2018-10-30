@@ -304,6 +304,3 @@ var Sandbox = {
 
 Sandbox.init();
 
-window.on_page_functions.forEach(function(func){
-    Metro.utils.exec(func, []);
-});
