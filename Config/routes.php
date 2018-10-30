@@ -22,7 +22,8 @@ return [
 
     ['GET',  "/oauth/github/login", ["controller" => "GithubOAuthController", "action" => "Login"]],
     ['GET',  "/oauth/github/return", ["controller" => "GithubOAuthController", "action" => "Return"]],
-
     ['GET',  "/oauth/gitlab/login", ["controller" => "GitlabOAuthController", "action" => "Login"]],
     ['GET',  "/oauth/gitlab/return", ["controller" => "GitlabOAuthController", "action" => "Return"]],
+    ['GET',  "/oauth/twitter/login", ["controller" => "TwitterOAuthController", "action" => "Login"]],
+    ['GET',  "/oauth/twitter/return", ["controller" => "TwitterOAuthController", "action" => "Return"]],
 ];

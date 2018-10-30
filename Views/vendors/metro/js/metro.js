@@ -3456,6 +3456,10 @@ var Utils = {
             return false;
         }
 
+        if (typeof o === "number" && t.toLowerCase() !== "number") {
+            return false;
+        }
+
         var ns = o.split(".");
         var i, context = window;
 
@@ -3682,6 +3686,17 @@ var d = new Date().getTime();
 
     objectDelete: function(obj, key){
         if (obj[key] !== undefined) delete obj[key];
+    },
+
+    arrayDeleteByMultipleKeys: function(arr, keys){
+        var args = Array.apply(null, keys);
+        args.sort(function(a, b){
+            return a - b;
+        });
+        for(var i = 0; i < args.length; i++){
+            var index = args[i] - i;
+            arr.splice(index, 1);
+        }
     },
 
     arrayDelete: function(arr, val){
@@ -12923,6 +12938,24 @@ var List = {
         return data;
     },
 
+    deleteItem: function(selector, value){
+        var that = this, element = this.element, o = this.options;
+        var i;
+        for (i = 0; i < this.items.length; i++) {
+            if (selector === o.sortTarget) {
+                if (this.items[i].textContent.contains(value)) {
+                    Utils.arrayDeleteByKey(this.items, i);
+                }
+            } else {
+                $.each($(this).find(selector), function(){
+                    if (this.textContent.contains(value)) {
+                        Utils.arrayDeleteByKey(that.items, i);
+                    }
+                })
+            }
+        }
+    },
+
     draw: function(){
         return this._draw();
     },
@@ -15645,22 +15678,22 @@ var Select = {
         var filter_input = drop_container.find("input");
         var list = drop_container.find("ul");
 
-        element.on(Metro.events.focus, function(){
-            container.addClass("focused");
-        });
-
-        element.on(Metro.events.blur, function(){
-            container.removeClass("focused");
-        });
-
         container.on(Metro.events.click, function(e){
+            $(".focused").removeClass("focused");
+            container.addClass("focused");
             e.preventDefault();
             e.stopPropagation();
         });
 
-        input.on(Metro.events.click, function(){container.toggleClass("focused");});
-        filter_input.on(Metro.events.blur, function(){container.removeClass("focused");});
-        filter_input.on(Metro.events.focus, function(){container.addClass("focused");});
+        input.on(Metro.events.click, function(e){
+            $(".focused").removeClass("focused");
+            container.addClass("focused");
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // filter_input.on(Metro.events.blur, function(){container.removeClass("focused");});
+        // filter_input.on(Metro.events.focus, function(){container.addClass("focused");});
 
         list.on(Metro.events.click, "li", function(e){
             if ($(this).hasClass("group-title")) {
@@ -15905,6 +15938,7 @@ $(document).on(Metro.events.click, function(){
     $.each(selects, function(){
         $(this).data('dropdown').close();
     });
+    $(".select").removeClass("focused");
 });
 
 Metro.plugin('select', Select);
@@ -16970,6 +17004,13 @@ var Spinner = {
             }, threshold);
         };
 
+        spinner.on(Metro.events.click, function(e){
+            $(".focused").removeClass("focused");
+            spinner.addClass("focused");
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
         spinner.on(Metro.events.start, ".spinner-button", function(){
             that.repeat_timer = true;
             spinnerButtonClick($(this).hasClass("spinner-button-plus"), o.repeatThreshold);
@@ -17077,6 +17118,12 @@ var Spinner = {
 };
 
 Metro.plugin('spinner', Spinner);
+
+$(document).on(Metro.events.click, function(){
+    $(".spinner").removeClass("focused");
+});
+
+
 
 // Source: js/plugins/splitter.js
 var Splitter = {
@@ -18970,7 +19017,7 @@ var Table = {
             Utils.exec(o.onCheckClickAll, [status], this);
         });
 
-        var _search = function(e){
+        var _search = function(){
             that.searchString = this.value.trim().toLowerCase();
 
             clearInterval(that.input_interval); that.input_interval = false;
@@ -19151,7 +19198,7 @@ var Table = {
             that.openInspector(false);
         });
 
-        inspector.on(Metro.events.click, ".js-table-inspector-reset", function(e){
+        inspector.on(Metro.events.click, ".js-table-inspector-reset", function(){
             that.resetView();
         });
     },
@@ -19531,8 +19578,55 @@ var Table = {
         return result;
     },
 
+    deleteItem: function(fieldIndex, value){
+        var i, deleteIndexes = [];
+        for(i = 0; i < this.items.length; i++) {
+            if (Utils.isFunc(value)) {
+                if (Utils.exec(value, [this.items[i][fieldIndex]])) {
+                    deleteIndexes.push(i);
+                }
+            } else {
+                if (this.items[i][fieldIndex] === value) {
+                    deleteIndexes.push(i);
+                }
+            }
+        }
+
+        Utils.arrayDeleteByMultipleKeys(this.items, deleteIndexes);
+
+        return this;
+    },
+
+    deleteItemByName: function(fieldName, value){
+        var i, fieldIndex, deleteIndexes = [];
+
+        for(i = 0; i < this.heads.length; i++) {
+            if (this.heads[i]['name'] === fieldName) {
+                fieldIndex = i;
+                break;
+            }
+        }
+
+        for(i = 0; i < this.items.length; i++) {
+            if (Utils.isFunc(value)) {
+                if (Utils.exec(value, [this.items[i][fieldIndex]])) {
+                    deleteIndexes.push(i);
+                }
+            } else {
+                if (this.items[i][fieldIndex] === value) {
+                    deleteIndexes.push(i);
+                }
+            }
+        }
+
+        Utils.arrayDeleteByMultipleKeys(this.items, deleteIndexes);
+
+        return this;
+    },
+
     draw: function(){
-        return this._draw();
+        this._draw();
+        return this;
     },
 
     sorting: function(dir){
@@ -19564,12 +19658,15 @@ var Table = {
         });
 
         Utils.exec(o.onSortStop, [this.items], element[0]);
+
+        return this;
     },
 
     search: function(val){
         this.searchString = val.trim().toLowerCase();
         this.currentPage = 1;
         this._draw();
+        return this;
     },
 
     loadData: function(source, review){
@@ -19653,6 +19750,7 @@ var Table = {
             return ;
         }
         this._draw();
+        return this;
     },
 
     prev: function(){
@@ -19663,18 +19761,21 @@ var Table = {
             return ;
         }
         this._draw();
+        return this;
     },
 
     first: function(){
         if (this.items.length === 0) return ;
         this.currentPage = 1;
         this._draw();
+        return this;
     },
 
     last: function(){
         if (this.items.length === 0) return ;
         this.currentPage = this.pagesCount;
         this._draw();
+        return this;
     },
 
     page: function(num){
@@ -19688,6 +19789,7 @@ var Table = {
 
         this.currentPage = num;
         this._draw();
+        return this;
     },
 
     addFilter: function(f, redraw){
@@ -19732,6 +19834,7 @@ var Table = {
             this.currentPage = 1;
             this.draw();
         }
+        return this;
     },
 
     getItems: function(){
@@ -20433,7 +20536,7 @@ var TagInput = {
         element[0].className = "";
 
         element.addClass("original-input");
-        input = $("<input type='text'>").addClass("input-wrapper");
+        input = $("<input type='text'>").addClass("input-wrapper").attr("size", 1);
         input.appendTo(container);
 
         if (Utils.isValue(values)) {
@@ -20456,6 +20559,10 @@ var TagInput = {
             container.removeClass("focused");
         });
 
+        input.on(Metro.events.inputchange, function(){
+            input.attr("size", Math.ceil(input.val().length / 2) + 2);
+        });
+
         input.on(Metro.events.keyup, function(e){
             var val = input.val().trim();
 
@@ -20467,6 +20574,7 @@ var TagInput = {
 
             input.val("");
             that._addTag(val.replace(",", ""));
+            input.attr("size", 1);
 
             if (e.keyCode === Metro.keyCode.ENTER) {
                 e.preventDefault();

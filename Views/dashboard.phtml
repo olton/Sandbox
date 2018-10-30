@@ -71,7 +71,7 @@
                         <?php echo date("d-m-Y", strtotime($code['created']))?>
                     </div>
                     <div class="buttons d-flex flex-align-center flex-justify-end" style="width: 100px;">
-                        <button title="Share" class="button square info" onclick="Sandbox.go('<?php echo $code['user_name'] . "/share/" . $code['hash']?>')"><span class="mif-share"></span></button>
+                        <button title="Fork" class="button square secondary" onclick="Sandbox.fork('<?php echo $code['hash']?>')"><span class="mif-copy"></span></button>
                         <button title="Debug" class="button square warning" onclick="Sandbox.open('<?php echo "/".$code['user_name'] . "/debug/" . $code['hash']?>', '_blank')"><span class="mif-bug"></span></button>
                         <button title="Delete" class="button square alert" onclick="Sandbox.delete('<?php echo $code['hash']?>')"><span class="mif-bin"></span></button>
                     </div>

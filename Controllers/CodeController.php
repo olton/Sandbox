@@ -92,6 +92,7 @@ class CodeController extends Controller {
         } finally {
             @fclose($file);
         }
+
         return $result;
     }
 
@@ -127,9 +128,7 @@ class CodeController extends Controller {
         $_SESSION['temp_file'] = $temp_file_name;
 
         $this->CreateFile($temp_file_name, $template, $code, true);
-
-        $code['iframe'] = is_file(SANDBOX_PATH . "temp" . DSP . $temp_file_name ) ? "//".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name : "";
-
+        $code['iframe'] = ($_SERVER['HTTP_HOST'] === "sandbox.local" ? "http" : "https") ."://".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
         $this->model->AddTempFile($temp_file_name, $_SESSION['current']);
 
         $params = [
@@ -271,7 +270,7 @@ class CodeController extends Controller {
             }
 
             unset($_SESSION['temp_file']);
-            if ($temp_file !== "") unlink(SANDBOX_PATH . "temp" . DSP . $temp_file);
+            if ($temp_file !== "") @unlink(SANDBOX_PATH . "temp" . DSP . $temp_file);
             if ($temp_file !== "") $this->model->DeleteTempFile($temp_file);
             $regular_file= $hash . ".html";
             $tpl = $this->model->TemplateByID($template);

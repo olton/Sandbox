@@ -1,7 +1,8 @@
 function console_out(messages, console_element, clear){
     var i;
     var console_print = function(output, val){
-        output.innerHTML += '<div class="log-item"><span class="text-small text-muted">['+((new Date()).format('%H:%M:%S'))+']</span> ' + val + '</div>';
+        output.innerHTML += '<div class="log-item"><span class="text-small text-muted">['+((new Date()).format('%H:%M:%S'))+']</span> ' + val.replace(/"/g, "") + '</div>';
+        output.scrollTo(0, output.scrollHeight);
     };
 
     if (!!clear) {
@@ -53,7 +54,7 @@ function receiveMessage(e){
         return ;
     }
 
-    console_out(e.data, console_element, true);
+    console_out(e.data, console_element, false);
 }
 
 function iframeErrorHandler(message, url, row, col, error){

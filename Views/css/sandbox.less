@@ -99,6 +99,13 @@ footer a:hover {
     align-items: center;
     font-size: 14px;
     font-weight: 500;
+    position: relative;
+
+    .settings-button {
+        position: absolute;
+        top: 8px;
+        left: 4px;
+    }
 }
 
 .console-wrapper {
@@ -364,5 +371,46 @@ footer a:hover {
     &.open {
         transition: @transition-transform;
         .translateY(0);
+    }
+}
+
+@media screen and (min-width: @xl) {
+    #oauth-buttons {
+        width: 250px;
+    }
+}
+
+.code-presenter-box {
+    position: relative;
+    display: block;
+
+    .iframe-wrapper {
+        position: relative;
+        height: 0;
+        padding-top: 56.25%;
+        overflow: hidden;
+    }
+
+    iframe {
+        width: 200%;
+        height: 200%;
+        border: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: @white;
+        transform: scale(.5);
+        transform-origin: top left;
+        transition: opacity .3s ease;
+    }
+
+    .iframe-meta {
+
+        .meta-data {
+
+        }
+        .meta-stat {
+
+        }
     }
 }

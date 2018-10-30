@@ -4,7 +4,7 @@
     <div class="dialog-title">Code settings</div>
     <div class="dialog-content">
 
-        <ul data-role="tabs" data-expand="true">
+        <ul data-role="tabs" data-expand="true" id="settings-tabs">
             <li><a href="#code-settings-html">HTML</a></li>
             <li><a href="#code-settings-css">CSS</a></li>
             <li><a href="#code-settings-js">JavaScript</a></li>
@@ -141,8 +141,8 @@
             <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span>Fork code</span></a></li>
 
-            <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Metro.dialog.open('#code-settings')"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
-            <li class="d-none-md"><a href="#" onclick="Metro.dialog.open('#code-settings')"><span>Code settings</span></a></li>
+            <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.openSettingsTab(1, this)"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
+            <li class="d-none-md"><a href="#" onclick="Sandbox.openSettingsTab(1, this)"><span>Code settings</span></a></li>
 
             <?php if ($_SESSION['current'] != -1) {?>
             <li title="User options" class="ml-1 d-none d-block-md no-hover">
@@ -190,7 +190,7 @@
                 <div id="iframe_reload" class="pos-absolute pos-top-right z-2" style="width: 100px; display: none">
                     <div data-role="activity" data-type="metro" data-style="color"></div>
                 </div>
-                <iframe src="<?php echo $code['iframe'] ?>"
+                <iframe src="<?php echo $code['iframe'];?>"
                         id="iframe"
                         allowfullscreen
                         allowtransparency
@@ -202,12 +202,18 @@
             <div class="d-flex flex-column console-wrapper">
                 <div class="wrapper-header">Console</div>
                 <div class="output-wrapper" id="console-output"></div>
-                <input type="text" data-role="input" data-cls-component="mt-auto" data-prepend="<span class='mif-chevron-right'>" data-history="true" data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
+                <input type="text" data-role="input"
+                       data-prevent-submit="true"
+                       data-cls-component="mt-auto"
+                       data-prepend="<span class='mif-chevron-right'>"
+                       data-history="true"
+                       data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
             </div>
         </div>
         <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40">
             <div id="html-code">
                 <div class="wrapper-header">
+                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(1, this)"><span class="mif-cog"></span></button>
                     <span>HTML</span>
                     <div class="ml-auto">
                         <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('html')"></span></button>
@@ -220,6 +226,7 @@
             </div>
             <div id="css-code">
                 <div class="wrapper-header">
+                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(2, this)"><span class="mif-cog"></span></button>
                     <span>CSS</span>
                     <div class="ml-auto">
                         <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('css')"></span></button>
@@ -232,6 +239,7 @@
             </div>
             <div id="js-code">
                 <div class="wrapper-header">
+                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(3, this)"><span class="mif-cog"></span></button>
                     <span>JavaScript</span>
                     <div class="ml-auto">
                         <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('js')"></span></button>

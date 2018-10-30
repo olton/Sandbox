@@ -5,5 +5,11 @@
 <script data-script="<?php echo $key?>" src="<?php echo $val?>"></script>
 <?php }?>
 
+<script>
+    window.on_page_functions.forEach(function(f){
+        Metro.utils.exec(f);
+    });
+</script>
+
 </body>
 </html>

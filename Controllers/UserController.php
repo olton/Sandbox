@@ -19,19 +19,18 @@ class UserController extends Controller {
     }
 
     public function Login(){
-
         if ($_SESSION['current'] != -1) {
             Url::Redirect("/");
         }
 
         $params = [
-            "page_title" => "Login :: Metro 4 Sandbox",
+            "page_title" => "Sandbox :: Metro 4",
             "foot_scripts" => [
                 "sandbox" => VIEW_PATH."js/sandbox.js"
             ]
         ];
         $view = new Viewer(VIEW_RENDER_PATH);
-        echo $view->Render("login.phtml", $params);
+        echo $view->Render("index.phtml", $params);
     }
 
     public function SignUp(){
@@ -41,7 +40,7 @@ class UserController extends Controller {
         }
 
         $params = array(
-            "page_title" => "Sign up :: Metro 4 Sandbox",
+            "page_title" => "Sandbox :: Metro 4",
             "foot_scripts" => [
                 "sandbox" => VIEW_PATH."js/sandbox.js"
             ]

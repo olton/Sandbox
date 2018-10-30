@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" class="_html_classes_">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    _html_head_
+    
 
-    <meta name="keywords" content="_tags_">
-    <meta name="description" content="_desc_">
+    <meta name="metro4:init" content="false">
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
 
     <link rel="stylesheet" href="//cdn.metroui.org.ua/v4/css/metro-all.min.css">
 
-    _css_external_
+    <link rel='stylesheet' href=''>
 
-    <title>_title_</title>
+
+    <title>Untitled code</title>
 
     <style>
-        _style_
+        
     </style>
 
     <script>
@@ -26,7 +29,7 @@
 
         window.addEventListener("message", function(e){
             console.log(e.data);
-            eval(e.data);
+            window.eval(e.data);
         }, false);
 
         window.onerror = function (message, url, row, col, err) {
@@ -34,19 +37,31 @@
         };
     </script>
 </head>
-<body class="_body_classes_">
+<body class="">
 
-_html_
+<div id="app">
+{{ message }}
+</div>
 
+<script src="//cdn.jsdelivr.net/npm/vue"></script>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="//cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
-_javascript_external_
+<script src=''></script>
+
 
 <script>
     (function(){
 
-        _js_
+        var app = new Vue({
+    el: '#app',
+    data: {
+        message: 'Hello Metro 4 + Vue!'
+    },
+    mounted: function () {
+        Metro.init();
+    }
+});
 
     })();
 </script>

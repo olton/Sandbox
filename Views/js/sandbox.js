@@ -255,8 +255,8 @@ var Sandbox = {
         head.val(head.val()+tags[tag]+"\n");
     },
 
-    sendMessageToIframe: function(iframe, msg){
-        iframe.contentWindow.postMessage(msg, '*');
+    sendMessageToIframe: function(iframe, value){
+        iframe.contentWindow.postMessage(value, '*');
     },
 
     expandBlock: function(el){
@@ -293,6 +293,12 @@ var Sandbox = {
             $('#css-code').css("flex-basis", "calc(50% - 8px)");
             $('#html-code').css("flex-basis", "calc(50% - 8px)");
         }
+    },
+
+    openSettingsTab: function(tab, from){
+        console.log(from);
+        $("#settings-tabs").data('tabs').open(tab);
+        Metro.dialog.open("#code-settings");
     }
 };
 

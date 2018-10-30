@@ -79,6 +79,12 @@ footer a:hover {
   align-items: center;
   font-size: 14px;
   font-weight: 500;
+  position: relative;
+}
+.wrapper-header .settings-button {
+  position: absolute;
+  top: 8px;
+  left: 4px;
 }
 .console-wrapper .wrapper-header {
   padding-left: 8px;
@@ -313,5 +319,32 @@ footer a:hover {
 #code-settings.open {
   transition: transform 0.3s ease;
   transform: translateY(0);
+}
+@media screen and (min-width: 1200px) {
+  #oauth-buttons {
+    width: 250px;
+  }
+}
+.code-presenter-box {
+  position: relative;
+  display: block;
+}
+.code-presenter-box .iframe-wrapper {
+  position: relative;
+  height: 0;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+.code-presenter-box iframe {
+  width: 200%;
+  height: 200%;
+  border: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  transform: scale(0.5);
+  transform-origin: top left;
+  transition: opacity 0.3s ease;
 }
 /*# sourceMappingURL=sandbox.css.map */

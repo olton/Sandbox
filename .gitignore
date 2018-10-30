@@ -66,3 +66,5 @@ node_modules
 Config/database.php
 Controllers/GithubOAuthConfig.php
 Controllers/GitlabOAuthConfig.php
+Controllers/TwitterOAuthConfig.php
+Controllers/FacebookOAuthConfig.php
