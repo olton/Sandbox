@@ -184,7 +184,7 @@
     <input type="hidden" name="saved" id="saved" value="<?php echo $code['saved'] ?>">
     <input type="hidden" name="alien" id="alien" value="<?php echo $code['alien'] ?>">
 
-    <div data-role="splitter" data-split-sizes="60, 40" class="h-100">
+    <div data-role="splitter" data-split-sizes="60, 40" class="h-100" id="splitter-browser" data-save-state="true">
         <div id="browser" data-role="splitter" data-split-sizes="80, 20" data-split-mode="vertical" data-min-sizes="40">
             <div class="iframe-wrapper">
                 <div id="iframe_reload" class="pos-absolute pos-top-right z-2" style="width: 100px; display: none">
@@ -217,7 +217,7 @@
                        data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
             </div>
         </div>
-        <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40">
+        <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40" id="splitter-code" data-save-state="true">
             <div id="html-code">
                 <div class="wrapper-header">
                     <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(1, this)"><span class="mif-cog"></span></button>
