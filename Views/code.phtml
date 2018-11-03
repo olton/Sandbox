@@ -147,10 +147,10 @@
             <?php if ($_SESSION['current'] != -1) {?>
             <li title="User options" class="ml-1 d-none d-block-md no-hover">
                 <div class="dropdown-button">
-                    <button class="button p-0"><img class="h-100" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
-                    <ul class="t-menu compact vertical pos-absolute" data-role="dropdown" style="top: 100%;">
+                    <button class="button p-0" style="width: 40px;"><img class="h-100 va-baseline" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
+                    <ul class="t-menu compact vertical pos-absolute shadow-1" data-role="dropdown" style="top: 100%;">
                         <li><a href="/"><span class="mif-dashboard"></span></a></li>
-                        <li><a href="/profile"><span class="mif-profile"></span></a></li>
+                        <li><a href="/profile"><span class="mif-user"></span></a></li>
                         <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
                     </ul>
                 </div>

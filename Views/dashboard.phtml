@@ -4,16 +4,30 @@
     <header class="app-bar container bg-darkViolet fg-white pos-relative" data-role="appbar" data-expand-point="md">
         <a class="app-bar-item no-hover" href="/"><img src="<?php echo VIEW_PATH?>images/sandbox.svg" style="height: 40px"></a>
         <a class="app-bar-item no-hover" href="/"><span class="enlarge-4">Sandbox Dashboard</span></a>
+
         <ul class="app-bar-menu ml-auto">
-            <li>
-                <a href="" class="dropdown-toggle marker-light"><?php echo $_SESSION['user']['name']?></a>
-                <ul class="d-menu bg-darkViolet fg-white" data-role="dropdown" style="box-shadow: none">
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Settings</a></li>
+            <li title="User options" class="ml-1 d-none d-block-md no-hover">
+                <div class="dropdown-button">
+                    <button class="button p-0  bg-transparent"><img class="h-100 va-baseline" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
+                    <ul class="t-menu compact vertical pos-absolute bg-darkViolet fg-white shadow-1" data-role="dropdown" style="top: 100%;">
+                        <li><a href="/"><span class="mif-dashboard"></span></a></li>
+                        <li><a href="/profile"><span class="mif-user"></span></a></li>
+                        <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="d-none-md">
+                <a class="dropdown-toggle marker-light"><?php echo $_SESSION['user']['name']?></a>
+                <ul class="d-menu place-right" data-role="dropdown">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </li>
-            <li><a href="/logout"><span class="mif-exit mif-2x va-middle"></span></a></li>
+
+            <li title="Logout" class="ml-1 mr-1 d-none d-block-md no-hover"><a class="pl-1 pr-1" href="/logout"><button class="button square bg-transparent"><span class="mif-exit mif-2x icon fg-white"></span></button></a></li>
+            <li class="d-none-md"><a href="/logout"></span><span>Logout</span></a></li>
         </ul>
     </header>
 </div>
@@ -22,10 +36,10 @@
     <h1 class="fg-white">Quick templates</h1>
     <div class="d-flex flex-justify-center mt-10">
         <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
-            <div class="code-template" onclick="Sandbox.go('/code?template=<?php echo $template['name']?>')">
+            <a class="code-template no-decor" href="/code?template=<?php echo $template['name']?>">
                 <img src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>">
                 <span class="name"><?php echo $template['title']?></span>
-            </div>
+            </a>
         <?php }?>
     </div>
 </div>
@@ -35,13 +49,13 @@
         <div class="d-flex flex-justify-between flex-align-center">
             <p class="text-medium">Recent codes</p>
             <div class="ml-auto">
-                <span class="text-muted text-small">Sort by: </span><span class="mr-2 text-bold reduce-1" id="sort-by">Name</span>
+                <span class="text-muted text-small">Sort by: </span><span class="mr-2 text-bold reduce-1" id="sort-by">Name <span class='mif-arrow-up'></span></span>
                 <div class="dropdown-button">
                     <button class="button dropdown-toggle"><span class="mif-import-export mif-2x"></span></button>
-                    <ul class="d-menu place-right" data-role="dropdown">
-                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'name')">By name</a></li>
-                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'created')">By created</a></li>
-                        <li><a href="#" onclick="Sandbox.sortList('.code-items', 'updated')">By updated</a></li>
+                    <ul class="d-menu place-right context" data-role="dropdown">
+                        <li><a class="pl-4" href="#" onclick="Sandbox.sortList('.code-items', 'name')">By name</a></li>
+                        <li><a class="pl-4" href="#" onclick="Sandbox.sortList('.code-items', 'created')">By created</a></li>
+                        <li><a class="pl-4" href="#" onclick="Sandbox.sortList('.code-items', 'updated')">By updated</a></li>
                     </ul>
                 </div>
             </div>

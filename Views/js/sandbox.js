@@ -238,7 +238,7 @@ var Sandbox = {
             Sandbox.sortCodes.field = col;
             Sandbox.sortCodes.dir = "asc";
         }
-        $("#sort-by").text(String(col).capitalize());
+        $("#sort-by").html(String(col).capitalize() + (Sandbox.sortCodes.dir === "asc" ? "<span class='mif-arrow-up'></span>" : "<span class='mif-arrow-down'></span>"));
         $(obj).data("list").sorting(Sandbox.sortCodes.field, Sandbox.sortCodes.dir, true);
     },
 
