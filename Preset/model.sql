@@ -1,131 +1,112 @@
--- MySQL Workbench Forward Engineering
+/*
+SQLyog Ultimate v12.4.1 (64 bit)
+MySQL - 10.1.31-MariaDB : Database - metro_sandbox
+*********************************************************************
+*/
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+/*!40101 SET NAMES utf8 */;
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema metro_sandbox
--- -----------------------------------------------------
+/*!40101 SET SQL_MODE=''*/;
 
--- -----------------------------------------------------
--- Schema metro_sandbox
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `metro_sandbox` DEFAULT CHARACTER SET utf8 ;
-USE `metro_sandbox` ;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `code` */
 
--- -----------------------------------------------------
--- Table `metro_sandbox`.`code`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `metro_sandbox`.`code` ;
+DROP TABLE IF EXISTS `code`;
 
-CREATE TABLE IF NOT EXISTS `metro_sandbox`.`code` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(100) NULL DEFAULT NULL,
-  `user` BIGINT(20) UNSIGNED NOT NULL,
-  `html` TEXT NULL DEFAULT NULL,
-  `css` TEXT NULL DEFAULT NULL,
-  `js` TEXT NULL DEFAULT NULL,
-  `created` DATETIME NULL DEFAULT NULL,
-  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `template` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
-  `hash` VARCHAR(20) NULL DEFAULT NULL,
-  `html_head` TEXT NULL DEFAULT NULL,
-  `html_processor` ENUM('none', 'halm', 'markdown', 'slim', 'pug') NULL DEFAULT 'none',
-  `html_classes` VARCHAR(255) NULL DEFAULT NULL,
-  `css_processor` ENUM('none', 'less', 'scss', 'sass', 'stylus') NULL DEFAULT 'none',
-  `desc` VARCHAR(255) NULL DEFAULT NULL,
-  `tags` VARCHAR(255) NULL DEFAULT NULL,
-  `code_type` ENUM('code', 'template') NULL DEFAULT 'code',
-  `js_processor` ENUM('none', 'Babel', 'TypeScript', 'CoffeeScript', 'LiveScript') NULL DEFAULT 'none',
-  `css_external` TEXT NULL DEFAULT NULL,
-  `js_external` TEXT NULL DEFAULT NULL,
-  `body_classes` VARCHAR(255) NULL DEFAULT NULL,
+CREATE TABLE `code` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `user` bigint(20) unsigned NOT NULL,
+  `html` text,
+  `css` text,
+  `js` text,
+  `created` datetime DEFAULT NULL,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `template` bigint(20) unsigned DEFAULT NULL,
+  `hash` varchar(20) DEFAULT NULL,
+  `html_head` text,
+  `html_processor` enum('none','halm','markdown','slim','pug') DEFAULT 'none',
+  `html_classes` varchar(255) DEFAULT NULL,
+  `css_processor` enum('none','less','scss','sass','stylus') DEFAULT 'none',
+  `desc` varchar(255) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `code_type` enum('code','template') DEFAULT 'code',
+  `js_processor` enum('none','Babel','TypeScript','CoffeeScript','LiveScript') DEFAULT 'none',
+  `css_external` text,
+  `js_external` text,
+  `body_classes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `i_code_user` (`user` ASC))
-ENGINE = MyISAM
-AUTO_INCREMENT = 80
-DEFAULT CHARACTER SET = utf8;
+  KEY `i_code_user` (`user`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+/*Data for the table `code` */
 
--- -----------------------------------------------------
--- Table `metro_sandbox`.`libs`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `metro_sandbox`.`libs` ;
+/*Table structure for table `temp_files` */
 
-CREATE TABLE IF NOT EXISTS `metro_sandbox`.`libs` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NULL DEFAULT NULL,
-  `css` VARCHAR(255) NULL DEFAULT NULL,
-  `js` VARCHAR(255) NULL DEFAULT NULL,
-  `var` VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = MyISAM
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8;
+DROP TABLE IF EXISTS `temp_files`;
 
+CREATE TABLE `temp_files` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- -----------------------------------------------------
--- Table `metro_sandbox`.`temp_files`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `metro_sandbox`.`temp_files` ;
+/*Data for the table `temp_files` */
 
-CREATE TABLE IF NOT EXISTS `metro_sandbox`.`temp_files` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NULL DEFAULT NULL,
-  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = MyISAM
-AUTO_INCREMENT = 499
-DEFAULT CHARACTER SET = utf8;
+/*Table structure for table `templates` */
 
+DROP TABLE IF EXISTS `templates`;
 
--- -----------------------------------------------------
--- Table `metro_sandbox`.`templates`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `metro_sandbox`.`templates` ;
-
-CREATE TABLE IF NOT EXISTS `metro_sandbox`.`templates` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NULL DEFAULT NULL,
-  `css` TEXT NULL DEFAULT NULL,
-  `html` TEXT NULL DEFAULT NULL,
-  `js` TEXT NULL DEFAULT NULL,
-  `libs` TEXT NULL DEFAULT NULL,
-  `icon` VARCHAR(255) NULL DEFAULT NULL,
-  `title` VARCHAR(100) NULL DEFAULT NULL,
+CREATE TABLE `templates` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `icon` varchar(255) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `css` text,
+  `html` text,
+  `js` text,
+  `head` text,
+  `css_links` text,
+  `js_links` text,
+  `template_order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `ui_name` (`name` ASC))
-ENGINE = MyISAM
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8;
+  UNIQUE KEY `ui_name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
+/*Data for the table `templates` */
 
--- -----------------------------------------------------
--- Table `metro_sandbox`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `metro_sandbox`.`user` ;
+insert  into `templates`(`id`,`icon`,`name`,`title`,`css`,`html`,`js`,`head`,`css_links`,`js_links`,`template_order`) values 
+(1,'m4.svg','metro4','Metro 4',NULL,NULL,NULL,NULL,'https://cdn.metroui.org.ua/v4/css/metro-all.min.css','https://code.jquery.com/jquery-3.3.1.min.js\r\nhttps://cdn.metroui.org.ua/v4/js/metro.min.js',1),
+(2,'m4-vue.png','metro4_vue','Metro 4 + VueJS',NULL,'&lt;div id=\"app\"&gt;\r\n{{ message }}\r\n&lt;/div&gt;','var app = new Vue({\r\n    el: \'#app\',\r\n    data: {\r\n        message: \'Hello Metro 4 + Vue!\'\r\n    },\r\n    mounted: function () {\r\n        Metro.init();\r\n    }\r\n});','<meta name=\"metro4:init\" content=\"false\">','https://cdn.metroui.org.ua/v4/css/metro-all.min.css','https://cdn.jsdelivr.net/npm/vue\r\nhttps://code.jquery.com/jquery-3.3.1.min.js\r\nhttps://cdn.metroui.org.ua/v4/js/metro.min.js',2),
+(3,'html.png','html','HTML5',NULL,NULL,NULL,NULL,NULL,NULL,5),
+(4,'vue.svg','vue','VueJS',NULL,'&lt;div id=\"app\"&gt;\r\n{{ message }}\r\n&lt;/div&gt;','var app = new Vue({\r\n  el: \'#app\',\r\n  data: {\r\n    message: \'Hello Vue!\'\r\n  }\r\n})',NULL,NULL,'https://cdn.jsdelivr.net/npm/vue',4),
+(5,'jquery.png','jquery','jQuery',NULL,NULL,NULL,NULL,NULL,'https://code.jquery.com/jquery-3.3.1.min.js',3);
 
-CREATE TABLE IF NOT EXISTS `metro_sandbox`.`user` (
-  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NULL DEFAULT NULL,
-  `email` VARCHAR(50) NULL DEFAULT NULL,
-  `password` VARCHAR(50) NULL DEFAULT NULL,
-  `created` DATETIME NULL DEFAULT NULL,
-  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_logged` DATETIME NULL DEFAULT NULL,
-  `oauth` ENUM('none', 'github', 'facebook', 'twitter') NOT NULL DEFAULT 'none',
-  `access_token` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = MyISAM
-AUTO_INCREMENT = 10
-DEFAULT CHARACTER SET = utf8;
+/*Table structure for table `user` */
 
+DROP TABLE IF EXISTS `user`;
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+CREATE TABLE `user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_logged` datetime DEFAULT NULL,
+  `oauth` enum('none','github','facebook','twitter') NOT NULL DEFAULT 'none',
+  `access_token` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*Data for the table `user` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
