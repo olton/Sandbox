@@ -55,7 +55,7 @@
 
                 <div class="form-group mt-2">
                     <label class="text-medium reduce-1">Add external stylesheets</label>
-                    <textarea id="css_external" name="css_external" data-role="textarea" placeholder="https://yourwebsite.com/style.css"></textarea>
+                    <textarea id="css_external" name="css_external" data-role="textarea" placeholder="https://yourwebsite.com/style.css"><?php echo $code['css_external']?></textarea>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
 
                 <div class="form-group mt-2">
                     <label class="text-medium reduce-1">Add external javascript</label>
-                    <textarea id="js_external" name="js_external" data-role="textarea" placeholder="https://yourwebsite.com/javascript.js"></textarea>
+                    <textarea id="js_external" name="js_external" data-role="textarea" placeholder="https://yourwebsite.com/javascript.js"><?php echo $code['js_external']?></textarea>
                 </div>
             </div>
             <div id="code-settings-details">
@@ -101,7 +101,7 @@
 
 <div class="container-fluid pos-fixed fixed-top z-fixed bg-light border-bottom bd-default pl-0 pr-0">
     <header class="app-bar pos-relative" data-role="appbar" data-expand-point="md">
-        <a class="app-bar-item no-hover pr-0" href="/"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>" title="<?php echo $code['template_title']?>" style="height: 24px"></a>
+        <a class="app-bar-item no-hover pr-0" href="/"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_data']['icon']?>" title="<?php echo $code['template_data']['title']?>" style="height: 24px"></a>
         <div class="app-bar-container" id="code-title-label">
             <span class="brand text-bold enlarge-2 no-hover" id="code_title_label"><?php echo $code['title'] ?></span>
             <button class="button square" onclick="Sandbox.openTitleEditor()"><span class="mif-pencil"></span></button>
@@ -179,7 +179,7 @@
 <form action="javascript:" id="editor_form" class="h-100">
     <input type="hidden" name="code_id" id="code_id" value="<?php echo $code['id'] ?>">
     <input type="hidden" name="code_hash" id="code_hash" value="<?php echo $code['hash'] ?>">
-    <input type="hidden" name="template" id="template" value="<?php echo $code['template_id'] ?>">
+    <input type="hidden" name="template" id="template" value="<?php echo $code['template'] ?>">
     <input type="hidden" name="temp_file" id="temp_file" value="<?php echo $code['temp_file'] ?>">
     <input type="hidden" name="saved" id="saved" value="<?php echo $code['saved'] ?>">
     <input type="hidden" name="alien" id="alien" value="<?php echo $code['alien'] ?>">

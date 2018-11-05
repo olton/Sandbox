@@ -3,7 +3,6 @@
 
 namespace Controllers;
 
-
 use Classes\Controller;
 use Classes\Hashids;
 use Classes\Url;
@@ -58,34 +57,67 @@ class CodeController extends Controller {
         $this->model = new CodeModel();
     }
 
-    private function CreateFile($file_name, $template, $code, $temp = false) {
-        $template_content = file_get_contents(SANDBOX_PATH . "templates" . DSP . "{$template}.html");
-        $template_content = str_replace(
-            ['_title_', '_html_head_', '_html_classes_', '_body_classes_', '_style_', '_html_', '_js_', '_tags_', '_desc_'],
-            [$code['title'], $code['html_head'], $code['html_classes'], $code['body_classes'], $code['css'], $code['html'], $code['js'], $code['tags'], $code['desc']],
-            $template_content
-        );
+    private function CreateFile($file_name, $code, $temp = false) {
+        global $CODE_TEMPLATE;
 
-        $css_external_array = explode("\n", $code['css_external']);
-        $css_external = "";
-        if  (count($css_external_array) > 0) foreach ($css_external_array as $css) {
-            $css_external .= "<link rel='stylesheet' href='$css'>\n";
-        }
-        $template_content = str_replace("_css_external_", $css_external, $template_content);
+        $html_classes = $code['html_classes'];
+        $head = $code['html_head'];
+        $tags = $code['tags'];
+        $desc = $code['desc'];
 
-        $js_external_array = explode("\n", $code['js_external']);
-        $js_external = "";
-        if  (count($js_external_array) > 0) foreach ($js_external_array as $js) {
-            $js_external .= "<script src='$js'></script>\n";
+        $css_links = "";
+        foreach (explode("\n", $code['css_external']) as $link) {
+            $css_links .= '<link rel="stylesheet" href="'.$link.'">'."\n";
         }
-        $template_content = str_replace("_javascript_external_", $js_external, $template_content);
+
+        $title = $code['title'];
+        $css_code = $code['css'];
+        $body_classes = $code['body_classes'];
+        $html_code = $code['html'];
+
+        $js_links = "";
+        foreach (explode("\n", $code['js_external']) as $link) {
+            $js_links .= '<script src="'.$link.'"></script>'."\n";
+        }
+
+        $js_code = $code['js'];
+
+        $template_content = html_entity_decode(str_replace(
+            [
+                "{{_html_classes_}}",
+                "{{_head_}}",
+                "{{_tags_}}",
+                "{{_desc_}}",
+                "{{_css_links_}}",
+                "{{_title_}}",
+                "{{_css_code_}}",
+                "{{_body_classes_}}",
+                "{{_html_code_}}",
+                "{{_js_links_}}",
+                "{{_js_code_}}",
+            ],
+            [
+                $html_classes,
+                $head,
+                $tags,
+                $desc,
+                $css_links,
+                $title,
+                $css_code,
+                $body_classes,
+                $html_code,
+                $js_links,
+                $js_code
+            ],
+            $CODE_TEMPLATE
+        ), ENT_QUOTES);
 
         $file = null;
         $result = false;
 
         try {
             $file = fopen(SANDBOX_PATH . ($temp ? "temp" . DSP : $_SESSION['user']['name'] . DSP ) . $file_name, 'w');
-            fwrite($file, html_entity_decode($template_content, ENT_QUOTES));
+            fwrite($file, $template_content);
             $result = true;
         } catch (\Exception $e) {
             //
@@ -109,25 +141,22 @@ class CodeController extends Controller {
         $temp_file_name = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
         $code = $this->model->Code(-1);
 
+        $code['html_head'] = $tpl['head'];
         $code['html'] = $tpl['html'];
         $code['css'] = $tpl['css'];
         $code['js'] = $tpl['js'];
+        $code['css_external'] = $tpl['css_links'];
+        $code['js_external'] = $tpl['js_links'];
+
+        $code['template_data'] = $tpl;
+
         $code['temp_file'] = $temp_file_name;
         $code['saved'] = 0;
-        $code['template'] = $tpl['id'];
-        $code['template_id'] = $tpl['id'];
-        $code['template_icon'] = $tpl['icon'];
-        $code['template_libs'] = $tpl['libs'];
-        $code['template_name'] = $tpl['name'];
-        $code['template_html'] = $tpl['html'];
-        $code['template_css'] = $tpl['css'];
-        $code['template_js'] = $tpl['js'];
-        $code['template_title'] = $tpl['title'];
         $code['alien'] = 0;
 
         $_SESSION['temp_file'] = $temp_file_name;
 
-        $this->CreateFile($temp_file_name, $template, $code, true);
+        $this->CreateFile($temp_file_name, $code, true, true);
         $code['iframe'] = ($_SERVER['HTTP_HOST'] === "sandbox.local" ? "http" : "https") ."://".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
         $this->model->AddTempFile($temp_file_name, $_SESSION['current']);
 
@@ -156,6 +185,7 @@ class CodeController extends Controller {
         $templates = $this->model->Templates();
 
         $code = $this->model->Code($hash);
+        $tpl = $this->model->TemplateByID($code['template']);
 
         if ($code === false) {
             @unlink(SANDBOX_PATH . "$user/$hash.html");
@@ -167,6 +197,7 @@ class CodeController extends Controller {
         $code['temp_file'] = "";
         $code['saved'] = 1;
         $code['alien'] = $alien;
+        $code['template_data'] = $tpl;
         $params = [
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
@@ -237,7 +268,7 @@ class CodeController extends Controller {
             if ($temp_file == '') {
                 $temp_file = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
             }
-            $this->CreateFile($temp_file, $tpl['name'], $code, true);
+            $this->CreateFile($temp_file, $code, true);
             $this->ReturnJSON(true, "OK", [
                 "mode" => "temp",
                 "code" => $code,
@@ -293,7 +324,6 @@ class CodeController extends Controller {
 
             $this->CreateFile(
                 $regular_file,
-                $tpl['name'],
                 $code,
                 false
             );

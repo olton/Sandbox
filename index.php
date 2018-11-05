@@ -24,6 +24,7 @@ ini_set('memory_limit', '256M');
 session_start();
 
 include('bootstrap.php');
+include(CONFIG_PATH . 'defines.php');
 
 use Classes\Application;
 use Classes\Security;

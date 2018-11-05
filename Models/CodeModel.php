@@ -9,7 +9,7 @@ use Classes\Model;
 class CodeModel extends Model {
 
     public function Templates(){
-        $h = $this->Select("select * from templates order by id");
+        $h = $this->Select("select * from templates order by template_order");
         if ($this->Rows($h) === 0) {
             return false;
         }
@@ -20,10 +20,17 @@ class CodeModel extends Model {
         return $templates;
     }
 
-    public function Template($name){
+    public function Template($name, $default = "html"){
         $h = $this->Select("select * from templates where name = " . $this->_e($name));
         if ($this->Rows($h) === 0) {
-            return false;
+            $h = $this->Select("select * from templates where name = " . $this->_e($default));
+
+            if ($this->Rows($h) === 0) {
+                throw new \Exception("Default template $default data not found!");
+            }
+
+            $template = $this->FetchArray($h);
+            return $template;
         }
         $template = $this->FetchArray($h);
         return $template;
@@ -67,7 +74,7 @@ class CodeModel extends Model {
         $h = $this->Select("
             select t1.*, 
                 t2.id as user_id, t2.name as user_name, t2.email as user_email, 
-                t3.id as template_id, t3.name as template_name, t3.css as template_css, t3.html as template_html, t3.js as template_js, t3.libs as template_libs, t3.icon as template_icon, t3.title as template_title 
+                t3.id as template_id, t3.name as template_name, t3.icon as template_icon, t3.title as template_title 
             from code t1
             left join user t2 on t1.user = t2.id 
             left join templates t3 on t1.template = t3.id 
@@ -138,7 +145,7 @@ class CodeModel extends Model {
         $h = $this->Select("
             select t1.*, 
                 t2.id as user_id, t2.name as user_name, t2.email as user_email, 
-                t3.name as template_name, t3.css as template_css, t3.html as template_html, t3.js as template_js, t3.libs as template_libs, t3.icon as template_icon, t3.title as template_title 
+                t3.name as template_name, t3.icon as template_icon, t3.title as template_title 
             from code t1
             left join user t2 on t1.user = t2.id 
             left join templates t3 on t1.template = t3.id 

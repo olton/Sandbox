@@ -1,20 +1,23 @@
+<?php
+
+$CODE_TEMPLATE = <<<CODE_TEMPLATE
 <!DOCTYPE html>
-<html lang="en" class="_html_classes_">
+<html lang="en" class="{{_html_classes_}}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    _html_head_
+    {{_head_}}
 
-    <meta name="keywords" content="_tags_">
-    <meta name="description" content="_desc_">
+    <meta name="keywords" content="{{_tags_}}">
+    <meta name="description" content="{{_desc_}}">
 
-    _css_external_
+    {{_css_links_}}
 
-    <title>_title_</title>
+    <title>{{_title_}}</title>
 
     <style>
-        _style_
+        {{_css_code_}}
     </style>
 
     <script>
@@ -32,20 +35,20 @@
         };
     </script>
 </head>
-<body class="_body_classes_">
+<body class="{{_body_classes_}}">
 
-_html_
+{{_html_code_}}
 
-<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-
-_javascript_external_
+{{_js_links_}}
 
 <script>
     (function(){
 
-        _js_
+        {{_js_code_}}
 
     })();
 </script>
 </body>
 </html>
+CODE_TEMPLATE;
+
