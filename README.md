@@ -14,9 +14,6 @@
 </p>
 
 <br>
-<div style="text-align: center!important;">
 
 [![Version: 2018.1](https://img.shields.io/badge/version-2018.1-brightgreen.svg)](https://github.com/olton/Sandbox)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://github.com/olton/Sandbox/blob/master/LICENSE)
-
-</div>
