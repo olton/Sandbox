@@ -23,7 +23,7 @@ class DefaultController extends Controller {
 
         if ($_SESSION['current'] == -1) {
             $params = [
-                "page_title" => "Metro 4 Sandbox",
+                "page_title" => "The Sandbox",
                 "foot_scripts" => [
                     "sandbox" => VIEW_PATH . "js/sandbox.js"
                 ]
@@ -35,7 +35,7 @@ class DefaultController extends Controller {
             $codes = $this->code_model->List($_SESSION['current']);
 
             $params = [
-                "page_title" => "Dashboard :: Metro 4 Sandbox",
+                "page_title" => "Dashboard :: The Sandbox",
                 "templates" => $templates,
                 "codes" => $codes,
                 "foot_scripts" => [

@@ -24,7 +24,7 @@ class UserController extends Controller {
         }
 
         $params = [
-            "page_title" => "Sandbox :: Metro 4",
+            "page_title" => "The Sandbox :: Login",
             "foot_scripts" => [
                 "sandbox" => VIEW_PATH."js/sandbox.js"
             ]
@@ -40,7 +40,7 @@ class UserController extends Controller {
         }
 
         $params = array(
-            "page_title" => "Sandbox :: Metro 4",
+            "page_title" => "The Sandbox :: Sign Up",
             "foot_scripts" => [
                 "sandbox" => VIEW_PATH."js/sandbox.js"
             ]
@@ -96,7 +96,7 @@ class UserController extends Controller {
         $_SESSION['current'] = -1;
         $_SESSION['user'] = [
             "name" => "anon",
-            "email" => "anon@sandbox.metroui.org.ua"
+            "email" => "anon@sandbox.org.ua"
         ];
         Url::Redirect("/");
     }
