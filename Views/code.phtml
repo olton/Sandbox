@@ -201,7 +201,6 @@
                 <script>
                     window.on_page_functions.push(function(){
                         var iframe = document.getElementById("iframe");
-                        console.log($(iframe.contentWindow.document).text().contains("Empty, need reload"));
                         if ($(iframe.contentWindow.document).text().contains("Empty, need reload")) Sandbox.saveCode(false);
                     });
                 </script>

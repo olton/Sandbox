@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.27 build 705 (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.28 build @@build (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -100,8 +100,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "4.2.27",
-    versionFull: "4.2.27.705 ",
+    version: "@@version",
+    versionFull: "@@version.@@build @@status",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -351,9 +351,11 @@ var Metro = {
         if (METRO_CLOAK_REMOVE !== "fade") {
             $(".m4-cloak").removeClass("m4-cloak");
         } else {
-            $(".m4-cloak").fadeIn(METRO_CLOAK_DURATION, function(){
+            $(".m4-cloak").animate({
+                opacity: 1
+            }, METRO_CLOAK_REMOVE, function(){
                 $(".m4-cloak").removeClass("m4-cloak");
-            });
+            })
         }
 
         return this;
@@ -4114,6 +4116,14 @@ var d = new Date().getTime();
         return Number(parseFloat(val.replace(/[^0-9-.]/g, '')));
     },
 
+    parseCard: function(val){
+        return val.replace(/[^0-9]/g, '');
+    },
+
+    parsePhone: function(val){
+        return Utils.parseCard(val);
+    },
+
     isVisible: function(el){
         if (Utils.isJQueryObject(el)) {
             el = el[0];
@@ -4216,6 +4226,74 @@ var d = new Date().getTime();
 
             iframe.dispatchEvent(evt);
         };
+    },
+
+    formData: function(form){
+        if (Utils.isNull(form)) {
+            return ;
+        }
+        if (Utils.isJQueryObject(form)) {
+            form = form[0];
+        }
+        if (!form || form.nodeName !== "FORM") {
+            return;
+        }
+        var i, j, q = {};
+        for (i = form.elements.length - 1; i >= 0; i = i - 1) {
+            if (form.elements[i].name === "") {
+                continue;
+            }
+            switch (form.elements[i].nodeName) {
+                case 'INPUT':
+                    switch (form.elements[i].type) {
+                        case 'text':
+                        case 'hidden':
+                        case 'password':
+                        case 'button':
+                        case 'reset':
+                        case 'submit':
+                            q[form.elements[i].name] = form.elements[i].value;
+                            break;
+                        case 'checkbox':
+                        case 'radio':
+                            if (form.elements[i].checked) {
+                                q[form.elements[i].name] = form.elements[i].value;
+                            }
+                            break;
+                    }
+                    break;
+                case 'file':
+                    break;
+                case 'TEXTAREA':
+                    q[form.elements[i].name] = form.elements[i].value;
+                    break;
+                case 'SELECT':
+                    switch (form.elements[i].type) {
+                        case 'select-one':
+                            q[form.elements[i].name] = form.elements[i].value;
+                            break;
+                        case 'select-multiple':
+                            q[form.elements[i].name] = [];
+                            for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
+                                if (form.elements[i].options[j].selected) {
+                                    q[form.elements[i].name].push(form.elements[i].options[j].value);
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 'BUTTON':
+                    switch (form.elements[i].type) {
+                        case 'reset':
+                        case 'submit':
+                        case 'button':
+                            q[form.elements[i].name] = form.elements[i].value;
+                            break;
+                    }
+                    break;
+            }
+        }
+        return q;
     }
 };
 
@@ -12931,6 +13009,8 @@ var List = {
                 case "integer": data = parseInt(data); break;
                 case "float": data = parseFloat(data); break;
                 case "money": data = Utils.parseMoney(data); break;
+                case "card": data = Utils.parseCard(data); break;
+                case "phone": data = Utils.parsePhone(data); break;
             }
         }
 
@@ -14361,7 +14441,7 @@ var Popover = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -14375,7 +14455,6 @@ var Popover = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
 
         this._createEvents();
 
@@ -14452,6 +14531,7 @@ var Popover = {
         var popover;
         var neb_pos;
         var id = Utils.elementId("popover");
+        var closeButton;
 
         if (this.popovered) {
             return ;
@@ -14463,7 +14543,10 @@ var Popover = {
         $("<div>").addClass("popover-content").addClass(o.clsPopoverContent).html(o.popoverText).appendTo(popover);
 
         if (o.popoverHide === 0 && o.closeButton === true) {
-            $("<button>").addClass("button square small popover-close-button bg-white").html("&times;").appendTo(popover);
+            closeButton = $("<button>").addClass("button square small popover-close-button bg-white").html("&times;").appendTo(popover);
+            closeButton.on(Metro.events.click, function(){
+                that.removePopover();
+            });
         }
 
         switch (o.popoverPosition) {
@@ -14474,9 +14557,12 @@ var Popover = {
         }
 
         popover.addClass(neb_pos);
-        popover.on(Metro.events.click, function(){
-            that.removePopover();
-        });
+
+        if (o.closeButton !== true) {
+            popover.on(Metro.events.click, function(){
+                that.removePopover();
+            });
+        }
 
         this.popover = popover;
         this.size = Utils.hiddenElementSize(popover);
@@ -14501,7 +14587,7 @@ var Popover = {
         var timeout = this.options.onPopoverHide === Metro.noop ? 0 : 300;
         var popover = this.popover;
 
-        if (!popovered) {
+        if (!this.popovered) {
             return ;
         }
 
@@ -16735,7 +16821,9 @@ var Sorter = {
                 case "number": data = Number(data); break;
                 case "int": data = parseInt(data); break;
                 case "float": data = parseFloat(data); break;
-                case "money": data = Number(parseFloat(data.replace(/[^0-9-.]/g, ''))); break;
+                case "money": data = Utils.parseMoney(data); break;
+                case "card": data = Utils.parseCard(data); break;
+                case "phone": data = Utils.parsePhone(data); break;
             }
         }
 
@@ -17303,9 +17391,6 @@ var Splitter = {
         if (o.saveState === true && storage !== null) {
 
             itemsSize = storage.getItem(this.storageKey + element.attr("id"));
-
-            console.log(this.storageKey + element.attr("id"));
-            console.log(itemsSize);
 
             $.each(element.children(".split-block"), function(i, v){
                 var item = $(v);
@@ -19615,6 +19700,8 @@ var Table = {
                 case "int": result = parseInt(result); break;
                 case "float": result = parseFloat(result); break;
                 case "money": result = Utils.parseMoney(result); break;
+                case "card": result = Utils.parseCard(result); break;
+                case "phone": result = Utils.parsePhone(result); break;
             }
         }
 
@@ -23383,7 +23470,6 @@ var Validator = {
         this.element = $(elem);
         this._onsubmit = null;
         this._onreset = null;
-        this._action = null;
         this.result = [];
 
         this._setOptionsFromDOM();
@@ -23425,8 +23511,6 @@ var Validator = {
     _create: function(){
         var that = this, element = this.element, o = this.options;
         var inputs = element.find("[data-validate]");
-
-        this._action = element[0].action;
 
         element
             .attr("novalidate", 'novalidate')
@@ -23488,6 +23572,7 @@ var Validator = {
             val: 0,
             log: []
         };
+        var formData = Utils.formData(element);
 
         $.each(inputs, function(){
             ValidatorFuncs.validate(this, result, o.onValidate, o.onError, o.requiredMode);
@@ -23495,18 +23580,16 @@ var Validator = {
 
         submit.removeAttr("disabled").removeClass("disabled");
 
-        element[0].action = this._action;
-
-        result.val += Utils.exec(o.onBeforeSubmit, [element], this.elem) === false ? 1 : 0;
+        result.val += Utils.exec(o.onBeforeSubmit, [element, formData], this.elem) === false ? 1 : 0;
 
         if (result.val === 0) {
-            Utils.exec(o.onValidateForm, [element], form);
+            Utils.exec(o.onValidateForm, [element, formData], form);
             setTimeout(function(){
-                Utils.exec(o.onSubmit, [element], form);
+                Utils.exec(o.onSubmit, [element, formData], form);
                 if (that._onsubmit !==  null) Utils.exec(that._onsubmit, null, form);
             }, o.submitTimeout);
         } else {
-            Utils.exec(o.onErrorForm, [result.log, element], form);
+            Utils.exec(o.onErrorForm, [result.log, element, formData], form);
             if (o.clearInvalid > 0) {
                 setTimeout(function(){
                     $.each(inputs, function(){

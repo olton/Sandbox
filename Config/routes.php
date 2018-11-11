@@ -10,8 +10,8 @@ return [
     ['GET',  "/logout", ["controller" => "UserController", "action" => "LogoutProcess"]],
 
     ['GET',  "/code", ["controller" => "CodeController", "action" => "Blank"], ["template"=>"[\w]+"]], /* /code or /code?template=default */
-    ['POST',  "/code/fork", ["controller" => "CodeController", "action" => "Fork"]],
-    ['POST',  "/code/delete", ["controller" => "CodeController", "action" => "Delete"]],
+    ['POST', "/code/fork", ["controller" => "CodeController", "action" => "Fork"]],
+    ['POST', "/code/delete", ["controller" => "CodeController", "action" => "Delete"]],
     ['GET',  "/code/list", ["controller" => "CodeController", "action" => "List"]],
     ['POST', "/code/save", ["controller" => "CodeController", "action" => "SaveProcess"]],
     ['POST', "/code/unsaved", ["controller" => "CodeController", "action" => "UnsavedProcess"]],
@@ -26,4 +26,8 @@ return [
     ['GET',  "/oauth/gitlab/return", ["controller" => "GitlabOAuthController", "action" => "Return"]],
     ['GET',  "/oauth/twitter/login", ["controller" => "TwitterOAuthController", "action" => "Login"]],
     ['GET',  "/oauth/twitter/return", ["controller" => "TwitterOAuthController", "action" => "Return"]],
+
+    ['GET', "/data/table", ["controller" => "InteractController", "action" => "TableData"]],
+
+    ['POST', "/form/post", ["controller" => "InteractController", "action" => "FormPost"]],
 ];
