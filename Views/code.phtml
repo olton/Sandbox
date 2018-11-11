@@ -206,7 +206,10 @@
                 </script>
             </div>
             <div class="d-flex flex-column console-wrapper">
-                <div class="wrapper-header">Console</div>
+                <div class="wrapper-header">
+                    <button type="button" class="button small square settings-button" onclick="console_clear()"><span class="mif-cross"></span></button>
+                    <span>Console</span>
+                </div>
                 <div class="output-wrapper" id="console-output"></div>
                 <input type="text" data-role="input"
                        data-prevent-submit="true"

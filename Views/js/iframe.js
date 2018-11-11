@@ -1,3 +1,7 @@
+function console_clear(){
+    $("#console-output").html("");
+}
+
 function console_out(messages, console_element, clear){
     var i;
     var console_print = function(output, val){
