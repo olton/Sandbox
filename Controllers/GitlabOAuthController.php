@@ -79,6 +79,10 @@ class GitlabOAuthController extends Controller {
             $user_data = $user_model->User($id);
         }
 
+        if (!file_exists(SANDBOX_PATH . $user->username)) {
+            mkdir(SANDBOX_PATH . $user->username, 0755, true);
+        }
+
         $_SESSION['current'] = $user_data['id'];
         $_SESSION['user']['name'] = $user_data['name'];
         $_SESSION['user']['email'] = $user_data['email'];
