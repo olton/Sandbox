@@ -32,12 +32,12 @@ var Editors = {
         lineNumbers: true,
         lineWrapping: false,
         theme: 'idea',
-        matchBrackets : true,
+        matchTags: {bothTags: true},
         extraKeys: {
-            "Ctrl-Q": function(cm){
-                cm.foldCode(cm.getCursor());
-            },
-            "Ctrl-Space": "autocomplete"
+            "Ctrl-Q": function(cm){cm.foldCode(cm.getCursor());},
+            "Ctrl-Space": "autocomplete",
+            "Ctrl-J": "toMatchingTag",
+            "F11": function(cm){cm.setOption("fullScreen", !cm.getOption("fullScreen"));}
         },
         foldGutter: true,
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],

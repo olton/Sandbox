@@ -13,10 +13,11 @@ class CodeController extends Controller {
     private $model;
     private $head = [
         "styles" => [
-            "codemirror" => VIEW_PATH."vendors/codemirror-5.40.2/lib/codemirror.css",
-            "codemirror-theme" => VIEW_PATH."vendors/codemirror-5.40.2/theme/idea.css",
-            "codemirror-fold-gutter" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/foldgutter.css",
-            "codemirror-show-hint" => VIEW_PATH."vendors/codemirror-5.40.2/addon/hint/show-hint.css"
+            "codemirror" => VIEW_PATH."vendors/codemirror-5.41.0/lib/codemirror.css",
+            "codemirror-theme" => VIEW_PATH."vendors/codemirror-5.41.0/theme/idea.css",
+            "codemirror-fold-gutter" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/foldgutter.css",
+            "codemirror-show-hint" => VIEW_PATH."vendors/codemirror-5.41.0/addon/hint/show-hint.css",
+            "codemirror-fullscreen-css" => VIEW_PATH."vendors/codemirror-5.41.0/addon/display/fullscreen.css"
         ],
         "scripts" => [
 
@@ -24,28 +25,29 @@ class CodeController extends Controller {
     ];
     private $foot = [
         "scripts" => [
-            "codemirror" => VIEW_PATH."vendors/codemirror-5.40.2/lib/codemirror.js",
-            "codemirror-matchbrackets" => VIEW_PATH."vendors/codemirror-5.40.2/addon/edit/matchbrackets.js",
-            "codemirror-closebrackets" => VIEW_PATH."vendors/codemirror-5.40.2/addon/edit/closebrackets.js",
-            "codemirror-closetag" => VIEW_PATH."vendors/codemirror-5.40.2/addon/edit/closetag.js",
-            "codemirror-continuecomment" => VIEW_PATH."vendors/codemirror-5.40.2/addon/comment/continuecomment.js",
-            "codemirror-comment" => VIEW_PATH."vendors/codemirror-5.40.2/addon/comment/comment.js",
-            "codemirror-foldcode" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/foldcode.js",
-            "codemirror-foldgutter" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/foldgutter.js",
-            "codemirror-xml-fold" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/xml-fold.js",
-            "codemirror-indent-fold" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/indent-fold.js",
-            "codemirror-comment-fold" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/comment-fold.js",
-            "codemirror-brace-fold" => VIEW_PATH."vendors/codemirror-5.40.2/addon/fold/brace-fold.js",
-            "codemirror-css-hint" => VIEW_PATH."vendors/codemirror-5.40.2/addon/hint/css-hint.js",
-            "codemirror-html-hint" => VIEW_PATH."vendors/codemirror-5.40.2/addon/hint/html-hint.js",
-            "codemirror-javascript-hint" => VIEW_PATH."vendors/codemirror-5.40.2/addon/hint/javascript-hint.js",
-            "codemirror-xml-hint" => VIEW_PATH."vendors/codemirror-5.40.2/addon/hint/xml-hint.js",
-            "codemirror-active-line" => VIEW_PATH."vendors/codemirror-5.40.2/addon/selection/active-line.js",
-            "codemirror-placeholder" => VIEW_PATH."vendors/codemirror-5.40.2/addon/display/placeholder.js",
-            "codemirror-xml" => VIEW_PATH."vendors/codemirror-5.40.2/mode/xml/xml.js",
-            "codemirror-htmlmixed" => VIEW_PATH."vendors/codemirror-5.40.2/mode/htmlmixed/htmlmixed.js",
-            "codemirror-css" => VIEW_PATH."vendors/codemirror-5.40.2/mode/css/css.js",
-            "codemirror-javascript" => VIEW_PATH."vendors/codemirror-5.40.2/mode/javascript/javascript.js",
+            "codemirror" => VIEW_PATH."vendors/codemirror-5.41.0/lib/codemirror.js",
+            "codemirror-matchtags" => VIEW_PATH."vendors/codemirror-5.41.0/addon/edit/matchtags.js",
+            "codemirror-closebrackets" => VIEW_PATH."vendors/codemirror-5.41.0/addon/edit/closebrackets.js",
+            "codemirror-closetag" => VIEW_PATH."vendors/codemirror-5.41.0/addon/edit/closetag.js",
+            "codemirror-continuecomment" => VIEW_PATH."vendors/codemirror-5.41.0/addon/comment/continuecomment.js",
+            "codemirror-comment" => VIEW_PATH."vendors/codemirror-5.41.0/addon/comment/comment.js",
+            "codemirror-foldcode" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/foldcode.js",
+            "codemirror-foldgutter" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/foldgutter.js",
+            "codemirror-xml-fold" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/xml-fold.js",
+            "codemirror-indent-fold" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/indent-fold.js",
+            "codemirror-comment-fold" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/comment-fold.js",
+            "codemirror-brace-fold" => VIEW_PATH."vendors/codemirror-5.41.0/addon/fold/brace-fold.js",
+            "codemirror-css-hint" => VIEW_PATH."vendors/codemirror-5.41.0/addon/hint/css-hint.js",
+            "codemirror-html-hint" => VIEW_PATH."vendors/codemirror-5.41.0/addon/hint/html-hint.js",
+            "codemirror-javascript-hint" => VIEW_PATH."vendors/codemirror-5.41.0/addon/hint/javascript-hint.js",
+            "codemirror-xml-hint" => VIEW_PATH."vendors/codemirror-5.41.0/addon/hint/xml-hint.js",
+            "codemirror-active-line" => VIEW_PATH."vendors/codemirror-5.41.0/addon/selection/active-line.js",
+            "codemirror-placeholder" => VIEW_PATH."vendors/codemirror-5.41.0/addon/display/placeholder.js",
+            "codemirror-fullscreen" => VIEW_PATH."vendors/codemirror-5.41.0/addon/display/fullscreen.js",
+            "codemirror-xml" => VIEW_PATH."vendors/codemirror-5.41.0/mode/xml/xml.js",
+            "codemirror-htmlmixed" => VIEW_PATH."vendors/codemirror-5.41.0/mode/htmlmixed/htmlmixed.js",
+            "codemirror-css" => VIEW_PATH."vendors/codemirror-5.41.0/mode/css/css.js",
+            "codemirror-javascript" => VIEW_PATH."vendors/codemirror-5.41.0/mode/javascript/javascript.js",
 
             "sandbox" => VIEW_PATH."js/sandbox.js",
             "iframe" => VIEW_PATH."js/iframe.js",
