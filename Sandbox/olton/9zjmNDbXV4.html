@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
+    
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css">
+
+
+    <title>Popover onShow</title>
+
+    <style>
+        
+    </style>
+
+    <script>
+        console.log = function(){
+            var i;
+            var args = new Array(arguments.length);
+            for(i = 0; i < args.length; ++i) {
+                args[i] = typeof arguments[i] === 'string' ? arguments[i] : String(arguments[i]) ;
+                if (Array.isArray(args[i])) {
+                    args[i] = args[i].map(function(val){
+                        return typeof val === 'object' ? String(val[0]) : String(val);
+                    });
+                }
+            }            
+            parent.postMessage(args, "*");
+        };
+
+        window.addEventListener("message", function(e){
+            console.log(e.data);
+            window.eval(e.data);
+        }, false);
+
+        window.onerror = function (message, url, row, col, err) {
+            console.log(message);
+        };
+    </script>
+</head>
+<body class="h-vh-100">
+
+<div class="h-100 container d-flex flex-justify-center flex-align-center">
+  <button class="button" data-role="popover" data-popover-text="This is a popover" data-on-popover-show="popoverShow">
+    Button
+  </button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.metroui.org.ua/v4-dev/js/metro.min.js"></script>
+
+
+<script>
+    function popoverShow(popover){
+  console.log(this);
+}
+</script>
+</body>
+</html>

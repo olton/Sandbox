@@ -57,8 +57,8 @@ class CodeController extends Controller {
         $this->model = new CodeModel();
     }
 
-    private function CreateFile($file_name, $code, $temp = false) {
-        global $CODE_TEMPLATE;
+    private function CreateFile($file_name, $code, $temp = false, $debug = false) {
+        global $CODE_TEMPLATE, $CODE_DEBUG_TEMPLATE;
 
         $html_classes = $code['html_classes'];
         $head = $code['html_head'];
@@ -81,6 +81,8 @@ class CodeController extends Controller {
         }
 
         $js_code = $code['js'];
+
+        $template_code = ($debug == false ? $CODE_TEMPLATE : $CODE_DEBUG_TEMPLATE);
 
         $template_content = html_entity_decode(str_replace(
             [
@@ -109,7 +111,7 @@ class CodeController extends Controller {
                 $js_links,
                 $js_code
             ],
-            $CODE_TEMPLATE
+            $template_code
         ), ENT_QUOTES);
 
         $file = null;
@@ -173,11 +175,20 @@ class CodeController extends Controller {
     }
 
     public function Editor($user, $hash){
+        $regular_file = $hash.".html";
 
-        if (!is_file(SANDBOX_PATH . "$user/$hash.html")) {
-            $this->model->DeleteCode($hash);
-            Url::Redirect("/");
-            exit(0);
+        if (!is_file(SANDBOX_PATH . "$user/".$regular_file)) {
+            $code = $this->model->Code($hash);
+            if ($code === false) {
+                Url::Redirect("/");
+                exit(0);
+            }
+            $this->CreateFile(
+                $regular_file,
+                $code,
+                false,
+                false
+            );
         }
 
         $alien = $_SESSION['user']['name'] != $user ? 1 : 0;
@@ -353,6 +364,22 @@ class CodeController extends Controller {
     }
 
     public function Debug($user, $hash){
+        $regular_file = $hash . ".html";
+
+        $code = $this->model->Code($hash);
+
+        if ($code === false) {
+            Url::Redirect("/not-found");
+            exit(0);
+        }
+
+        $this->CreateFile(
+            $regular_file,
+            $code,
+            false,
+            true
+        );
+
         $view = new Viewer("Sandbox/".$user."/");
         echo $view->Render($hash.".html", []);
     }

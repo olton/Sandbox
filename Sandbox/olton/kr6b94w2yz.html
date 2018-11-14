@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
+    
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css">
+
+
+    <title>Untitled code</title>
+
+    <style>
+        
+    </style>
+
+    <script>
+        console.log = function(){
+            parent.postMessage(Array.prototype.slice.call(arguments, 0), "*");
+        };
+
+        window.addEventListener("message", function(e){
+            console.log(e.data);
+            window.eval(e.data);
+        }, false);
+
+        window.onerror = function (message, url, row, col, err) {
+            console.log(message);
+        };
+    </script>
+</head>
+<body class="">
+
+<DIV class="container"> 
+
+<FORM id="SEARCH" name="search" method="post" data-role="validator" data-on-before-submit="onBeforeSubmit" action="/check.machine.php">
+
+<DIV class="row mb-2">
+   <DIV class="cell-2">
+      <LABEL class="text-bold fg-steel" for="TIPO">Check</LABEL>
+      <SELECT id="TIPO" name="tipo" data-role="select" data-filter="false" size="1">
+      <OPTION value="0" selected>Un ROMset</OPTION>
+      <OPTION value="1">Una "Famiglia"</OPTION>
+      <OPTION value="2">Tutti i ROMset</OPTION>
+      </SELECT>
+   </DIV>
+   <DIV class="cell-3">
+      <LABEL class="text-bold fg-steel" for="MACHINE">Machine</LABEL>
+      <INPUT id="MACHINE" name="machine" type="text" data-role="input" data-validate="maxlength=30" value="" />
+   </DIV>
+   <DIV class="cell-2 offset-1 pt-6">
+      <INPUT id="BADDUMP" name="baddump" type="checkbox" data-role="checkbox" data-caption="<SPAN class='text-bold fg-steel'>BAD rom dump?</SPAN>" />
+   </DIV>
+   <DIV class="cell-2 pt-6">
+      <INPUT id="NODUMP" name="nodump" type="checkbox" data-role="checkbox" data-caption="<SPAN class='text-bold fg-steel'>NO dump?</SPAN>" />
+   </DIV>
+   <DIV class="cell-2 pt-6">
+      <INPUT id="UNNEEDED" name="unneed" type="checkbox" data-role="checkbox" data-caption="<SPAN class='text-bold fg-steel'>Unneeded?</SPAN>" />
+   </DIV>
+</DIV>
+
+<HR class="bg-steel fg-white">
+
+<DIV class="row mb-2">
+   <DIV class="cell-8">
+      <BUTTON id="SUBMIT" class="button bg-steel bg-lightSteel-hover text-bold fg-white"><SPAN class="icon mif-checkmark"></SPAN> Controlla</BUTTON>
+   </DIV>
+</DIV>
+
+</FORM>
+
+</DIV>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.metroui.org.ua/v4-dev/js/metro.min.js"></script>
+
+
+<script>
+    function onBeforeSubmit() {
+
+  if($("#TIPO").val()!=3)
+    if($("#MACHINE").val()=="") {
+      $("#MACHINE").parent().removeClass("valid").addClass("invalid");
+      return(false);
+     }
+
+  return(true);
+
+ }
+</script>
+</body>
+</html>

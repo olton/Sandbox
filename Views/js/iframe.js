@@ -56,6 +56,8 @@ function console_out(messages, console_element, clear){
 function receiveMessage(e){
     var console_element = document.getElementById("console-output");
 
+    console.log(Object.values(e.data));
+
     if (!Array.isArray(e.data)) {
         return ;
     }
