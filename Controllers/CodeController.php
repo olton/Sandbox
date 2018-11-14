@@ -331,9 +331,8 @@ class CodeController extends Controller {
             if ($temp_file !== "") @unlink(SANDBOX_PATH . "temp" . DSP . $temp_file);
             if ($temp_file !== "") $this->model->DeleteTempFile($temp_file);
             $regular_file= $hash . ".html";
-            $tpl = $this->model->TemplateByID($template);
 
-            $code = $this->model->Code($id);
+            $code = $this->model->Code($hash);
 
             $this->CreateFile(
                 $regular_file,

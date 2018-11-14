@@ -90,34 +90,35 @@ var Sandbox = {
     saveCode: function(save_button, cb_success, cb_error){
         var that = this, iframe = document.getElementById("iframe");
 
+        var data = {
+            id: $('#code_id').val(),
+            title: $('#code_title').val(),
+            hash: $('#code_hash').val(),
+
+            template: $('#template').val(),
+            temp_file: $('#temp_file').val(),
+            saved: $('#saved').val(),
+            alien: $('#alien').val(),
+            can_save: save_button,
+
+            html: Editors.getEditorValue('html_editor'),
+            css: Editors.getEditorValue('css_editor'),
+            js: Editors.getEditorValue('js_editor'),
+
+            html_head: $('#html_head').val(),
+            html_classes: $('#html_classes').val(),
+            body_classes: $('#body_classes').val(),
+            html_processor: $('#html_processor').val(),
+            css_processor: $('#css_processor').val(),
+            js_processor: $('#js_processor').val(),
+            js_external: $('#js_external').val(),
+            css_external: $('#css_external').val(),
+            desc: $('#desc').val(),
+            tags: $('#tags').val(),
+            code_type: $('#code_type').val()
+        };
+
         $("#iframe_reload").show(function(){
-            var data = {
-                id: $('#code_id').val(),
-                title: $('#code_title').val(),
-                hash: $('#code_hash').val(),
-
-                template: $('#template').val(),
-                temp_file: $('#temp_file').val(),
-                saved: $('#saved').val(),
-                alien: $('#alien').val(),
-                can_save: save_button,
-
-                html: Editors.getEditorValue('html_editor'),
-                css: Editors.getEditorValue('css_editor'),
-                js: Editors.getEditorValue('js_editor'),
-
-                html_head: $('#html_head').val(),
-                html_classes: $('#html_classes').val(),
-                body_classes: $('#body_classes').val(),
-                html_processor: $('#html_processor').val(),
-                css_processor: $('#css_processor').val(),
-                js_processor: $('#js_processor').val(),
-                js_external: $('#js_external').val(),
-                css_external: $('#css_external').val(),
-                desc: $('#desc').val(),
-                tags: $('#tags').val(),
-                code_type: $('#code_type').val()
-            };
 
             that.sendData(data, "/code/save", null, function(response){
 
@@ -140,9 +141,9 @@ var Sandbox = {
                     $('#code_hash').val(code.hash);
                     $('#temp_file').val(data.temp_file);
                     $('#saved').val(1);
-                    $('#code_page-debug_button').parent().show();
+                    $('#code_page-debug_button').attr("href", data.debug_url).parent().show();
                     $('#code_page-fork_button').parent().show();
-                    $('#code_page-debug_button').attr("href", data.debug_url);
+                    // $('#code_page-debug_button').attr("href", data.debug_url);
                     Editors.saved = true;
                 } else {
 
