@@ -69,7 +69,6 @@ function iframeErrorHandler(message, url, row, col, error){
     console_out(message + " on " + url + " " + row+":"+col, document.getElementById("console-output"), true);
 }
 
-Metro.utils.iframeBubbleMouseMove(document.getElementById("iframe"));
 window.addEventListener("message", receiveMessage, false);
 
 

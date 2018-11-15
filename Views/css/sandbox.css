@@ -70,6 +70,9 @@ footer a:hover {
   margin: 0;
   background: #ffffff;
 }
+#iframe.no-pointer {
+  pointer-events: none;
+}
 .wrapper-header {
   padding: 8px 8px 8px 40px;
   background: #f8f8f8;

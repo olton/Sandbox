@@ -143,7 +143,6 @@ var Sandbox = {
                     $('#saved').val(1);
                     $('#code_page-debug_button').attr("href", data.debug_url).parent().show();
                     $('#code_page-fork_button').parent().show();
-                    // $('#code_page-debug_button').attr("href", data.debug_url);
                     Editors.saved = true;
                 } else {
 

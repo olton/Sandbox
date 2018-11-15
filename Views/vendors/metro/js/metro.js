@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.28 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.29 build @@build (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -4197,37 +4197,6 @@ var d = new Date().getTime();
         return (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "")
     },
 
-    iframeBubbleMouseMove: function(iframe){
-        if (Utils.isJQueryObject(iframe)) {
-            iframe = iframe[0];
-        }
-        var existingOnMouseMove = iframe.contentWindow.onmousemove;
-        iframe.contentWindow.onmousemove = function(e){
-            if(existingOnMouseMove) existingOnMouseMove(e);
-            var evt = document.createEvent("MouseEvents");
-            var boundingClientRect = iframe.getBoundingClientRect();
-            evt.initMouseEvent(
-                "mousemove",
-                true,
-                false,
-                window,
-                e.detail,
-                e.screenX,
-                e.screenY,
-                e.clientX + boundingClientRect.left,
-                e.clientY + boundingClientRect.top,
-                e.ctrlKey,
-                e.altKey,
-                e.shiftKey,
-                e.metaKey,
-                e.button,
-                null
-            );
-
-            iframe.dispatchEvent(evt);
-        };
-    },
-
     formData: function(form){
         if (Utils.isNull(form)) {
             return ;
@@ -6665,7 +6634,7 @@ var CalendarPicker = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -7547,7 +7516,7 @@ var Checkbox = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -10353,7 +10322,7 @@ var File = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -11580,7 +11549,7 @@ var MaterialInput = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -11979,7 +11948,7 @@ var Input = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -12357,7 +12326,7 @@ var Keypad = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -14173,6 +14142,10 @@ var Notify = {
         var notify, that = this, o = this.options;
         var m, t;
 
+        if (Utils.isNull(options)) {
+            options = {};
+        }
+
         if (!Utils.isValue(message)) {
             return false;
         }
@@ -14215,11 +14188,14 @@ var Notify = {
             Utils.exec(Utils.isValue(options.onAppend) ? options.onAppend : o.onAppend, null, notify[0]);
 
             notify.css({
-                marginTop: o.distance
+                marginTop: Utils.isValue(options.onAppend) ? options.distance : o.distance
             }).fadeIn(100, function(){
+                var duration = Utils.isValue(options.duration) ? options.duration : o.duration;
+                var animation = Utils.isValue(options.animation) ? options.animation : o.animation;
+
                 notify.animate({
                     marginTop: ".25rem"
-                }, o.duration, o.animation, function(){
+                }, duration, animation, function(){
 
                     Utils.exec(o.onNotifyCreate, null, this);
 
@@ -14476,6 +14452,9 @@ var Popover = {
             }
             setTimeout(function(){
                 that.createPopover();
+
+                Utils.exec(o.onPopoverShow, [that.popover], element[0]);
+
                 if (o.popoverHide > 0) {
                     setTimeout(function(){
                         that.removePopover();
@@ -14604,6 +14583,7 @@ var Popover = {
 
     show: function(){
         var that = this, element = this.element, o = this.options;
+
         if (this.popovered === true) {
             return ;
         }
@@ -14611,7 +14591,7 @@ var Popover = {
         setTimeout(function(){
             that.createPopover();
 
-            Utils.exec(o.onPopoverShow, [popover], element[0]);
+            Utils.exec(o.onPopoverShow, [that.popover], element[0]);
 
             if (o.popoverHide > 0) {
                 setTimeout(function(){
@@ -14900,7 +14880,7 @@ var Radio = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -15081,6 +15061,12 @@ var Rating = {
             }
         }
 
+        if (element.is(":disabled")) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+
         this.rating = rating;
     },
 
@@ -15172,10 +15158,29 @@ var Rating = {
         this.static(isStatic);
     },
 
+    disable: function(){
+        this.element.data("disabled", true);
+        this.element.parent().addClass("disabled");
+    },
+
+    enable: function(){
+        this.element.data("disabled", false);
+        this.element.parent().removeClass("disabled");
+    },
+
+    toggleState: function(){
+        if (this.elem.disabled) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+    },
+
     changeAttribute: function(attributeName){
         switch (attributeName) {
             case "value":
             case "data-value": this.changeAttributeValue(attributeName); break;
+            case "disabled": this.toggleState(); break;
             case "data-message": this.changeAttributeMessage(); break;
             case "data-static": this.changeAttributeStatic(); break;
         }
@@ -15874,7 +15879,7 @@ var Select = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -16399,6 +16404,12 @@ var Slider = {
             }
         }
 
+        if (element.is(":disabled")) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+
         this.slider = slider;
     },
 
@@ -16717,10 +16728,29 @@ var Slider = {
         this.buff(val);
     },
 
+    disable: function(){
+        this.element.data("disabled", true);
+        this.element.parent().addClass("disabled");
+    },
+
+    enable: function(){
+        this.element.data("disabled", false);
+        this.element.parent().removeClass("disabled");
+    },
+
+    toggleState: function(){
+        if (this.elem.disabled) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+    },
+
     changeAttribute: function(attributeName){
         switch (attributeName) {
             case "data-value": this.changeValue(); break;
             case "data-buffer": this.changeBuffer(); break;
+            case 'disabled': this.toggleState(); break;
         }
     }
 };
@@ -17174,13 +17204,12 @@ var Spinner = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
         }
     },
-
 
     changeAttribute: function(attributeName){
         var that = this, element = this.element;
@@ -17335,6 +17364,9 @@ var Splitter = {
 
             gutter.addClass("active");
 
+            prev_block.addClass("stop-select stop-pointer");
+            next_block.addClass("stop-select stop-pointer");
+
             Utils.exec(o.onResizeStart, [start_pos, gutter, prev_block, next_block], element);
 
             $(window).on(Metro.events.move + "-" + element.attr("id"), function(e){
@@ -17355,6 +17387,9 @@ var Splitter = {
             });
 
             $(window).on(Metro.events.stop + "-" + element.attr("id"), function(e){
+
+                prev_block.removeClass("stop-select stop-pointer");
+                next_block.removeClass("stop-select stop-pointer");
 
                 that._saveSize();
 
@@ -18248,7 +18283,7 @@ var Switch = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -20707,6 +20742,12 @@ var TagInput = {
                 that._addTag(this);
             })
         }
+
+        if (element.is(":disabled")) {
+            this.disable();
+        } else {
+            this.enable();
+        }
     },
 
     _createEvents: function(){
@@ -20848,6 +20889,24 @@ var TagInput = {
         container.find(".tag").remove();
     },
 
+    disable: function(){
+        this.element.data("disabled", true);
+        this.element.parent().addClass("disabled");
+    },
+
+    enable: function(){
+        this.element.data("disabled", false);
+        this.element.parent().removeClass("disabled");
+    },
+
+    toggleState: function(){
+        if (this.elem.disabled) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+    },
+
     changeAttribute: function(attributeName){
         var that = this, element = this.element, o = this.options;
 
@@ -20862,6 +20921,7 @@ var TagInput = {
 
         switch (attributeName) {
             case "value": changeValue(); break;
+            case "disabled": this.toggleState(); break;
         }
     },
 
@@ -21068,7 +21128,7 @@ var Textarea = {
     },
 
     toggleState: function(){
-        if (this.element.data("disabled") === false) {
+        if (this.elem.disabled) {
             this.disable();
         } else {
             this.enable();
@@ -23485,6 +23545,7 @@ var Validator = {
         interactiveCheck: false,
         clearInvalid: 0,
         requiredMode: true,
+        useRequiredClass: true,
         onBeforeSubmit: Metro.noop_true,
         onSubmit: Metro.noop,
         onError: Metro.noop,
@@ -23520,7 +23581,7 @@ var Validator = {
             var input = $(this);
             var funcs = input.data("validate");
             var required = funcs.indexOf("required") > -1;
-            if (required) {
+            if (required && o.useRequiredClass === true) {
                 if (ValidatorFuncs.is_control(input)) {
                     input.parent().addClass("required");
                 } else {
