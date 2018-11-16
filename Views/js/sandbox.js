@@ -204,13 +204,11 @@ var Sandbox = {
         Sandbox.sendData({
             hash: hash
         }, "/code/delete", null, function(response){
-            var i, item, items = $("#code-items").children("li");
-            for(i = 0; i < items.length; i++) {
-                item = $(items[i]);
-                if (item.data('hash') === response.data.hash) {
-                    items.remove();
-                    break;
-                }
+            var list;
+            if (response.result) {
+                list = $("#code-items").data("list");
+                list.deleteItem(hash);
+                list.draw();
             }
         }, function(response){
             Sandbox.info("Fork error!", response instanceof String ? response : response.message);

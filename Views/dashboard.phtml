@@ -61,9 +61,21 @@
             </div>
         </div>
 
-        <ul class="code-items" data-role="list" data-sort-class="name" data-sort-dir="asc" id="code-items">
+        <ul class="code-items" data-role="list"
+            data-sort-class="name"
+            data-sort-dir="asc"
+            data-items="20"
+            data-show-pagination="true"
+            data-show-search="true"
+            data-show-list-info="true"
+            data-cls-component="mt-4"
+            data-cls-list-info="mt-2 mb-2"
+            data-filter-class="name"
+            data-list-search-title="Search by name:"
+            id="code-items">
             <?php if (isset($codes) && $codes != false) foreach ($codes as $code) {?>
                 <li class="code-item" data-hash="<?php echo $code['hash']?>">
+                    <div class="d-none"><?php echo $code['hash']?></div>
                     <div class="icon"><img src="<?php echo VIEW_PATH?>images/<?php echo $code['template_icon']?>"></div>
                     <div class="name"><a href="/<?php echo $code['user_name'] . "/code/" . $code['hash']?>"><?php echo $code['title']?></a></div>
 
