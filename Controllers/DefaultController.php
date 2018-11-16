@@ -31,11 +31,13 @@ class DefaultController extends Controller {
             $page = "index.phtml";
         } else {
 
-            $templates = $this->code_model->Templates();
+            $top_templates = $this->code_model->Templates("is_top=1");
+            $templates = $this->code_model->Templates("is_top!=1");
             $codes = $this->code_model->List($_SESSION['current']);
 
             $params = [
                 "page_title" => "Dashboard :: The Sandbox",
+                "top_templates" => $top_templates,
                 "templates" => $templates,
                 "codes" => $codes,
                 "foot_scripts" => [

@@ -233,7 +233,8 @@ footer a:hover {
     top: 0;
   }
 }
-.code-template {
+.code-template,
+.template-small {
   width: 80px;
   height: 80px;
   margin: 0 2px;
@@ -246,16 +247,23 @@ footer a:hover {
   cursor: pointer;
 }
 .code-template img,
-.code-template [class*=mif-] {
+.template-small img,
+.code-template [class*=mif-],
+.template-small [class*=mif-] {
   width: 40px;
   height: 40px;
 }
-.code-template .name {
+.code-template .name,
+.template-small .name {
   margin-top: auto;
   font-size: 12px;
   margin-bottom: 10px;
   font-weight: 500;
   display: none;
+}
+.template-small {
+  width: 48px;
+  height: 48px;
 }
 @media screen and (min-width: 768px) {
   .code-template {

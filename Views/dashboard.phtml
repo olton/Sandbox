@@ -35,10 +35,17 @@
 <div class="hero text-center add-neb" style="padding-top: 40px; padding-bottom: 40px">
     <h1 class="fg-white">Quick templates</h1>
     <div class="d-flex flex-justify-center mt-10">
-        <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+        <?php if (isset($top_templates) && count($top_templates) > 0) foreach ($top_templates as $template){?>
             <a class="code-template no-decor" href="/code?template=<?php echo $template['name']?>">
                 <img src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>">
                 <span class="name"><?php echo $template['title']?></span>
+            </a>
+        <?php }?>
+    </div>
+    <div class="d-flex flex-justify-center mt-10">
+        <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
+            <a class="template-small no-decor" href="/code?template=<?php echo $template['name']?>" data-role="hint" data-hint-text="<?php echo $template['title']?>">
+                <img src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>">
             </a>
         <?php }?>
     </div>

@@ -8,8 +8,8 @@ use Classes\Model;
 
 class CodeModel extends Model {
 
-    public function Templates(){
-        $h = $this->Select("select * from templates order by template_order");
+    public function Templates($filter = "1=1"){
+        $h = $this->Select("select * from templates where 1=1 and $filter order by template_order");
         if ($this->Rows($h) === 0) {
             return false;
         }
