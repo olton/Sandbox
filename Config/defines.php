@@ -46,7 +46,7 @@ $CODE_TEMPLATE = <<<CODE_TEMPLATE
 
 {{_js_links_}}
 
-<script>
+<script type="{{_js_type_}}">
     {{_js_code_}}
 </script>
 </body>
@@ -79,7 +79,7 @@ $CODE_DEBUG_TEMPLATE = <<<CODE_DEBUG_TEMPLATE
 
 {{_js_links_}}
 
-<script>
+<script type="{{_js_type_}}">
     {{_js_code_}}
 </script>
 </body>

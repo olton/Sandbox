@@ -55,6 +55,7 @@ class CodeModel extends Model {
                 "html" => "",
                 "css" => "",
                 "js" => "",
+                "js_type" => "text/javascript",
                 "hash" => "new",
                 "template" => 1,
                 "html_head" => "",
@@ -89,7 +90,7 @@ class CodeModel extends Model {
         return $code;
     }
 
-    public function Save($id, $user, $title, $html, $css, $js, $template, $hash,
+    public function Save($id, $user, $title, $html, $css, $js, $js_type, $template, $hash,
                          $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code"){
         $data = [
             "user" => $user,
@@ -97,6 +98,7 @@ class CodeModel extends Model {
             "html" => $html,
             "css" => $css,
             "js" => $js,
+            "js_type" => $js_type,
             "template" => $template,
             "hash" => $hash,
             "created" => date("Y-m-d h:i:s"),

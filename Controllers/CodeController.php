@@ -82,6 +82,7 @@ class CodeController extends Controller {
             $js_links .= '<script src="'.$link.'"></script>'."\n";
         }
 
+        $js_type = $code['js_type'];
         $js_code = $code['js'];
 
         $template_code = ($debug == false ? $CODE_TEMPLATE : $CODE_DEBUG_TEMPLATE);
@@ -98,6 +99,7 @@ class CodeController extends Controller {
                 "{{_body_classes_}}",
                 "{{_html_code_}}",
                 "{{_js_links_}}",
+                "{{_js_type_}}",
                 "{{_js_code_}}",
             ],
             [
@@ -111,6 +113,7 @@ class CodeController extends Controller {
                 $body_classes,
                 $html_code,
                 $js_links,
+                $js_type,
                 $js_code
             ],
             $template_code
@@ -149,6 +152,7 @@ class CodeController extends Controller {
         $code['html'] = $tpl['html'];
         $code['css'] = $tpl['css'];
         $code['js'] = $tpl['js'];
+        $code['js_type'] = $tpl['js_type'];
         $code['css_external'] = $tpl['css_links'];
         $code['js_external'] = $tpl['js_links'];
 
@@ -160,7 +164,7 @@ class CodeController extends Controller {
 
         $_SESSION['temp_file'] = $temp_file_name;
 
-        $this->CreateFile($temp_file_name, $code, true, true);
+        $this->CreateFile($temp_file_name, $code, true, false);
         $code['iframe'] = ($_SERVER['HTTP_HOST'] === "sandbox.local" ? "http" : "https") ."://".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
         $this->model->AddTempFile($temp_file_name, $_SESSION['current']);
 
@@ -231,6 +235,7 @@ class CodeController extends Controller {
         $html = $POST['html'];
         $css = $POST['css'];
         $js = $POST['js'];
+        $js_type = $POST['js_type'];
         $template = $POST['template'];
         $temp_file = $POST['temp_file'];
         $hash = $POST['hash'];
@@ -264,6 +269,7 @@ class CodeController extends Controller {
                 "html" => $html,
                 "css" => $css,
                 "js" => $js,
+                "js_type" => $js_type,
                 "hash" => "new",
                 "template" => $template,
                 "html_head" => $html_head,
@@ -305,6 +311,7 @@ class CodeController extends Controller {
                 $html,
                 $css,
                 $js,
+                $js_type,
                 $template,
                 $hash,
                 $html_head,
@@ -324,7 +331,6 @@ class CodeController extends Controller {
                 $hash_gen = new Hashids(HASH_SALT, 10);
                 $hash = $hash_gen->encode($result);
                 $this->model->UpdateHash($result, $hash);
-                $id = $result;
             }
 
             unset($_SESSION['temp_file']);

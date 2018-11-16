@@ -251,7 +251,7 @@ footer a:hover {
 .code-template [class*=mif-],
 .template-small [class*=mif-] {
   width: 40px;
-  height: 40px;
+  max-height: 40px;
 }
 .code-template .name,
 .template-small .name {

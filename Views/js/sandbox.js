@@ -104,6 +104,7 @@ var Sandbox = {
             html: Editors.getEditorValue('html_editor'),
             css: Editors.getEditorValue('css_editor'),
             js: Editors.getEditorValue('js_editor'),
+            js_type: $('#js_type').val(),
 
             html_head: $('#html_head').val(),
             html_classes: $('#html_classes').val(),
