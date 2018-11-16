@@ -142,7 +142,8 @@ class CodeController extends Controller {
             exit(0);
         }
 
-        $templates = $this->model->Templates();
+        $top_templates = $this->model->Templates("is_top=1");
+        $templates = $this->model->Templates("is_top!=1");
 
         $tpl = $this->model->Template($template);
         $temp_file_name = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
@@ -172,6 +173,7 @@ class CodeController extends Controller {
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
             "code" => $code,
+            "top_templates" => $top_templates,
             "templates" => $templates,
             "head_styles" => $this->head['styles'],
             "foot_scripts" => $this->foot['scripts'],
@@ -199,7 +201,8 @@ class CodeController extends Controller {
 
         $alien = $_SESSION['user']['name'] != $user ? 1 : 0;
 
-        $templates = $this->model->Templates();
+        $top_templates = $this->model->Templates("is_top=1");
+        $templates = $this->model->Templates("is_top!=1");
 
         $code = $this->model->Code($hash);
         $tpl = $this->model->TemplateByID($code['template']);
@@ -219,6 +222,7 @@ class CodeController extends Controller {
             "page_title" => "Metro 4 Sandbox",
             "body_class" => "h-vh-100",
             "code" => $code,
+            "top_templates" => $top_templates,
             "templates" => $templates,
             "head_styles" => $this->head['styles'],
             "foot_scripts" => $this->foot['scripts'],

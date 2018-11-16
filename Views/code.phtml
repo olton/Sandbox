@@ -122,6 +122,10 @@
                 <div class="dropdown-button">
                     <button class="button info marker-light dropdown-toggle"><span class="mif-add"></span></button>
                     <ul class="d-menu" data-role="dropdown">
+                        <?php if (isset($top_templates) && count($top_templates) > 0) foreach ($top_templates as $template){?>
+                            <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
+                        <?php }?>
+                        <li class="divider"></li>
                         <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
                             <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
                         <?php }?>
@@ -132,6 +136,10 @@
             <li class="d-none-md">
                 <a href="" class="dropdown-toggle">New</a>
                 <ul class="d-menu" data-role="dropdown">
+                    <?php if (isset($top_templates) && count($top_templates) > 0) foreach ($top_templates as $template){?>
+                        <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
+                    <?php }?>
+                    <li class="divider"></li>
                     <?php if (isset($templates) && count($templates) > 0) foreach ($templates as $template){?>
                         <li><a href="/code?template=<?php echo $template['name']?>"><img class="icon" src="<?php echo VIEW_PATH?>images/<?php echo $template['icon']?>"><?php echo $template['title']?></a></li>
                     <?php }?>
