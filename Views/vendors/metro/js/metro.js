@@ -12988,11 +12988,12 @@ var List = {
 
     deleteItem: function(value){
         var i, deleteIndexes = [], item;
+        var is_func = Utils.isFunc(value);
 
         for (i = 0; i < this.items.length; i++) {
             item = this.items[i];
 
-            if (Utils.isFunc(value)) {
+            if (is_func) {
                 if (Utils.exec(value, [item])) {
                     deleteIndexes.push(i);
                 }
@@ -18359,6 +18360,7 @@ var Table = {
         clsDelButton: "",
         clsAddButton: "",
 
+        horizontalScroll: false,
         check: false,
         checkType: "checkbox",
         checkStyle: 1,
@@ -18416,6 +18418,7 @@ var Table = {
         cellWrapper: true,
 
         clsComponent: "",
+        clsTableContainer: "",
         clsTable: "",
 
         clsHead: "",
@@ -18880,9 +18883,6 @@ var Table = {
                 classes.push("hidden");
             }
 
-            if (item.type === 'rowcheck') {classes.push("check-cell");}
-            if (item.type === 'rownum') {classes.push("rownum-cell");}
-
             classes.push(o.clsHeadCell);
 
             if (Utils.bool(view[cell_index]['show'])) {
@@ -18951,7 +18951,7 @@ var Table = {
 
     _createTopBlock: function (){
         var that = this, element = this.element, o = this.options;
-        var top_block = $("<div>").addClass("table-top").addClass(o.clsTableTop).insertBefore(element);
+        var top_block = $("<div>").addClass("table-top").addClass(o.clsTableTop).insertBefore(element.parent());
         var search_block, search_input, rows_block, rows_select;
 
         search_block = Utils.isValue(this.wrapperSearch) ? this.wrapperSearch : $("<div>").addClass("table-search-block").addClass(o.clsSearch).appendTo(top_block);
@@ -18999,7 +18999,7 @@ var Table = {
 
     _createBottomBlock: function (){
         var element = this.element, o = this.options;
-        var bottom_block = $("<div>").addClass("table-bottom").addClass(o.clsTableBottom).insertAfter(element);
+        var bottom_block = $("<div>").addClass("table-bottom").addClass(o.clsTableBottom).insertAfter(element.parent());
         var info, pagination;
 
         info = Utils.isValue(this.wrapperInfo) ? this.wrapperInfo : $("<div>").addClass("table-info").addClass(o.clsTableInfo).appendTo(bottom_block);
@@ -19017,7 +19017,7 @@ var Table = {
 
     _createStructure: function(){
         var that = this, element = this.element, o = this.options;
-        var table_component, columns;
+        var table_container, table_component, columns;
         var w_search = $(o.searchWrapper), w_info = $(o.infoWrapper), w_rows = $(o.rowsWrapper), w_paging = $(o.paginationWrapper);
 
         if (w_search.length > 0) {this.wrapperSearch = w_search;}
@@ -19025,11 +19025,14 @@ var Table = {
         if (w_rows.length > 0) {this.wrapperRows = w_rows;}
         if (w_paging.length > 0) {this.wrapperPagination = w_paging;}
 
-        if (!element.parent().hasClass("table-component")) {
-            table_component = $("<div>").addClass("table-component").insertBefore(element);
-            element.appendTo(table_component);
-        } else {
-            table_component = element.parent();
+        table_component = $("<div>").addClass("table-component");
+        table_component.insertBefore(element);
+
+        table_container = $("<div>").addClass("table-container").addClass(o.clsTableContainer).appendTo(table_component);
+        element.appendTo(table_container);
+
+        if (o.horizontalScroll === true) {
+            table_container.addClass("horizontal-scroll");
         }
 
         table_component.addClass(o.clsComponent);
@@ -19095,7 +19098,7 @@ var Table = {
 
     _createEvents: function(){
         var that = this, element = this.element, o = this.options;
-        var component = element.parent();
+        var component = element.closest(".table-component");
         var search = component.find(".table-search-block input");
         var customSearch;
         var id = element.attr("id");
@@ -19404,7 +19407,7 @@ var Table = {
 
     _info: function(start, stop, length){
         var element = this.element, o = this.options;
-        var component = element.parent();
+        var component = element.closest(".table-component");
         var info = Utils.isValue(this.wrapperInfo) ? this.wrapperInfo : component.find(".table-info");
         var text;
 
@@ -19429,7 +19432,7 @@ var Table = {
 
     _paging: function(length){
         var that = this, element = this.element, o = this.options;
-        var component = element.parent();
+        var component = element.closest(".table-component");
         var pagination_wrapper = Utils.isValue(this.wrapperPagination) ? this.wrapperPagination : component.find(".table-pagination");
         var i, prev, next;
         var shortDistance = 5;
@@ -19544,11 +19547,11 @@ var Table = {
                 if (that.searchFields.length > 0) {
                     $.each(that.heads, function(i, v){
                         if (that.searchFields.indexOf(v.name) > -1) {
-                            row_data += ""+row[i];
+                            row_data += "•"+row[i];
                         }
                     })
                 } else {
-                    row_data = row.join("");
+                    row_data = row.join("•");
                 }
 
                 row_data = row_data.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim().toLowerCase();
@@ -19745,8 +19748,9 @@ var Table = {
 
     deleteItem: function(fieldIndex, value){
         var i, deleteIndexes = [];
+        var is_func = Utils.isFunc(value);
         for(i = 0; i < this.items.length; i++) {
-            if (Utils.isFunc(value)) {
+            if (is_func) {
                 if (Utils.exec(value, [this.items[i][fieldIndex]])) {
                     deleteIndexes.push(i);
                 }
@@ -19764,6 +19768,7 @@ var Table = {
 
     deleteItemByName: function(fieldName, value){
         var i, fieldIndex, deleteIndexes = [];
+        var is_func = Utils.isFunc(value);
 
         for(i = 0; i < this.heads.length; i++) {
             if (this.heads[i]['name'] === fieldName) {
@@ -19773,7 +19778,7 @@ var Table = {
         }
 
         for(i = 0; i < this.items.length; i++) {
-            if (Utils.isFunc(value)) {
+            if (is_func) {
                 if (Utils.exec(value, [this.items[i][fieldIndex]])) {
                     deleteIndexes.push(i);
                 }
@@ -20425,6 +20430,7 @@ var Tabs = {
         expand: false,
         expandPoint: null,
         tabsPosition: "top",
+        tabsType: "default",
 
         clsTabs: "",
         clsTabsList: "",
@@ -20474,6 +20480,9 @@ var Tabs = {
         container.addClass(o.tabsPosition.replace(["-", "_", "+"], " "));
 
         element.addClass("tabs-list");
+        if (o.tabsType !== "default") {
+            element.addClass("tabs-"+o.tabsType);
+        }
         if (!right_parent) {
             container.insertBefore(element);
             element.appendTo(container);

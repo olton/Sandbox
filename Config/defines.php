@@ -12,6 +12,7 @@ $CODE_TEMPLATE = <<<CODE_TEMPLATE
     <meta name="keywords" content="{{_tags_}}">
     <meta name="description" content="{{_desc_}}">
 
+    {{_css_base_}}
     {{_css_links_}}
 
     <title>{{_title_}}</title>
@@ -65,6 +66,7 @@ $CODE_DEBUG_TEMPLATE = <<<CODE_DEBUG_TEMPLATE
     <meta name="keywords" content="{{_tags_}}">
     <meta name="description" content="{{_desc_}}">
 
+    {{_css_base_}}
     {{_css_links_}}
 
     <title>{{_title_}}</title>

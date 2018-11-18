@@ -64,6 +64,7 @@ class CodeModel extends Model {
                 "body_classes" => "",
                 "css_processor" => "none",
                 "css_external" => "",
+                "css_base" => "none",
                 "js_processor" => "none",
                 "js_external" => "",
                 "desc" => "",
@@ -91,7 +92,7 @@ class CodeModel extends Model {
     }
 
     public function Save($id, $user, $title, $html, $css, $js, $js_type, $template, $hash,
-                         $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code"){
+                         $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $css_base = "none", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code"){
         $data = [
             "user" => $user,
             "title" => $title,
@@ -108,6 +109,7 @@ class CodeModel extends Model {
             "html_processor" => $html_processor,
             "css_processor" => $css_processor,
             "css_external" => $css_external,
+            "css_base" => $css_base,
             "js_processor" => $js_processor,
             "js_external" => $js_external,
             "desc" => $desc,

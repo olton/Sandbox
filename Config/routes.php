@@ -8,6 +8,9 @@ return [
     ['GET',  "/login", ["controller" => "UserController", "action" => "Login"]],
     ['POST', "/login/process", ["controller" => "UserController", "action" => "LoginProcess"]],
     ['GET',  "/logout", ["controller" => "UserController", "action" => "LogoutProcess"]],
+    ['GET',  "/profile", ["controller" => "UserController", "action" => "Profile"]],
+    ['POST', "/profile/save", ["controller" => "UserController", "action" => "ProfileProcess"]],
+    ['POST', "/profile/delete", ["controller" => "UserController", "action" => "DeleteProcess"]],
 
     ['GET',  "/code", ["controller" => "CodeController", "action" => "Blank"], ["template"=>"[\w]+"]], /* /code or /code?template=default */
     ['POST', "/code/fork", ["controller" => "CodeController", "action" => "Fork"]],

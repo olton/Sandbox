@@ -18,6 +18,24 @@ class UserController extends Controller {
         $this->model = new UserModel();
     }
 
+    public function Profile(){
+        if ($_SESSION['current'] == -1) {
+            Url::Redirect("/");
+        }
+
+        $user = $this->model->User($_SESSION['current']);
+
+        $params = [
+            "page_title" => "The Sandbox :: User Profile",
+            "user" => $user,
+            "foot_scripts" => [
+                "sandbox" => VIEW_PATH."js/sandbox.js"
+            ]
+        ];
+        $view = new Viewer(VIEW_RENDER_PATH);
+        echo $view->Render("profile.phtml", $params);
+    }
+
     public function Login(){
         if ($_SESSION['current'] != -1) {
             Url::Redirect("/");

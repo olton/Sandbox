@@ -47,6 +47,13 @@
 
             <div id="code-settings-css">
                 <div class="form-group">
+                    <label class="text-medium reduce-1 d-block">CSS Base</label>
+                    <input type="radio" data-role="radio" data-style="2" data-caption="Reset" name="css_base" value="reset" <?php echo $code['css_base'] === 'reset' ? 'checked' : '' ?>>
+                    <input type="radio" data-role="radio" data-style="2" data-caption="Normalize" name="css_base" value="normalize" <?php echo $code['css_base'] === 'normalize' ? 'checked' : '' ?>>
+                    <input type="radio" data-role="radio" data-style="2" data-caption="None" name="css_base" value="none" <?php echo $code['css_base'] === 'none' ? 'checked' : '' ?>>
+                </div>
+
+                <div class="form-group">
                     <label class="text-medium reduce-1">CSS processor</label>
                     <select id="css_processor" name="css_processor" data-role="select" data-filter="false">
                         <option value="none">None</option>
@@ -56,6 +63,7 @@
                 <div class="form-group mt-2">
                     <label class="text-medium reduce-1">Add external stylesheets</label>
                     <textarea id="css_external" name="css_external" data-role="textarea" placeholder="https://yourwebsite.com/style.css"><?php echo $code['css_external']?></textarea>
+                    <span class="text-small text-muted">One file on one row</span>
                 </div>
             </div>
 
@@ -70,6 +78,7 @@
                 <div class="form-group mt-2">
                     <label class="text-medium reduce-1">Add external javascript</label>
                     <textarea id="js_external" name="js_external" data-role="textarea" placeholder="https://yourwebsite.com/javascript.js"><?php echo $code['js_external']?></textarea>
+                    <span class="text-small text-muted">One file on one row</span>
                 </div>
 
                 <div class="form-group mt-2">
@@ -77,6 +86,7 @@
                     <input type="text" id="js_type" name="js_type" data-role="input" value="<?php echo $code['js_type']?>">
                 </div>
             </div>
+
             <div id="code-settings-details">
                 <div class="form-group">
                     <label class="text-medium reduce-1">Code description</label>

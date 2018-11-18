@@ -67,6 +67,12 @@ class CodeController extends Controller {
         $tags = $code['tags'];
         $desc = $code['desc'];
 
+        if ($code['css_base'] == "none") {
+            $css_base = "";
+        } else {
+            $css_base = '<link rel="stylesheet" href="/Sandbox/data/css/'.$code['css_base'].'.css'.'">'."\n";
+        }
+
         $css_links = "";
         foreach (explode("\n", $code['css_external']) as $link) {
             $css_links .= '<link rel="stylesheet" href="'.$link.'">'."\n";
@@ -93,6 +99,7 @@ class CodeController extends Controller {
                 "{{_head_}}",
                 "{{_tags_}}",
                 "{{_desc_}}",
+                "{{_css_base_}}",
                 "{{_css_links_}}",
                 "{{_title_}}",
                 "{{_css_code_}}",
@@ -107,6 +114,7 @@ class CodeController extends Controller {
                 $head,
                 $tags,
                 $desc,
+                $css_base,
                 $css_links,
                 $title,
                 $css_code,
@@ -253,6 +261,7 @@ class CodeController extends Controller {
         $tags = $POST['tags'];
         $code_type = $POST['code_type'];
         $css_external = $POST['css_external'];
+        $css_base = $POST['css_base'];
         $js_external = $POST['js_external'];
         $alien = intval($POST['alien']) === 1;
 
@@ -282,6 +291,7 @@ class CodeController extends Controller {
                 "body_classes" => $body_classes,
                 "css_processor" => $css_processor,
                 "css_external" => $css_external,
+                "css_base" => $css_base,
                 "js_processor" => $js_processor,
                 "js_external" => $js_external,
                 "desc" => $desc,
@@ -324,6 +334,7 @@ class CodeController extends Controller {
                 $body_classes,
                 $css_processor,
                 $css_external,
+                $css_base,
                 $js_processor,
                 $js_external,
                 $desc,

@@ -104,7 +104,6 @@ var Sandbox = {
             html: Editors.getEditorValue('html_editor'),
             css: Editors.getEditorValue('css_editor'),
             js: Editors.getEditorValue('js_editor'),
-            js_type: $('#js_type').val(),
 
             html_head: $('#html_head').val(),
             html_classes: $('#html_classes').val(),
@@ -116,7 +115,9 @@ var Sandbox = {
             css_external: $('#css_external').val(),
             desc: $('#desc').val(),
             tags: $('#tags').val(),
-            code_type: $('#code_type').val()
+            code_type: $('#code_type').val(),
+            js_type: $('#js_type').val(),
+            css_base: $('input[name=css_base]').val()
         };
 
         $("#iframe_reload").show(function(){
