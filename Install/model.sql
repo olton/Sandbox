@@ -39,10 +39,11 @@ CREATE TABLE `code` (
   `js_external` text,
   `body_classes` varchar(255) DEFAULT NULL,
   `js_type` varchar(100) DEFAULT 'text/javascript',
+  `css_base` varchar(100) DEFAULT 'none',
+  `layout` enum('left','right','top','bottom') DEFAULT 'right',
   PRIMARY KEY (`id`),
   KEY `i_code_user` (`user`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
 
 /*Table structure for table `temp_files` */
 
@@ -54,8 +55,7 @@ CREATE TABLE `temp_files` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
-
+) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `templates` */
 
@@ -104,6 +104,7 @@ CREATE TABLE `user` (
   `last_logged` datetime DEFAULT NULL,
   `oauth` enum('none','github','facebook','twitter') NOT NULL DEFAULT 'none',
   `access_token` varchar(100) DEFAULT NULL,
+  `layout` enum('left','right','top','bottom') DEFAULT 'right',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
