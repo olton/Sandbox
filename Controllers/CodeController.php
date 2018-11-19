@@ -164,6 +164,7 @@ class CodeController extends Controller {
         $code['js_type'] = $tpl['js_type'];
         $code['css_external'] = $tpl['css_links'];
         $code['js_external'] = $tpl['js_links'];
+        $code['layout'] = $_SESSION['user']['layout'];
 
         $code['template_data'] = $tpl;
 
@@ -172,6 +173,7 @@ class CodeController extends Controller {
         $code['alien'] = 0;
 
         $_SESSION['temp_file'] = $temp_file_name;
+        $_SESSION['layout'] = $code['layout'];
 
         $this->CreateFile($temp_file_name, $code, true, false);
         $code['iframe'] = ($_SERVER['HTTP_HOST'] === "sandbox.local" ? "http" : "https") ."://".$_SERVER['HTTP_HOST']."/Sandbox/temp/".$temp_file_name;
@@ -221,6 +223,8 @@ class CodeController extends Controller {
             exit(0);
         }
 
+        $_SESSION['layout'] = $code['layout'];
+
         $code['iframe'] = "//".$_SERVER['HTTP_HOST']."/Sandbox/$user/$hash.html";
         $code['temp_file'] = "";
         $code['saved'] = 1;
@@ -264,6 +268,7 @@ class CodeController extends Controller {
         $css_base = $POST['css_base'];
         $js_external = $POST['js_external'];
         $alien = intval($POST['alien']) === 1;
+        $layout = isset($_SESSION['layout']) ? $_SESSION['layout'] : 'right';
 
         $saved = intval($POST['saved']) === 1;
         $can_save = isset($POST['can_save']) ? $POST['can_save'] != "false" : "false";
@@ -296,7 +301,8 @@ class CodeController extends Controller {
                 "js_external" => $js_external,
                 "desc" => $desc,
                 "tags" => $tags,
-                "code_type" => $code_type
+                "code_type" => $code_type,
+                "layout" => $layout
             ];
             if ($temp_file == '') {
                 $temp_file = uniqid($_SESSION['user']['name']."-".$tpl['name']."-").".html";
@@ -430,5 +436,20 @@ class CodeController extends Controller {
         @unlink(SANDBOX_PATH . $_SESSION['user']['name'] . DSP . "$hash.html");
         $this->model->DeleteCode($hash);
         $this->ReturnJSON(true, "OK", ["hash"=>$hash]);
+    }
+
+    public function LayoutProcess(){
+        global $POST;
+
+        $hash = $POST['hash'];
+        $layout = $POST['layout'];
+
+        if ($hash == "new") {
+            $this->ReturnJSON(true, "OK", []);
+        }
+
+        $this->model->SetLayout($hash, $layout);
+
+        $this->ReturnJSON(true, "OK", []);
     }
 }

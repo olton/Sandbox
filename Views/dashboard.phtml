@@ -11,8 +11,7 @@
                     <button class="button p-0  bg-transparent"><img class="h-100 va-baseline" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
                     <ul class="t-menu compact vertical pos-absolute bg-darkViolet fg-white shadow-1" data-role="dropdown" style="top: 100%;">
                         <li><a href="/"><span class="mif-dashboard"></span></a></li>
-                        <li><a href="/profile"><span class="mif-user"></span></a></li>
-                        <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
+                        <li><a href="/profile"><span class="mif-cogs"></span></a></li>
                     </ul>
                 </div>
             </li>
@@ -22,7 +21,6 @@
                 <ul class="d-menu place-right" data-role="dropdown">
                     <li><a href="/">Dashboard</a></li>
                     <li><a href="/profile">Profile</a></li>
-                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </li>
 
@@ -114,8 +112,6 @@
     </div>
 </div>
 
-<div class="container-fluid bg-white bg-light fg-dark" data-role="htmlcontainer" data-html-source="/Views/thanks.phtml"></div>
-
-<footer class="footer-bg" data-role="htmlcontainer" data-html-source="/Views/footer.phtml"></footer>
-
+<?php include "thanks.phtml";?>
+<?php include "footer.phtml";?>
 <?php include "foot.phtml";?>

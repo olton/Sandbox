@@ -159,11 +159,32 @@
             <li title="Save code" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.saveCode(true)"><button class="button square success"><span class="mif-floppy-disk icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.saveCode(true)"><span>Save code</span></a></li>
 
-            <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square warning"><span class="mif-bug icon"></span></button></a></li>
+            <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square alert"><span class="mif-bug icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span>Debug code</span></a></li>
 
             <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span>Fork code</span></a></li>
+
+            <li title="Page layout" class="ml-1 d-none d-block-md no-hover">
+                <div class="dropdown-button">
+                    <button class="button p-0 warning" style="width: 40px;"><span class="mif-layers icon mif-2x"></span></button>
+                    <ul id="layout-menu" class="t-menu compact vertical pos-absolute shadow-1 place-right" data-role="dropdown" style="top: 100%;">
+                        <li class="<?php echo $_SESSION['layout'] === 'left' ? 'active' : ''?>" title="Left"><a href="#" onclick="Sandbox.layout('left', '<?php echo $code['hash']?>')"><img src="/Views/images/layout-left.png" class="icon"></a></li>
+                        <li class="<?php echo $_SESSION['layout'] === 'right' ? 'active' : ''?>" title="Right"><a href="#" onclick="Sandbox.layout('right', '<?php echo $code['hash']?>')"><img src="/Views/images/layout-right.png" class="icon"></a></li>
+                        <li class="<?php echo $_SESSION['layout'] === 'top' ? 'active' : ''?>" title="Top"><a href="#" onclick="Sandbox.layout('top', '<?php echo $code['hash']?>')"><img src="/Views/images/layout-top.png" class="icon"></a></li>
+                        <li class="<?php echo $_SESSION['layout'] === 'bottom' ? 'active' : ''?>" title="Bottom"><a href="#" onclick="Sandbox.layout('bottom', '<?php echo $code['hash']?>')"><img src="/Views/images/layout-bottom.png" class="icon"></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="d-none-md">
+                <a class="dropdown-toggle">Layout</a>
+                <ul class="d-menu place-right" data-role="dropdown">
+                    <li><a href="#" onclick="Sandbox.layout('left', '<?php echo $code['hash']?>')">Layout left</a></li>
+                    <li><a href="#" onclick="Sandbox.layout('right', '<?php echo $code['hash']?>')">Layout right</a></li>
+                    <li><a href="#" onclick="Sandbox.layout('top', '<?php echo $code['hash']?>')">Layout top</a></li>
+                    <li><a href="#" onclick="Sandbox.layout('bottom', '<?php echo $code['hash']?>')">Layout bottom</a></li>
+                </ul>
+            </li>
 
             <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.openSettingsTab(1, this)"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.openSettingsTab(1, this)"><span>Code settings</span></a></li>
@@ -174,8 +195,7 @@
                     <button class="button p-0" style="width: 40px;"><img class="h-100 va-baseline" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
                     <ul class="t-menu compact vertical pos-absolute shadow-1" data-role="dropdown" style="top: 100%;">
                         <li><a href="/"><span class="mif-dashboard"></span></a></li>
-                        <li><a href="/profile"><span class="mif-user"></span></a></li>
-                        <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
+                        <li><a href="/profile"><span class="mif-cogs"></span></a></li>
                     </ul>
                 </div>
             </li>
@@ -185,7 +205,6 @@
                 <ul class="d-menu place-right" data-role="dropdown">
                     <li><a href="/">Dashboard</a></li>
                     <li><a href="/profile">Profile</a></li>
-                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </li>
 
@@ -208,83 +227,8 @@
     <input type="hidden" name="saved" id="saved" value="<?php echo $code['saved'] ?>">
     <input type="hidden" name="alien" id="alien" value="<?php echo $code['alien'] ?>">
 
-    <div data-role="splitter" data-split-sizes="60, 40" class="h-100" id="splitter-browser" data-save-state="true">
-        <div id="browser" data-role="splitter" data-split-sizes="80, 20" data-split-mode="vertical" data-min-sizes="40">
-            <div class="iframe-wrapper">
-                <div id="iframe_reload" class="pos-absolute pos-top-right z-2" style="width: 100px; display: none">
-                    <div data-role="activity" data-type="metro" data-style="color"></div>
-                </div>
-                <iframe src="<?php echo $code['iframe'];?>"
-                        id="iframe"
-                        allowfullscreen
-                        allowtransparency
-                        sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"
-                        frameborder="0"
-                        class="z-1"
-                ></iframe>
-                <script>
-                    window.on_page_functions.push(function(){
-                        var iframe = document.getElementById("iframe");
-                        if ($(iframe.contentWindow.document).text().contains("Empty, need reload")) Sandbox.saveCode(false);
-                    });
-                </script>
-            </div>
-            <div class="d-flex flex-column console-wrapper">
-                <div class="wrapper-header">
-                    <button type="button" class="button small square settings-button" onclick="console_clear()"><span class="mif-cross"></span></button>
-                    <span>Console</span>
-                </div>
-                <div class="output-wrapper" id="console-output"></div>
-                <input type="text" data-role="input"
-                       data-prevent-submit="true"
-                       data-cls-component="mt-auto"
-                       data-prepend="<span class='mif-chevron-right'>"
-                       data-history="true"
-                       data-on-enter-click="Sandbox.sendMessageToIframe($('#iframe')[0], this.value)">
-            </div>
-        </div>
-        <div data-role="splitter" data-split-mode="vertical" data-min-sizes="40" id="splitter-code" data-save-state="true">
-            <div id="html-code">
-                <div class="wrapper-header">
-                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(1, this)"><span class="mif-cog"></span></button>
-                    <span>HTML</span>
-                    <div class="ml-auto">
-                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('html')"></span></button>
-                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('html')"></span></button>
-                    </div>
-                </div>
-                <div class="code-wrapper">
-                    <textarea name="html_editor" id="html_editor" placeholder="HTML code goes here..."><?php echo $code['html'] ?></textarea>
-                </div>
-            </div>
-            <div id="css-code">
-                <div class="wrapper-header">
-                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(2, this)"><span class="mif-cog"></span></button>
-                    <span>CSS</span>
-                    <div class="ml-auto">
-                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('css')"></span></button>
-                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('css')"></span></button>
-                    </div>
-                </div>
-                <div class="code-wrapper">
-                    <textarea name="css_editor" id="css_editor" placeholder="CSS code goes here..."><?php echo $code['css'] ?></textarea>
-                </div>
-            </div>
-            <div id="js-code">
-                <div class="wrapper-header">
-                    <button type="button" class="button small square settings-button" onclick="Sandbox.openSettingsTab(3, this)"><span class="mif-cog"></span></button>
-                    <span>JavaScript</span>
-                    <div class="ml-auto">
-                        <button class="button small square"><span class="mif-chevron-thin-down" onclick="Sandbox.collapseBlock('js')"></span></button>
-                        <button class="button small square"><span class="mif-chevron-thin-up" onclick="Sandbox.expandBlock('js')"></span></button>
-                    </div>
-                </div>
-                <div class="code-wrapper">
-                    <textarea name="js_editor" id="js_editor" placeholder="JavaScript code goes here..."><?php echo $code['js'] ?></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include "layout-".$_SESSION['layout'].".phtml"?>
+
 </form>
 
 <?php include "foot.phtml"; ?>

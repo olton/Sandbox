@@ -367,4 +367,10 @@ footer a:hover {
   transform-origin: top left;
   transition: opacity 0.3s ease;
 }
+#layout-menu .icon {
+  opacity: 0.5;
+}
+#layout-menu li.active .icon {
+  opacity: 1;
+}
 /*# sourceMappingURL=sandbox.css.map */

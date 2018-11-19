@@ -11,8 +11,7 @@
                     <button class="button p-0  bg-transparent"><img class="h-100 va-baseline" data-role="gravatar" data-default="mm" data-email="<?php echo $_SESSION['user']['email']?>"></button>
                     <ul class="t-menu compact vertical pos-absolute bg-darkViolet fg-white shadow-1" data-role="dropdown" style="top: 100%;">
                         <li><a href="/"><span class="mif-dashboard"></span></a></li>
-                        <li><a href="/profile"><span class="mif-user"></span></a></li>
-                        <li><a href="/cogs"><span class="mif-cogs"></span></a></li>
+                        <li><a href="/profile"><span class="mif-cogs"></span></a></li>
                     </ul>
                 </div>
             </li>
@@ -22,7 +21,6 @@
                 <ul class="d-menu place-right" data-role="dropdown">
                     <li><a href="/">Dashboard</a></li>
                     <li><a href="/profile">Profile</a></li>
-                    <li><a href="/settings">Settings</a></li>
                 </ul>
             </li>
 
@@ -34,11 +32,10 @@
 
 <div class="container-fluid">
     <div class="container mt-10 mb-20">
-        <form action="javascript:" data-role="validator" data-required-mode="false" data-use-required-class="false" class="mt-10">
 
             <div class="row">
-                <div class="cell-md-3"></div>
-                <div class="cell-md-6">
+                <div class="cell-md-2"></div>
+                <div class="cell-md-8">
                     <ul data-role="tabs" data-expand-point="sm" data-tabs-type="text" style="margin-left: -.5rem">
                         <li><a href="#user_settings">Profile</a></li>
                         <li><a href="#editor_settings">Editor</a></li>
@@ -47,42 +44,43 @@
                     <div class="tabs-content pt-5 border-top bd-default">
 
                         <div id="user_settings">
-                            <div class="form-group">
-                                <label>USERNAME</label>
-                                <input type="text" class="input-large" data-role="input" data-validate="required" value="<?php echo $user['name'] ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>EMAIL</label>
-                                <input type="text" class="input-large" data-role="input" data-validate="required"  value="<?php echo $user['email'] ?>">
-                            </div>
-                            <div class="form-group">
-                                <label>PASSWORD</label>
-                                <div class="row">
-                                    <div class="cell-md-6">
-                                        <input type="password" class="input-large" data-role="input" data-validate="minlength=6"  value="">
-                                    </div>
-                                    <div class="cell-md-6">
-                                        <input type="password" class="input-large" data-role="input" data-validate="minlength=6"  value="">
+                            <form action="javascript:" data-role="validator" data-required-mode="false" data-use-required-class="false" id="user_profile_form">
+                                <div class="form-group">
+                                    <label>USERNAME</label>
+                                    <input type="text" name="name" class="input-large" data-role="input" data-validate="required" value="<?php echo $user['name'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>EMAIL</label>
+                                    <input type="text" name="email" class="input-large" data-role="input" data-validate="required"  value="<?php echo $user['email'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label>PASSWORD</label>
+                                    <div class="row">
+                                        <div class="cell-md-6">
+                                            <input type="password" name="password" class="input-large" data-role="input" data-validate="minlength=6">
+                                        </div>
+                                        <div class="cell-md-6 pt-1 pt-0-md">
+                                            <input type="password" name="password_2" class="input-large" data-role="input" data-validate="minlength=6">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-actions mt-6">
-                                <button class="button success large" type="button">Save profile</button>
-                                <a href="/" class="button link">Cancel</a>
-                            </div>
+                                <div class="form-actions mt-6">
+                                    <button class="button success large" type="button" onclick="Sandbox.saveProfile(this.form)">Save profile</button>
+                                    <a href="/" class="button link">Cancel</a>
+                                </div>
+                            </form>
                         </div>
 
                         <div id="editor_settings"></div>
                     </div>
                 </div>
-                <div class="cell-md-3"></div>
+                <div class="cell-md-2"></div>
             </div>
 
 
-        </form>
     </div>
 </div>
 
-<footer class="footer-bg" data-role="htmlcontainer" data-html-source="/Views/footer.phtml"></footer>
-
+<?php include "thanks.phtml"?>
+<?php include "footer.phtml"?>
 <?php include "foot.phtml"?>

@@ -42,6 +42,10 @@ if (!isset($_SESSION['current']) || $_SESSION['current'] == -1) {
     $_SESSION['user']['email'] = 'anon@sandbox.metroui.org.ua';
 }
 
+if (!isset($_SESSION['layout'])) {
+    $_SESSION['layout'] = 'right';
+}
+
 $GET = Security::XSS($_GET, ENT_QUOTES);
 $POST = Security::XSS($_POST, ENT_QUOTES);
 $REQUEST = Security::XSS($_REQUEST, ENT_QUOTES);

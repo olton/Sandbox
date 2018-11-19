@@ -18,7 +18,10 @@ return [
     ['GET',  "/code/list", ["controller" => "CodeController", "action" => "List"]],
     ['POST', "/code/save", ["controller" => "CodeController", "action" => "SaveProcess"]],
     ['POST', "/code/unsaved", ["controller" => "CodeController", "action" => "UnsavedProcess"]],
+    ['POST', "/code/layout", ["controller" => "CodeController", "action" => "LayoutProcess"]],
+
     ['GET',  "/:user/code/:hash", ["controller" => "CodeController", "action" => "Editor"], ["user"=>'[\w]+', "hash"=>'[\w]{10}']], /* /olton/code/wEAK85evGp */
+
 
     ['GET',  "/:user/full/:code", ["controller" => "CodeController", "action" => "Full"], ["user"=>'[\w]+', "code"=>'[\w]{10}']], /* /olton/full/wEAK85evGp */
     ['GET',  "/:user/debug/:code", ["controller" => "CodeController", "action" => "Debug"], ["user"=>'[\w]+', "code"=>'[\w]{10}']], /* /olton/debug/wEAK85evGp */

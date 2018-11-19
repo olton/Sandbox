@@ -118,4 +118,40 @@ class UserController extends Controller {
         ];
         Url::Redirect("/");
     }
+
+    public function ProfileProcess(){
+        global $POST;
+
+        $user_id = $_SESSION['current'];
+        $name = $POST['name'];
+        $email = $POST['email'];
+        $password = trim($POST['password']);
+        $password_2 = trim($POST['password_2']);
+
+        if ($user_id == -1) {
+            $this->ReturnJSON(false, "Auth required!", []);
+        }
+
+        $user = $this->model->User($user_id);
+
+        if ($user['name'] !== $name) {
+            if ($this->model->NameExists($name)) {
+                $this->ReturnJSON(false, "USERNAME exists!", [$POST]);
+            }
+        }
+
+        if ($user['email'] !== $email) {
+            if ($this->model->EmailExists($email)) {
+                $this->ReturnJSON(false, "EMAIL exists!", [$POST]);
+            }
+        }
+
+        $this->model->Save($user_id, $name, $email);
+
+        if ($password !== "" && $password === $password_2) {
+            $this->model->SetPassword($user_id, Security::EncodePassword($password));
+        }
+
+        $this->ReturnJSON(true, "OK", []);
+    }
 }

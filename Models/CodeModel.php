@@ -92,7 +92,7 @@ class CodeModel extends Model {
     }
 
     public function Save($id, $user, $title, $html, $css, $js, $js_type, $template, $hash,
-                         $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $css_base = "none", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code"){
+                         $html_head = "", $html_processor = "none", $html_classes = "", $body_classes = "", $css_processor = "none", $css_external = "", $css_base = "none", $js_processor = "none", $js_external = "", $desc = "", $tags = "", $code_type = "code", $layout = "right"){
         $data = [
             "user" => $user,
             "title" => $title,
@@ -114,7 +114,8 @@ class CodeModel extends Model {
             "js_external" => $js_external,
             "desc" => $desc,
             "tags" => $tags,
-            "code_type" => $code_type
+            "code_type" => $code_type,
+            "layout" => $layout
         ];
 
         if ($id == -1) {
@@ -131,6 +132,13 @@ class CodeModel extends Model {
             "hash" => $hash
         ];
         $this->Update("code", $data, "id = " . $this->_e($id), true);
+    }
+
+    public function SetLayout($hash, $layout){
+        $data = [
+            "layout" => $layout
+        ];
+        $this->Update("code", $data, "hash = " . $this->_e($hash), true);
     }
 
     public function AddTempFile($name, $user_id){

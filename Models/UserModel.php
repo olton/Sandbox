@@ -8,7 +8,7 @@ use Classes\Model;
 
 class UserModel extends Model {
     public function UserByName($name){
-        $h = $this->Select("select id, name, email, created, updated, last_logged from user where name = " . $this->_e($name));
+        $h = $this->Select("select id, name, email, created, updated, last_logged, layout from user where name = " . $this->_e($name));
         if ($this->Rows($h) === 0) {
             return false;
         }
@@ -17,7 +17,7 @@ class UserModel extends Model {
     }
 
     public function User($id){
-        $h = $this->Select("select id, name, email, created, updated, last_logged from user where id = " . $this->_e($id));
+        $h = $this->Select("select id, name, email, created, updated, last_logged, layout from user where id = " . $this->_e($id));
         if ($this->Rows($h) === 0) {
             return false;
         }
@@ -76,5 +76,12 @@ class UserModel extends Model {
         return $this->Rows($h);
     }
 
+    public function SetLayout($id, $layout){
+        $data = [
+            "layout" => $layout
+        ];
+        $h = $this->Update("user", $data, "id = " . $this->_e($id), true);
+        return $this->Rows($h);
+    }
 
 }

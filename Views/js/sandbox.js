@@ -190,6 +190,18 @@ var Sandbox = {
         }, 100);
     },
 
+    saveProfile: function(f){
+        Sandbox.sendForm(f, "/profile/save", null, function(response){
+            Metro.toast.init({
+                showTop: true,
+                distance: 60,
+                clsToast: "success"
+            }).create("Profile save successfully!")
+        }, function(response){
+            Sandbox.info("Error!", response.message);
+        })
+    },
+
     logout: function(){
         this.go("/logout/process");
     },
@@ -299,6 +311,15 @@ var Sandbox = {
         console.log(from);
         $("#settings-tabs").data('tabs').open(tab);
         Metro.dialog.open("#code-settings");
+    },
+
+    layout: function (layout, hash) {
+        Sandbox.sendData({
+            layout: layout,
+            hash: hash
+        }, "/code/layout", null, function(){
+            Sandbox.reload();
+        });
     }
 };
 
