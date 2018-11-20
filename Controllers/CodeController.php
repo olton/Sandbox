@@ -8,9 +8,11 @@ use Classes\Hashids;
 use Classes\Url;
 use Classes\Viewer;
 use Models\CodeModel;
+use Models\UserModel;
 
 class CodeController extends Controller {
     private $model;
+    private $user_model;
     private $head = [
         "styles" => [
             "codemirror" => VIEW_PATH."vendors/codemirror-5.41.0/lib/codemirror.css",
@@ -57,6 +59,7 @@ class CodeController extends Controller {
 
     public function __construct(){
         $this->model = new CodeModel();
+        $this->user_model = new UserModel();
     }
 
     private function CreateFile($file_name, $code, $temp = false, $debug = false) {
@@ -443,6 +446,8 @@ class CodeController extends Controller {
 
         $hash = $POST['hash'];
         $layout = $POST['layout'];
+
+        $this->user_model->SetLayout($_SESSION['current'], $layout);
 
         if ($hash == "new") {
             $this->ReturnJSON(true, "OK", []);

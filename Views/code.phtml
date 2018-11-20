@@ -128,6 +128,8 @@
         </div>
 
         <ul class="app-bar-menu ml-auto">
+
+            <?php if ($_SESSION['current'] != -1) {?>
             <li class="d-none d-block-md no-hover mr-1">
                 <div class="dropdown-button">
                     <button class="button info marker-light dropdown-toggle"><span class="mif-add"></span></button>
@@ -155,16 +157,22 @@
                     <?php }?>
                 </ul>
             </li>
+            <?php }?>
 
+            <?php if ($_SESSION['current'] != -1) {?>
             <li title="Save code" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.saveCode(true)"><button class="button square success"><span class="mif-floppy-disk icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.saveCode(true)"><span>Save code</span></a></li>
+            <?php }?>
 
             <li title="Debug code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><button class="button square alert"><span class="mif-bug icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a target="_blank" id="code_page-debug_button" href="<?php echo $code['hash'] == 'new' ? '#' : '/'.$code['user_name'].'/debug/' . $code['hash'] ?>"><span>Debug code</span></a></li>
 
+            <?php if ($_SESSION['current'] != -1) {?>
             <li title="Fork code" class="d-none d-block-md no-hover" style="display: <?php echo $code['hash'] == 'new' ? 'none!important' : 'block'?>"><a class="p-0" id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><button class="button square secondary"><span class="mif-copy icon"></span></button></a></li>
             <li class="d-none-md" style="display: <?php echo $code['hash'] == 'new' ? 'none' : 'block'?>"><a id="code_page-fork_button" href="#" onclick="Sandbox.fork('<?php echo $code['hash']?>'); return false;"><span>Fork code</span></a></li>
+            <?php }?>
 
+            <?php if ($_SESSION['current'] != -1) {?>
             <li title="Page layout" class="ml-1 d-none d-block-md no-hover">
                 <div class="dropdown-button">
                     <button class="button p-0 warning" style="width: 40px;"><span class="mif-layers icon mif-2x"></span></button>
@@ -185,6 +193,7 @@
                     <li><a href="#" onclick="Sandbox.layout('bottom', '<?php echo $code['hash']?>')">Layout bottom</a></li>
                 </ul>
             </li>
+            <?php }?>
 
             <li title="Code settings" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.openSettingsTab(1, this)"><button class="button square dark"><span class="mif-cogs icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.openSettingsTab(1, this)"><span>Code settings</span></a></li>
