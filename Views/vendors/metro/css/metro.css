@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.30 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.30 build 709 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -16675,6 +16675,8 @@ a {
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 a:hover {
   color: #0056b3;
@@ -19943,6 +19945,7 @@ aside::after {
   border: 1px solid transparent;
   outline: none;
   position: relative;
+  font-weight: 500;
 }
 .command-button:active,
 .image-button:active,
@@ -19972,6 +19975,8 @@ aside::after {
   -webkit-box-ordinal-group: 3;
       -ms-flex-order: 2;
           order: 2;
+  font-weight: 400;
+  line-height: 1.2;
 }
 .command-button .caption small,
 .image-button .caption small {
@@ -20000,6 +20005,7 @@ aside::after {
           align-items: center;
   height: 36px;
   line-height: 30px;
+  font-weight: 400;
 }
 .image-button .icon {
   width: 34px;
@@ -20257,14 +20263,6 @@ aside::after {
 }
 .info-button .info:hover {
   color: #0056b3;
-}
-a.button,
-a.command-button,
-a.image-button,
-a.shortcut,
-a.tool-button,
-a.split-button a.split {
-  color: #1d1d1d;
 }
 .button:focus,
 .command-button:focus,
@@ -20658,6 +20656,62 @@ a.split-button a.split {
   bottom: 20px;
   right: 20px;
   position: fixed;
+}
+a.button,
+a.flat-button,
+a.action-button,
+a.command-button,
+a.image-button,
+a.shortcut,
+a.tool-button,
+a.split-button,
+a.split {
+  color: #1d1d1d;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  text-decoration: none;
+}
+a.button:hover,
+a.flat-button:hover,
+a.action-button:hover,
+a.command-button:hover,
+a.image-button:hover,
+a.shortcut:hover,
+a.tool-button:hover,
+a.split-button:hover,
+a.split:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+a.button:active,
+a.flat-button:active,
+a.action-button:active,
+a.command-button:active,
+a.image-button:active,
+a.shortcut:active,
+a.tool-button:active,
+a.split-button:active,
+a.split:active,
+a.button.focus,
+a.flat-button.focus,
+a.action-button.focus,
+a.command-button.focus,
+a.image-button.focus,
+a.shortcut.focus,
+a.tool-button.focus,
+a.split-button.focus,
+a.split.focus,
+a.button:focus,
+a.flat-button:focus,
+a.action-button:focus,
+a.command-button:focus,
+a.image-button:focus,
+a.shortcut:focus,
+a.tool-button:focus,
+a.split-button:focus,
+a.split:focus {
+  -webkit-box-shadow: 0 0 0 3px rgba(228, 228, 228, 0.45);
+          box-shadow: 0 0 0 3px rgba(228, 228, 228, 0.45);
 }
 .breadcrumbs {
   margin-bottom: 1rem;
@@ -21692,10 +21746,8 @@ label {
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -21727,6 +21779,21 @@ label {
   width: auto;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+.inline-form .form-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 form:disabled,
 fieldset:disabled,

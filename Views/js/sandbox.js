@@ -225,7 +225,7 @@ var Sandbox = {
                 list.draw();
             }
         }, function(response){
-            Sandbox.info("Fork error!", response instanceof String ? response : response.message);
+            Sandbox.info("Delete error!", response instanceof String ? response : response.message);
         });
     },
 

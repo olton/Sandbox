@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.30 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.30 build 709 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -100,8 +100,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "4.2.30-dev",
-    versionFull: "4.2.30-dev",
+    version: "4.2.30",
+    versionFull: "4.2.30.709 ",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -6781,6 +6781,8 @@ var Carousel = {
         onMouseLeave: Metro.noop,
         onNextClick: Metro.noop,
         onPrevClick: Metro.noop,
+        onSlideShow: Metro.noop,
+        onSlideHide: Metro.noop,
         onCarouselCreate: Metro.noop
     },
 
@@ -7147,6 +7149,14 @@ var Carousel = {
             case 'fade': Animation['fade'](current, next, duration, effectFunc); break;
             default: Animation['switch'](current, next);
         }
+
+        setTimeout(function(){
+            Utils.exec(o.onSlideShow, [next[0]], element[0]);
+        }, duration);
+
+        setTimeout(function(){
+            Utils.exec(o.onSlideHide, [current[0]], element[0]);
+        }, duration);
 
         if (interval === true) {
 
@@ -17337,6 +17347,7 @@ var Splitter = {
                 children_sizes = Utils.strToArray(o.minSizes);
                 for (i = 0; i < children_sizes.length; i++) {
                     $(children[i]).data("min-size", children_sizes[i]);
+                    children[i].style.setProperty('min-'+resizeProp, String(children_sizes[i]).contains("%") ? children_sizes[i] : String(children_sizes[i]).replace("px", "")+"px", 'important');
                 }
             } else {
                 $.each(children, function(){

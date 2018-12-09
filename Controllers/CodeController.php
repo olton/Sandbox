@@ -425,7 +425,7 @@ class CodeController extends Controller {
         $hash = $hash_gen->encode($id);
         $this->model->UpdateHash($id, $hash);
 
-        $this->ReturnJSON(true, "OK", ["redirect"=>$_SESSION['current']."/code/".$hash]);
+        $this->ReturnJSON(true, "OK", ["redirect"=>"/".$_SESSION['user']["name"]."/code/".$hash]);
     }
 
     public function Delete(){

@@ -83,6 +83,7 @@ footer a:hover {
   font-size: 14px;
   font-weight: 500;
   position: relative;
+  white-space: nowrap;
 }
 .wrapper-header .settings-button {
   position: absolute;
@@ -127,7 +128,7 @@ footer a:hover {
 }
 .log-item {
   font-size: 12px;
-  padding: 2px 24px;
+  padding: 2px 4px;
   border-bottom: 1px solid #f8f8f8;
 }
 .login-box-left {

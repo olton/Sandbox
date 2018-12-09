@@ -80,7 +80,7 @@ class CodeModel extends Model {
             from code t1
             left join user t2 on t1.user = t2.id 
             left join templates t3 on t1.template = t3.id 
-            where t1.id = " . $this->_e($id) . " or t1.hash = " . $this->_e($id));
+            where t1.hash = " . $this->_e($id));
 
         if ($this->Rows($h) === 0) {
             return false;
@@ -183,8 +183,8 @@ class CodeModel extends Model {
         return $this->ID();
     }
 
-    public function DeleteCode($id){
-        $h = $this->Delete("code", "id = " . $this->_e($id) . " or hash = " . $this->_e($id));
+    public function DeleteCode($hash){
+        $h = $this->Delete("code", "hash = " . $this->_e($hash));
         return $this->Rows($h);
     }
 }
