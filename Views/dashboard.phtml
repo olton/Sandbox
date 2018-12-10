@@ -109,6 +109,16 @@
                 </li>
             <?php }?>
         </ul>
+
+        <script>
+            window.on_page_functions.push(function(){
+                var sort_field = Metro.utils.nvl(Metro.storage.getItem("CODE:LIST:SORT:FIELD"), "created");
+                var sort_dir = Metro.utils.nvl(Metro.storage.getItem("CODE:LIST:SORT:DIR"), "desc");
+
+                Sandbox.sortList(".code-items", sort_field, sort_dir);
+            });
+        </script>
+
     </div>
 </div>
 

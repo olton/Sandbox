@@ -239,7 +239,7 @@ var Sandbox = {
         });
     },
 
-    sortList: function(obj, col){
+    sortList: function(obj, col, dir){
         if (Sandbox.sortCodes.field === col) {
             if (Sandbox.sortCodes.dir === "asc") {
                 Sandbox.sortCodes.dir = "desc";
@@ -250,6 +250,14 @@ var Sandbox = {
             Sandbox.sortCodes.field = col;
             Sandbox.sortCodes.dir = "asc";
         }
+
+        if (Metro.utils.isValue(dir)) {
+            Sandbox.sortCodes.dir = dir;
+        }
+
+        Metro.storage.setItem("CODE:LIST:SORT:FIELD", Sandbox.sortCodes.field);
+        Metro.storage.setItem("CODE:LIST:SORT:DIR", Sandbox.sortCodes.dir);
+
         $("#sort-by").html(String(col).capitalize() + (Sandbox.sortCodes.dir === "asc" ? "<span class='mif-arrow-up'></span>" : "<span class='mif-arrow-down'></span>"));
         $(obj).data("list").sorting(Sandbox.sortCodes.field, Sandbox.sortCodes.dir, true);
     },
