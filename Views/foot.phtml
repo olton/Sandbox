@@ -1,7 +1,7 @@
 <script src="<?php echo VIEW_PATH ?>vendors/jquery/jquery-3.3.1.min.js"></script>
 <script src="<?php echo VIEW_PATH ?>vendors/metro/js/metro.js?ver=@@b-version"></script>
 <script>
-    Metro.storage.setKey("METRO4:SANDBOX");
+    Metro.storage.setKey("SANDBOX");
 </script>
 
 <?php if (isset($foot_scripts)) foreach ($foot_scripts as $key=>$val) {?>
@@ -12,6 +12,8 @@
     window.on_page_functions.forEach(function(f){
         Metro.utils.exec(f);
     });
+
+    // Metro.init();
 </script>
 
 </body>

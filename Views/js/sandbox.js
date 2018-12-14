@@ -7,9 +7,6 @@ var Sandbox = {
 
     init: function(){
         this.version = "1.0.0";
-
-        Metro.storage.setKey("M4:SANDBOX");
-
         return this;
     },
 
@@ -88,7 +85,7 @@ var Sandbox = {
     },
 
     saveCode: function(save_button, cb_success, cb_error){
-        var that = this, iframe = document.getElementById("iframe");
+        var that = this, iframe = document.getElementById(Metro.utils.mediaExist("lg") ? "iframe" : "iframe_mobile");
 
         var data = {
             id: $('#code_id').val(),
@@ -120,7 +117,7 @@ var Sandbox = {
             css_base: $('input[name=css_base]').val()
         };
 
-        $("#iframe_reload").show(function(){
+        $(".iframe_reload").show(function(){
 
             that.sendData(data, "/code/save", null, function(response){
 
@@ -132,6 +129,8 @@ var Sandbox = {
                 }
 
                 $('#console-output').html("");
+                $('#console-output-mobile').html("");
+
                 $('#code_title').val(code.title);
                 $('#code_title_label').text(code.title);
 
@@ -154,10 +153,10 @@ var Sandbox = {
 
                 Metro.utils.exec(cb_success, [response]);
 
-                $("#iframe_reload").hide();
+                $(".iframe_reload").hide();
             }, function (response) {
                 Metro.utils.exec(cb_error, [response]);
-                $("#iframe_reload").hide();
+                $(".iframe_reload").hide();
             });
         });
     },

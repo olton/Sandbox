@@ -1,5 +1,6 @@
 function console_clear(){
     $("#console-output").html("");
+    $("#console-output-mobile").html("");
 }
 
 function console_out(messages, console_element, clear){
@@ -54,19 +55,18 @@ function console_out(messages, console_element, clear){
 }
 
 function receiveMessage(e){
-    var console_element = document.getElementById("console-output");
-
-    console.log(Object.values(e.data));
+    var console_element = document.getElementById(Metro.utils.mediaExist("lg") ? "console-output" : "console-output-mobile");
 
     if (!Array.isArray(e.data)) {
         return ;
     }
-
     console_out(e.data, console_element, false);
 }
 
 function iframeErrorHandler(message, url, row, col, error){
-    console_out(message + " on " + url + " " + row+":"+col, document.getElementById("console-output"), true);
+    var console_element = document.getElementById(Metro.utils.mediaExist("lg") ? "console-output" : "console-output-mobile");
+
+    console_out(message + " on " + url + " " + row+":"+col, console_element, true);
 }
 
 window.addEventListener("message", receiveMessage, false);

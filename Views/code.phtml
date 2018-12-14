@@ -4,10 +4,10 @@
     <div class="dialog-title">Code settings</div>
     <div class="dialog-content">
 
-        <ul data-role="tabs" data-expand="true" id="settings-tabs">
+        <ul data-role="tabs" data-expand="true" class="flex-justify-center flex-justify-start-lg" id="settings-tabs">
             <li><a href="#code-settings-html">HTML</a></li>
             <li><a href="#code-settings-css">CSS</a></li>
-            <li><a href="#code-settings-js">JavaScript</a></li>
+            <li><a href="#code-settings-js">JS</a></li>
             <li><a href="#code-settings-details">Details</a></li>
         </ul>
 
@@ -236,7 +236,13 @@
     <input type="hidden" name="saved" id="saved" value="<?php echo $code['saved'] ?>">
     <input type="hidden" name="alien" id="alien" value="<?php echo $code['alien'] ?>">
 
-    <?php include "layout-".$_SESSION['layout'].".phtml"?>
+    <div id="mobile-layout" class="d-none-lg">
+        <?php include "mobile-layout.phtml"?>
+    </div>
+
+    <div id="wide-layout" class="d-none d-block-lg h-100">
+        <?php include "layout-".$_SESSION['layout'].".phtml"?>
+    </div>
 
 </form>
 

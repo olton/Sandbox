@@ -1,10 +1,10 @@
 <div data-role="splitter" data-split-sizes="50, 50" class="h-100" id="splitter-browser" data-save-state="true" data-split-mode="vertical" data-min-sizes="200, 44" >
     <div id="browser" data-role="splitter" data-split-sizes="70, 30" data-min-sizes="40">
         <div class="iframe-wrapper">
-            <div id="iframe_reload" class="pos-absolute pos-top-right z-2" style="width: 100px; display: none">
+            <div id="iframe_reload" class="iframe_reload pos-absolute pos-top-right z-2" style="width: 100px; display: none">
                 <div data-role="activity" data-type="metro" data-style="color"></div>
             </div>
-            <iframe src="<?php echo $code['iframe'];?>"
+            <iframe src=""
                     id="iframe"
                     allowfullscreen
                     allowtransparency
@@ -15,6 +15,11 @@
             <script>
                 window.on_page_functions.push(function(){
                     var iframe = document.getElementById("iframe");
+                    if (!Metro.utils.mediaExist("lg")) {
+                        iframe.src="";
+                        return ;
+                    }
+                    iframe.src = "<?php echo $code['iframe'];?>";
                     if ($(iframe.contentWindow.document).text().contains("Empty, need reload")) Sandbox.saveCode(false);
                 });
             </script>

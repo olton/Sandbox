@@ -2,7 +2,7 @@
 @import (once) "../../../Metro4/less/include/mixins";
 
 body {
-    padding-top: 50px;
+    padding-top: 52px;
 }
 
 .hero {
@@ -79,7 +79,7 @@ footer a:hover {
     max-height: 64px;
 }
 
-#iframe {
+#iframe, #iframe_mobile {
     position: absolute;
     top: 0;
     left: 0;
@@ -144,7 +144,7 @@ footer a:hover {
     height: ~"calc(100% - 76px)";
 }
 
-#console-output {
+#console-output, #console-output-mobile {
     overflow: auto;
 }
 
@@ -442,6 +442,33 @@ footer a:hover {
     li.active {
         .icon {
             opacity: 1;
+        }
+    }
+}
+
+@media screen and (max-width: 991px) {
+    #code-settings {
+        width: 100%!important;
+        max-width: ~"calc(100% - 20px)";
+        max-height: ~"calc(100% - 20px)";
+    }
+
+    #mobile-layout {
+
+        height: ~"calc(100% - 2px)";
+
+        #html-code, #css-code, #js-code, #browser {
+            height: ~"calc(100% - 40px)";
+
+            .wrapper-header {
+                padding-left: 4px;
+
+                .settings-button {
+                    top: initial;
+                    left: auto;
+                    right: 4px;
+                }
+            }
         }
     }
 }

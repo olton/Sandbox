@@ -3,6 +3,7 @@ var Editors = {
     saved: false,
 
     init: function(options){
+        var editor_suffix = "_mobile";
         this.options = $.extend( {}, this.options, options );
         if (Metro.utils.isValue(options) && Metro.utils.isValue(options.editor)) {
             this.editor_options = $.extend( {}, this.editor_options, options.editor );
@@ -13,13 +14,15 @@ var Editors = {
         this.edit_timer = null;
         this.edit_timer_threshold = 2000;
 
-        this.createEditor('html_editor', {
+        if (Metro.utils.mediaExist("lg")) {editor_suffix = "";}
+
+        this.createEditor('html_editor', "html_editor"+editor_suffix, {
             mode: 'text/html'
         });
-        this.createEditor('css_editor', {
+        this.createEditor('css_editor', "css_editor"+editor_suffix, {
             mode: 'text/x-less'
         });
-        this.createEditor('js_editor', {
+        this.createEditor('js_editor', "js_editor"+editor_suffix, {
             mode: 'javascript'
         });
     },
@@ -47,10 +50,10 @@ var Editors = {
         styleActiveLine: true
     },
 
-    createEditor: function(editor, options){
+    createEditor: function(editor, editor_el, options){
         var that = this, o = this.options;
         var editor_options = $.extend( {}, this.editor_options, options );
-        this[editor] = CodeMirror.fromTextArea(document.getElementById(editor), editor_options);
+        this[editor] = CodeMirror.fromTextArea(document.getElementById(editor_el), editor_options);
         this[editor].setSize("100%", "100%");
         this[editor].on("beforeChange", function(instance, changeObj){
             Editors.saved = false;
@@ -71,6 +74,7 @@ var Editors = {
 
     refreshAll: function(){
         var that = this;
+
         $.each(['html_editor', 'css_editor', 'js_editor'], function(){
             that[this].refresh();
         })

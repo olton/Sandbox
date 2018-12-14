@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.30 build 709 (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.31 build @@build (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -100,8 +100,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "4.2.30",
-    versionFull: "4.2.30.709 ",
+    version: "@@version",
+    versionFull: "@@version.@@build @@status",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -255,11 +255,11 @@ var Metro = {
     hotkeys: [],
 
     about: function(f){
-        console.log("Metro 4 Components Library - v" + (f === true ? this.versionFull : this.version));
+        console.log("Metro 4 - v" + (f === true ? this.versionFull : this.version));
     },
 
     aboutDlg: function(f){
-        alert("Metro 4 Components Library - v" + (f === true ? this.versionFull : this.version));
+        alert("Metro 4 - v" + (f === true ? this.versionFull : this.version));
     },
 
     ver: function(f){
@@ -560,7 +560,8 @@ var Animation = {
         if (duration === undefined) {duration = this.duration;}
         if (func === undefined) {func = this.func;}
         current.css("z-index", 1).animate({
-            top: -h
+            top: -h,
+            opacity: 0
         }, duration, func);
 
         next.css({
@@ -568,7 +569,8 @@ var Animation = {
             left: 0,
             zIndex: 2
         }).animate({
-            top: 0
+            top: 0,
+            opacity: 1
         }, duration, func);
     },
 
@@ -577,7 +579,8 @@ var Animation = {
         if (duration === undefined) {duration = this.duration;}
         if (func === undefined) {func = this.func;}
         current.css("z-index", 1).animate({
-            top: h
+            top: h,
+            opacity: 0
         }, duration, func);
 
         next.css({
@@ -585,7 +588,8 @@ var Animation = {
             top: -h,
             zIndex: 2
         }).animate({
-            top: 0
+            top: 0,
+            opacity: 1
         }, duration, func);
     },
 
@@ -594,14 +598,16 @@ var Animation = {
         if (duration === undefined) {duration = this.duration;}
         if (func === undefined) {func = this.func;}
         current.css("z-index", 1).animate({
-            left: -w
+            left: -w,
+            opacity: 0
         }, duration, func);
 
         next.css({
             left: w,
             zIndex: 2
         }).animate({
-            left: 0
+            left: 0,
+            opacity: 1
         }, duration, func);
     },
 
@@ -610,14 +616,16 @@ var Animation = {
         if (duration === undefined) {duration = this.duration;}
         if (func === undefined) {func = this.func;}
         current.css("z-index", 1).animate({
-            left: w
+            left: w,
+            opacity: 0
         }, duration, func);
 
         next.css({
             left: -w,
             zIndex: 2
         }).animate({
-            left: 0
+            left: 0,
+            opacity: 1
         }, duration, func);
     },
 
@@ -1856,13 +1864,19 @@ if (typeof Array.from !== "function") {
     }
 }
 
+if (typeof Array.contains !== "function") {
+    Array.prototype.contains = function(val, from){
+        return this.indexOf(val, from) > -1;
+    }
+}
+
 /**
  * Number.prototype.format(n, x, s, c)
  *
- * @param integer n: length of decimal
- * @param integer x: length of whole part
- * @param mixed   s: sections delimiter
- * @param mixed   c: decimal delimiter
+ * @param  n: length of decimal
+ * @param  x: length of whole part
+ * @param  s: sections delimiter
+ * @param  c: decimal delimiter
  */
 Number.prototype.format = function(n, x, s, c) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
@@ -1886,7 +1900,8 @@ String.prototype.toDate = function(format)
     var today, year, month, day, hour, minute, second;
 
     if (!Utils.isValue(format)) {
-        format = "yyyy-mm-dd";
+        // format = "yyyy-mm-dd";
+        return new Date(this);
     }
 
     normalized      = this.replace(/[^a-zA-Z0-9%]/g, '-');
@@ -1912,6 +1927,32 @@ String.prototype.toDate = function(format)
     second  = secondsIndex>-1 ? dateItems[secondsIndex] : today.getSeconds();
 
     return new Date(year,month,day,hour,minute,second);
+};
+
+String.prototype.toArray = function(delimiter, type, format){
+    var str = this;
+    var a;
+
+    type = type || "string";
+    delimiter = delimiter || ",";
+    format = format === undefined || format === null ? false : format;
+
+    a = (""+str).split(delimiter);
+
+    return a.map(function(s){
+        var result;
+
+        switch (type) {
+            case "int":
+            case "integer": result = parseInt(s); break;
+            case "number":
+            case "float": result = parseFloat(s); break;
+            case "date": result = !format ? new Date(s) : s.toDate(format); break;
+            default: result = s.trim();
+        }
+
+        return result;
+    });
 };
 
 Date.prototype.getWeek = function (dowOffset) {
@@ -3173,93 +3214,19 @@ special.scrollstop = {
 };
 
 
-// Source: js/utils/session-storage.js
-var SessionStorage = {
-    key: "METRO:APP",
-
-    init: function( options ) {
-        this.options = $.extend( {}, this.options, options );
-
-        return this;
-    },
-
-    nvl: function(data, other){
-        return data === undefined || data === null ? other : data;
-    },
-
-    setKey: function(key){
-        this.key = key;
-    },
-
-    getKey: function(){
-        return this.key;
-    },
-
-    setItem: function(key, value){
-        window.sessionStorage.setItem(this.key + ":" + key, JSON.stringify(value));
-    },
-
-    getItem: function(key, default_value, reviver){
-        var result, value;
-
-        value = this.nvl(window.sessionStorage.getItem(this.key + ":" + key), default_value);
-
-        try {
-            result = JSON.parse(value, reviver);
-        } catch (e) {
-            result = null;
-        }
-        return result;
-    },
-
-    getItemPart: function(key, sub_key, default_value, reviver){
-        var i;
-        var val = this.getItem(key, default_value, reviver);
-
-        sub_key = sub_key.split("->");
-        for(i = 0; i < sub_key.length; i++) {
-            val = val[sub_key[i]];
-        }
-        return val;
-    },
-
-    delItem: function(key){
-        window.sessionStorage.removeItem(this.key + ":" + key)
-    },
-
-    size: function(unit){
-        var divider;
-        switch (unit) {
-            case 'm':
-            case 'M': {
-                divider = 1024 * 1024;
-                break;
-            }
-            case 'k':
-            case 'K': {
-                divider = 1024;
-                break;
-            }
-            default: divider = 1;
-        }
-        return JSON.stringify(window.sessionStorage).length / divider;
-    }
-};
-
-Metro['session'] = SessionStorage.init();
-
 // Source: js/utils/storage.js
 var Storage = {
-    key: "METRO:APP",
+    options: {
+        key: "METRO:APP",
+        storage: window.localStorage
+    },
 
     init: function( options, elem ) {
         this.options = $.extend( {}, this.options, options );
+        this.storage = this.options.storage;
+        this.key = this.options.key;
 
         return this;
-    },
-
-    nvl: function(data, other){
-        return data === undefined || data === null ? other : data;
     },
 
     setKey: function(key){
@@ -3271,20 +3238,20 @@ var Storage = {
     },
 
     setItem: function(key, value){
-        window.localStorage.setItem(this.key + ":" + key, JSON.stringify(value));
+        this.storage.setItem(this.key + ":" + key, JSON.stringify(value));
     },
 
     getItem: function(key, default_value, reviver){
         var result, value;
 
-        value = this.nvl(window.localStorage.getItem(this.key + ":" + key), default_value);
+        value = this.storage.getItem(this.key + ":" + key);
 
         try {
             result = JSON.parse(value, reviver);
         } catch (e) {
             result = null;
         }
-        return result;
+        return Utils.nvl(result, default_value);
     },
 
     getItemPart: function(key, sub_key, default_value, reviver){
@@ -3299,7 +3266,7 @@ var Storage = {
     },
 
     delItem: function(key){
-        window.localStorage.removeItem(this.key + ":" + key)
+        this.storage.removeItem(this.key + ":" + key)
     },
 
     size: function(unit){
@@ -3317,11 +3284,17 @@ var Storage = {
             }
             default: divider = 1;
         }
-        return JSON.stringify(window.localStorage).length / divider;
+        return JSON.stringify(this.storage).length / divider;
     }
 };
 
-Metro['storage'] = Storage.init();
+Metro['storage'] = Object.create(Storage).init({
+    storage: window.localStorage
+});
+Metro['session'] = Object.create(Storage).init({
+    storage: window.sessionStorage
+});
+
 
 // Source: js/utils/tpl.js
 var TemplateEngine = function(html, options) {
@@ -5470,6 +5443,7 @@ var Calendar = {
         this.selected = [];
         this.exclude = [];
         this.special = [];
+        this.excludeDay = [];
         this.min = null;
         this.max = null;
         this.locale = null;
@@ -5484,10 +5458,13 @@ var Calendar = {
     },
 
     options: {
+        dayBorder: false,
+        excludeDay: null,
         prevMonthIcon: "<span class='default-icon-chevron-left'></span>",
         nextMonthIcon: "<span class='default-icon-chevron-right'></span>",
         prevYearIcon: "<span class='default-icon-chevron-left'></span>",
         nextYearIcon: "<span class='default-icon-chevron-right'></span>",
+        compact: false,
         wide: false,
         widePoint: null,
         pickerMode: false,
@@ -5502,6 +5479,7 @@ var Calendar = {
         showHeader: true,
         showFooter: true,
         showTimeField: true,
+        showWeekNumber: false,
         clsCalendar: "",
         clsCalendarHeader: "",
         clsCalendarContent: "",
@@ -5523,6 +5501,7 @@ var Calendar = {
         minDate: null,
         maxDate: null,
         weekDayClick: false,
+        weekNumberClick: false,
         multiSelect: false,
         special: null,
         format: METRO_DATE_FORMAT,
@@ -5532,7 +5511,9 @@ var Calendar = {
         onClear: Metro.noop,
         onDone: Metro.noop,
         onDayClick: Metro.noop,
+        onDayDraw: Metro.noop,
         onWeekDayClick: Metro.noop,
+        onWeekNumberClick: Metro.noop,
         onMonthChange: Metro.noop,
         onYearChange: Metro.noop,
         onCalendarCreate: Metro.noop
@@ -5555,7 +5536,15 @@ var Calendar = {
     _create: function(){
         var that = this, element = this.element, o = this.options;
 
-        element.html("").addClass("calendar").addClass(o.clsCalendar);
+        element.html("").addClass("calendar " + (o.compact === true ? "compact" : "")).addClass(o.clsCalendar);
+
+        if (o.dayBorder === true) {
+            element.addClass("day-border");
+        }
+
+        if (Utils.isValue(o.excludeDay)) {
+            this.excludeDay = o.excludeDay.toArray(",", "int");
+        }
 
         if (Utils.isValue(o.preset)) {
             this._dates2array(o.preset, 'selected');
@@ -5598,7 +5587,7 @@ var Calendar = {
         this.locale = Metro.locales[o.locale] !== undefined ? Metro.locales[o.locale] : Metro.locales["en-US"];
 
         this._drawCalendar();
-        this._bindEvents();
+        this._createEvents();
 
         if (o.wide === true) {
             element.addClass("calendar-wide");
@@ -5646,7 +5635,7 @@ var Calendar = {
         });
     },
 
-    _bindEvents: function(){
+    _createEvents: function(){
         var that = this, element = this.element, o = this.options;
 
         $(window).on(Metro.events.resize, function(){
@@ -5739,25 +5728,61 @@ var Calendar = {
             e.stopPropagation();
         });
 
-        element.on(Metro.events.click, ".week-days .day", function(e){
-            if (o.weekDayClick === false || o.multiSelect === false) {
-                return ;
-            }
-            var day = $(this);
-            var index = day.index();
-            var days = o.outside === true ? element.find(".days-row .day:nth-child("+(index + 1)+")") : element.find(".days-row .day:not(.outside):nth-child("+(index + 1)+")");
-            $.each(days, function(){
-                var d = $(this);
-                var dd = d.data('day');
-                Utils.arrayDelete(that.selected, dd);
-                that.selected.push(dd);
-                d.addClass("selected").addClass(o.clsSelected);
-            });
-            Utils.exec(o.onWeekDayClick, [that.selected, day, element]);
+        if (o.weekDayClick === true) {
+            element.on(Metro.events.click, ".week-days .day", function (e) {
+                var day, index, days;
 
-            e.preventDefault();
-            e.stopPropagation();
-        });
+                day = $(this);
+                index = day.index();
+
+                if (o.multiSelect === true) {
+                    days = o.outside === true ? element.find(".days-row .day:nth-child(" + (index + 1) + ")") : element.find(".days-row .day:not(.outside):nth-child(" + (index + 1) + ")");
+                    $.each(days, function () {
+                        var d = $(this);
+                        var dd = d.data('day');
+
+                        if (d.hasClass("disabled") || d.hasClass("excluded")) return;
+
+                        if (!that.selected.contains(dd))
+                            that.selected.push(dd);
+                        d.addClass("selected").addClass(o.clsSelected);
+                    });
+                }
+
+                Utils.exec(o.onWeekDayClick, [that.selected, day], element[0]);
+
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
+
+        if (o.weekNumberClick) {
+            element.on(Metro.events.click, ".days-row .week-number", function (e) {
+                var weekNumElement, weekNumber, days;
+
+                weekNumElement = $(this);
+                weekNumber = weekNumElement.text();
+
+                if (o.multiSelect === true) {
+                    days = $(this).siblings(".day");
+                    $.each(days, function () {
+                        var d = $(this);
+                        var dd = d.data('day');
+
+                        if (d.hasClass("disabled") || d.hasClass("excluded")) return;
+
+                        if (!that.selected.contains(dd))
+                            that.selected.push(dd);
+                        d.addClass("selected").addClass(o.clsSelected);
+                    });
+                }
+
+                Utils.exec(o.onWeekNumberClick, [that.selected, weekNumber, weekNumElement], element[0]);
+
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
 
         element.on(Metro.events.click, ".days-row .day", function(e){
             var day = $(this);
@@ -5777,26 +5802,30 @@ var Calendar = {
                 return ;
             }
 
-            if (o.pickerMode === true) {
-                that.selected = [date];
-                that.today = new Date(date);
-                that.current.year = that.today.getFullYear();
-                that.current.month = that.today.getMonth();
-                that.current.day = that.today.getDate();
-                that._drawHeader();
-                that._drawContent();
-            } else {
-                if (index === -1) {
-                    if (o.multiSelect === false) {
-                        element.find(".days-row .day").removeClass("selected").removeClass(o.clsSelected);
-                        that.selected = [];
-                    }
-                    that.selected.push(date);
-                    day.addClass("selected").addClass(o.clsSelected);
+            if (!day.hasClass("disabled")) {
+
+                if (o.pickerMode === true) {
+                    that.selected = [date];
+                    that.today = new Date(date);
+                    that.current.year = that.today.getFullYear();
+                    that.current.month = that.today.getMonth();
+                    that.current.day = that.today.getDate();
+                    that._drawHeader();
+                    that._drawContent();
                 } else {
-                    day.removeClass("selected").removeClass(o.clsSelected);
-                    Utils.arrayDelete(that.selected, date);
+                    if (index === -1) {
+                        if (o.multiSelect === false) {
+                            element.find(".days-row .day").removeClass("selected").removeClass(o.clsSelected);
+                            that.selected = [];
+                        }
+                        that.selected.push(date);
+                        day.addClass("selected").addClass(o.clsSelected);
+                    } else {
+                        day.removeClass("selected").removeClass(o.clsSelected);
+                        Utils.arrayDelete(that.selected, date);
+                    }
                 }
+
             }
 
             Utils.exec(o.onDayClick, [that.selected, day, element]);
@@ -5976,6 +6005,13 @@ var Calendar = {
          * Week days
          */
         var week_days = $("<div>").addClass("week-days").appendTo(content);
+        var day_class = "day";
+
+        if (o.showWeekNumber === true) {
+            $("<span>").addClass("week-number").html("#").appendTo(week_days);
+            day_class += " and-week-number";
+        }
+
         for (i = 0; i < 7; i++) {
             if (o.weekStart === 0) {
                 j = i;
@@ -5983,7 +6019,7 @@ var Calendar = {
                 j = i + 1;
                 if (j === 7) j = 0;
             }
-            $("<span>").addClass("day").html(calendar_locale["days"][j + 7]).appendTo(week_days);
+            $("<span>").addClass(day_class).html(calendar_locale["days"][j + 7]).appendTo(week_days);
         }
 
         /**
@@ -6002,9 +6038,13 @@ var Calendar = {
             year = this.current.year;
         }
 
+        if (o.showWeekNumber === true) {
+            $("<div>").addClass("week-number").html((new Date(year, month, prev_month_days - first_day + 1)).getWeek(o.weekStart)).appendTo(days_row);
+        }
+
         for(i = 0; i < first_day; i++) {
             var v = prev_month_days - first_day + i + 1;
-            d = $("<div>").addClass("day outside").appendTo(days_row);
+            d = $("<div>").addClass(day_class+" outside").appendTo(days_row);
 
             s = new Date(year, month, v);
             s.setHours(0,0,0,0);
@@ -6013,6 +6053,14 @@ var Calendar = {
 
             if (o.outside === true) {
                 d.html(v);
+
+                if (this.excludeDay.length > 0) {
+                    if (this.excludeDay.indexOf(s.getDay()) > -1) {
+                        d.addClass("disabled excluded").addClass(o.clsExcluded);
+                    }
+                }
+
+                Utils.exec(o.onDayDraw, [s], d[0]);
             }
 
             counter++;
@@ -6021,7 +6069,7 @@ var Calendar = {
         first.setHours(0,0,0,0);
         while(first.getMonth() === this.current.month) {
 
-            d = $("<div>").addClass("day").html(first.getDate()).appendTo(days_row);
+            d = $("<div>").addClass(day_class).html(first.getDate()).appendTo(days_row);
 
             d.data('day', first.getTime());
 
@@ -6051,6 +6099,11 @@ var Calendar = {
                     d.addClass("disabled excluded").addClass(o.clsExcluded);
                 }
 
+                if (this.excludeDay.length > 0) {
+                    if (this.excludeDay.indexOf(first.getDay()) > -1) {
+                        d.addClass("disabled excluded").addClass(o.clsExcluded);
+                    }
+                }
             } else {
 
                 if (this.special.indexOf(first.getTime()) === -1) {
@@ -6059,9 +6112,14 @@ var Calendar = {
 
             }
 
+            Utils.exec(o.onDayDraw, [first], d[0]);
+
             counter++;
             if (counter % 7 === 0) {
                 days_row = $("<div>").addClass("days-row").appendTo(days);
+                if (o.showWeekNumber === true) {
+                    $("<div>").addClass("week-number").html((new Date(first.getFullYear(), first.getMonth(), first.getDate() + 1)).getWeek(o.weekStart)).appendTo(days_row);
+                }
             }
             first.setDate(first.getDate() + 1);
             first.setHours(0,0,0,0);
@@ -6078,12 +6136,20 @@ var Calendar = {
         }
 
         if (first_day > 0) for(i = 0; i < 7 - first_day; i++) {
-            d = $("<div>").addClass("day outside").appendTo(days_row);
+            d = $("<div>").addClass(day_class+" outside").appendTo(days_row);
             s = new Date(year, month, i + 1);
             s.setHours(0,0,0,0);
             d.data('day', s.getTime());
             if (o.outside === true) {
                 d.html(i + 1);
+
+                if (this.excludeDay.length > 0) {
+                    if (this.excludeDay.indexOf(s.getDay()) > -1) {
+                        d.addClass("disabled excluded").addClass(o.clsExcluded);
+                    }
+                }
+
+                Utils.exec(o.onDayDraw, [s], d[0]);
             }
         }
     },
@@ -6097,7 +6163,7 @@ var Calendar = {
             that._drawFooter();
             that._drawMonths();
             that._drawYears();
-        }, 1);
+        }, 0);
     },
 
     getPreset: function(){
@@ -6753,7 +6819,9 @@ var Carousel = {
 
         controls: true,
         bullets: true,
-        bulletStyle: "square", // square, circle, rect, diamond
+        bulletsStyle: "square", // square, circle, rect, diamond
+        bulletsSize: "default", // default, mini, small, large
+
         controlsOnMouse: false,
         controlsOutside: false,
         bulletsPosition: "default", // default, left, right
@@ -6841,6 +6909,8 @@ var Carousel = {
 
         if (o.autoStart === true) {
             this._start();
+        } else {
+            Utils.exec(o.onSlideShow, [this.slides[this.currentIndex][0], undefined], this.slides[this.currentIndex][0]);
         }
 
         Utils.exec(this.options.onCarouselCreate, [this.element]);
@@ -6863,7 +6933,7 @@ var Carousel = {
             var t = o.direction === 'left' ? 'next' : 'prior';
             that._slideTo(t, true);
         }, period);
-        Utils.exec(o.onStart, [element]);
+        Utils.exec(o.onStart, [element], element[0]);
     },
 
     _stop: function(){
@@ -6971,7 +7041,7 @@ var Carousel = {
             return ;
         }
 
-        bullets = $('<div>').addClass("carousel-bullets").addClass("bullet-style-"+o.bulletStyle).addClass(o.clsBullets);
+        bullets = $('<div>').addClass("carousel-bullets").addClass(o.bulletsSize+"-size").addClass("bullet-style-"+o.bulletsStyle).addClass(o.clsBullets);
         if (o.bulletsPosition === 'default' || o.bulletsPosition === 'center') {
             bullets.addClass("flex-justify-center");
         } else if (o.bulletsPosition === 'left') {
@@ -7151,11 +7221,11 @@ var Carousel = {
         }
 
         setTimeout(function(){
-            Utils.exec(o.onSlideShow, [next[0]], element[0]);
+            Utils.exec(o.onSlideShow, [next[0], current[0]], next[0]);
         }, duration);
 
         setTimeout(function(){
-            Utils.exec(o.onSlideHide, [current[0]], element[0]);
+            Utils.exec(o.onSlideHide, [current[0], next[0]], current[0]);
         }, duration);
 
         if (interval === true) {
@@ -14414,7 +14484,7 @@ var Popover = {
     options: {
         popoverText: "",
         popoverHide: 3000,
-        popoverTimeout: 100,
+        popoverTimeout: 10,
         popoverOffset: 10,
         popoverTrigger: Metro.popoverEvents.HOVER,
         popoverPosition: Metro.position.TOP,
@@ -16065,6 +16135,9 @@ var Sidebar = {
     },
 
     options: {
+        shadow: true,
+        position: "left",
+        size: 290,
         shift: null,
         staticShift: null,
         toggle: null,
@@ -16109,11 +16182,25 @@ var Sidebar = {
         var header = element.find(".sidebar-header");
         var sheet = Metro.sheet;
 
+        element.addClass("sidebar").addClass("on-"+o.position);
+
+        if (o.size !== 290) {
+            Utils.addCssRule(sheet, ".sidebar", "width: " + o.size + "px;");
+
+            if (o.position === "left") {
+                Utils.addCssRule(sheet, ".sidebar.on-left", "left: " + -o.size + "px;");
+            } else {
+                Utils.addCssRule(sheet, ".sidebar.on-right", "right: " + -o.size + "px;");
+            }
+        }
+
+        if (o.shadow === true) {
+            element.addClass("sidebar-shadow");
+        }
+
         if (element.attr("id") === undefined) {
             element.attr("id", Utils.elementId("sidebar"));
         }
-
-        element.addClass("sidebar");
 
         if (o.toggle !== null && $(o.toggle).length > 0) {
             this.toggle_element = $(o.toggle);
@@ -16129,7 +16216,11 @@ var Sidebar = {
 
         if (o.static !== null) {
             if (o.staticShift !== null) {
-                Utils.addCssRule(sheet, "@media screen and " + Metro.media_queries[o.static.toUpperCase()], o.staticShift + "{margin-left: 280px; width: calc(100% - 280px);}");
+                if (o.position === 'left') {
+                    Utils.addCssRule(sheet, "@media screen and " + Metro.media_queries[o.static.toUpperCase()], o.staticShift + "{margin-left: " + o.size + "px; width: calc(100% - " + o.size + "px);}");
+                } else {
+                    Utils.addCssRule(sheet, "@media screen and " + Metro.media_queries[o.static.toUpperCase()], o.staticShift + "{margin-right: " + o.size + "px; width: calc(100% - " + o.size + "px);}");
+                }
             }
         }
     },
@@ -16144,7 +16235,7 @@ var Sidebar = {
             });
         }
 
-        if (o.static !== null && ["fs", "sm", "md", "lg", "xl", "xxl"].indexOf(o.static)) {
+        if (o.static !== null && ["fs", "sm", "md", "lg", "xl", "xxl"].indexOf(o.static) > -1) {
             $(window).on(Metro.events.resize + "_" + element.attr("id"), function(){
                 that._checkStatic();
             });
@@ -16155,6 +16246,10 @@ var Sidebar = {
                 that.close();
             });
         }
+
+        element.on(Metro.events.click, ".sidebar-menu .js-sidebar-close", function(){
+            that.close();
+        });
     },
 
     _checkStatic: function(){
@@ -23314,7 +23409,7 @@ Metro.plugin('treeview', Treeview);
 // Source: js/plugins/validator.js
 var ValidatorFuncs = {
     required: function(val){
-        return Utils.isValue(val.trim());
+        return Utils.isValue(val) ? val.trim() : false;
     },
     length: function(val, len){
         if (!Utils.isValue(len) || isNaN(len) || len <= 0) {
@@ -23367,8 +23462,12 @@ var ValidatorFuncs = {
     url: function(val){
         return /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(val);
     },
-    date: function(val){
-        return (new Date(val) !== "Invalid Date" && !isNaN(new Date(val)));
+    date: function(val, format){
+        if (Utils.isNull(format)) {
+            return new Date(val) !== "Invalid Date";
+        } else {
+            return val.toDate(format) !== "Invalid Date";
+        }
     },
     number: function(val){
         return !isNaN(val);
@@ -23386,12 +23485,12 @@ var ValidatorFuncs = {
         return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(val);
     },
     color: function(val){
+        if (!Utils.isValue(val)) return false;
         return Colors.color(val, Colors.PALETTES.STANDARD) !== false;
     },
     pattern: function(val, pat){
-        if (!Utils.isValue(pat)) {
-            return false;
-        }
+        if (!Utils.isValue(val)) return false;
+        if (!Utils.isValue(pat)) return false;
         var reg = new RegExp(pat);
         return reg.test(val);
     },
@@ -23402,9 +23501,13 @@ var ValidatorFuncs = {
         return val !== not_this;
     },
     notequals: function(val, val2){
+        if (Utils.isNull(val)) return false;
+        if (Utils.isNull(val2)) return false;
         return val.trim() !== val2.trim();
     },
     equals: function(val, val2){
+        if (Utils.isNull(val)) return false;
+        if (Utils.isNull(val2)) return false;
         return val.trim() === val2.trim();
     },
     custom: function(val, func){
@@ -23519,6 +23622,10 @@ var ValidatorFuncs = {
 
                 if (['compare', 'equals', 'notequals'].indexOf(f) > -1) {
                     a = input[0].form.elements[a].value;
+                }
+
+                if (f === 'date') {
+                    a = input.attr("data-value-format");
                 }
 
                 if (Utils.isFunc(ValidatorFuncs[f]) === false)  {

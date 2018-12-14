@@ -1,5 +1,5 @@
 body {
-  padding-top: 50px;
+  padding-top: 52px;
 }
 .hero {
   background: #7700b3;
@@ -60,7 +60,8 @@ footer a:hover {
   width: 124px;
   max-height: 64px;
 }
-#iframe {
+#iframe,
+#iframe_mobile {
   position: absolute;
   top: 0;
   left: 0;
@@ -70,7 +71,8 @@ footer a:hover {
   margin: 0;
   background: #ffffff;
 }
-#iframe.no-pointer {
+#iframe.no-pointer,
+#iframe_mobile.no-pointer {
   pointer-events: none;
 }
 .wrapper-header {
@@ -113,7 +115,8 @@ footer a:hover {
 .output-wrapper {
   height: calc(100% - 76px);
 }
-#console-output {
+#console-output,
+#console-output-mobile {
   overflow: auto;
 }
 .CodeMirror {
@@ -373,5 +376,35 @@ footer a:hover {
 }
 #layout-menu li.active .icon {
   opacity: 1;
+}
+@media screen and (max-width: 991px) {
+  #code-settings {
+    width: 100%!important;
+    max-width: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+  }
+  #mobile-layout {
+    height: calc(100% - 2px);
+  }
+  #mobile-layout #html-code,
+  #mobile-layout #css-code,
+  #mobile-layout #js-code,
+  #mobile-layout #browser {
+    height: calc(100% - 40px);
+  }
+  #mobile-layout #html-code .wrapper-header,
+  #mobile-layout #css-code .wrapper-header,
+  #mobile-layout #js-code .wrapper-header,
+  #mobile-layout #browser .wrapper-header {
+    padding-left: 4px;
+  }
+  #mobile-layout #html-code .wrapper-header .settings-button,
+  #mobile-layout #css-code .wrapper-header .settings-button,
+  #mobile-layout #js-code .wrapper-header .settings-button,
+  #mobile-layout #browser .wrapper-header .settings-button {
+    top: initial;
+    left: auto;
+    right: 4px;
+  }
 }
 /*# sourceMappingURL=sandbox.css.map */

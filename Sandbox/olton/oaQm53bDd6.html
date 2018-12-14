@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
+    <meta name="metro4:init" content="false">
+
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="stylesheet" href="/Sandbox/data/css/reset.css">
+
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css">
+
+
+    <title>Video carousel</title>
+
+    <style>
+        
+    </style>
+
+    <script>
+        console.log = function(){
+            var i;
+            var args = new Array(arguments.length);
+            for(i = 0; i < args.length; ++i) {
+                args[i] = typeof arguments[i] === 'string' ? arguments[i] : String(arguments[i]) ;
+            }            
+            parent.postMessage(args, "*");
+        };
+
+        window.addEventListener("message", function(e){
+            console.log(e.data);
+            window.eval(e.data);
+        }, false);
+
+        window.onerror = function (message, url, row, col, err) {
+            console.log(message);
+        };
+    </script>
+</head>
+<body class="h-vh-100 d-flex flex-align-center">
+
+<div class="container">
+    <div data-role="carousel"
+         data-auto-start="false"
+         data-bullets-position="center"
+         data-bullets-size="large"
+         data-bullets-style="cycle"
+         data-on-slide-show="onSlideShow"
+         data-controls-outside="true"
+         data-period="10000"
+         id="carousel4"> 
+
+        <div class="slide" id="slide4-1">
+            <video type='video/mp4' data-role="video"
+                   data-src="https://metroui.org.ua/res/oceans.mp4"
+                   data-on-end="nextVideo"
+            ></video>
+        </div>
+
+        <div class="slide" id="slide4-2">
+            <video type='video/mp4' data-role="video"
+                   data-src="https://metroui.org.ua/res/video-16x9.mp4"
+                   data-on-end="nextVideo"
+            ></video>
+        </div>
+
+        <div class="slide" id="slide4-3">
+            <video type='video/mp4' data-role="video"
+                   data-src="https://metroui.org.ua/res/mountain.mp4"
+                   data-on-end="nextVideo"
+            ></video>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.metroui.org.ua/v4-dev/js/metro.min.js"></script>
+
+
+<script type="text/javascript">
+    function nextVideo() {
+  ("#carousel4").data("carousel").next();
+}
+
+function onSlideShow(_new, _old){
+    var new_video_el, old_video_el, new_video = undefined, old_video = undefined;
+
+    new_video_el = $(_new).find("video");
+    old_video_el = $(_old).find("video");
+
+    setTimeout(function(){
+        if (new_video_el.length > 0) {
+          new_video = new_video_el.data("video");
+        }
+
+        if (old_video_el.length > 0) {
+          old_video = old_video_el.data("video");
+        }
+
+        if (old_video) old_video.stop();
+        if (new_video) new_video.play();
+    }, 0);    
+}
+
+Metro.init();
+</script>
+</body>
+</html>
