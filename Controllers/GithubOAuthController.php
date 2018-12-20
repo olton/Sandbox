@@ -71,6 +71,11 @@ class GithubOAuthController extends Controller {
             exit(0);
         }
 
+        if (in_array(strtolower($user->login), ["data", "temp"])) {
+            header('Location: ' . "/login");
+            exit(0);
+        }
+
         $user_model = new UserModel();
         $user_data = $user_model->UserByName($user->login);
 

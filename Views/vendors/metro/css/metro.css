@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.31 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.31 build 710 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -19274,12 +19274,6 @@ aside::after {
 .table.row-border .tr + .tr {
   border-top: 1px #dfdfdf solid;
 }
-.table th .checkbox,
-.table td .checkbox,
-.table .th .checkbox,
-.table .td .checkbox {
-  height: auto;
-}
 .table.subcompact th,
 .table.subcompact td,
 .table.subcompact .th,
@@ -19298,43 +19292,6 @@ aside::after {
 .table .rownum-cell {
   width: 36px;
   text-align: center;
-}
-.table .check-cell .checkbox,
-.table .check-cell .radio {
-  height: 24px;
-  line-height: 24px;
-}
-.table .crud-cell {
-  width: 1px;
-  text-align: center;
-}
-.table .crud-cell .crud-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: row nowrap;
-          flex-flow: row nowrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-.table .crud-cell .button {
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  padding: 0;
-  font-size: 12px;
-}
-.table .crud-cell .button + .button {
-  margin-left: 1px;
-}
-.table.fixed-layout .crud-cell {
-  width: 90px;
 }
 .table thead td.hidden,
 .table tbody td.hidden,
@@ -19684,7 +19641,9 @@ aside::after {
   list-style: none inside;
 }
 .items-list .item,
-.feed-list .item {
+.feed-list .item,
+.items-list > li,
+.feed-list > li {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -19703,7 +19662,9 @@ aside::after {
   cursor: default;
 }
 .items-list .item .avatar,
-.feed-list .item .avatar {
+.feed-list .item .avatar,
+.items-list > li .avatar,
+.feed-list > li .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -19715,7 +19676,9 @@ aside::after {
   line-height: 42px;
 }
 .items-list .item .second-action,
-.feed-list .item .second-action {
+.feed-list .item .second-action,
+.items-list > li .second-action,
+.feed-list > li .second-action {
   position: absolute;
   right: 16px;
   width: 24px;
@@ -19728,43 +19691,72 @@ aside::after {
 }
 .items-list .item .label,
 .feed-list .item .label,
+.items-list > li .label,
+.feed-list > li .label,
 .items-list .item .second-label,
-.feed-list .item .second-label {
+.feed-list .item .second-label,
+.items-list > li .second-label,
+.feed-list > li .second-label {
   display: block;
 }
 .items-list .item .label,
-.feed-list .item .label {
+.feed-list .item .label,
+.items-list > li .label,
+.feed-list > li .label {
   line-height: 1;
 }
 .items-list .item .second-label,
-.feed-list .item .second-label {
+.feed-list .item .second-label,
+.items-list > li .second-label,
+.feed-list > li .second-label {
   font-size: 0.9em;
   color: #989898;
   line-height: 1;
 }
 .items-list .item .avatar ~ .label,
 .feed-list .item .avatar ~ .label,
+.items-list > li .avatar ~ .label,
+.feed-list > li .avatar ~ .label,
 .items-list .item .avatar ~ .second-label,
-.feed-list .item .avatar ~ .second-label {
+.feed-list .item .avatar ~ .second-label,
+.items-list > li .avatar ~ .second-label,
+.feed-list > li .avatar ~ .second-label {
   padding-left: 56px;
 }
 .items-list .item + .item,
 .feed-list .item + .item {
   border-top: 1px #dfdfdf solid;
 }
-.feed-list .title {
-  padding: 4px 16px;
-  font-size: 18px;
-  border-bottom: 1px solid #dfdfdf;
-  font-weight: 500;
+.items-list > li + li,
+.feed-list > li + li {
+  border-top: 1px #dfdfdf solid;
 }
-.feed-list .item {
+.feed-list .title {
+  padding: 0 16px;
+  font-size: 18px;
+  font-weight: 500;
+  height: 36px;
+  line-height: 36px;
+  display: block;
+}
+.feed-list .item + .title,
+.feed-list li + .title {
+  margin-top: 32px;
+}
+.feed-list .title + .item,
+.feed-list .title + li,
+.feed-list li + .title {
+  border-top: 1px transparent solid;
+}
+.feed-list .item,
+.feed-list > li {
   height: 104px;
   padding: 16px 0;
   -ms-flex-pack: distribute;
       justify-content: space-around;
 }
-.feed-list .item .avatar {
+.feed-list .item .avatar,
+.feed-list > li .avatar {
   position: absolute;
   top: 16px;
   left: 16px;
@@ -19773,22 +19765,28 @@ aside::after {
   border-radius: 0;
   margin-top: 0;
 }
-.feed-list .item .second-label {
+.feed-list .item .second-label,
+.feed-list > li .second-label {
   font-size: 10px;
 }
 .feed-list .item .avatar ~ .label,
-.feed-list .item .avatar ~ .second-label {
+.feed-list > li .avatar ~ .label,
+.feed-list .item .avatar ~ .second-label,
+.feed-list > li .avatar ~ .second-label {
   margin-left: 128px;
   margin-right: 16px;
   padding-left: 0;
 }
-.feed-list .item .avatar.on-right {
+.feed-list .item .avatar.on-right,
+.feed-list > li .avatar.on-right {
   float: none;
   left: auto;
   right: 16px;
 }
 .feed-list .item .avatar.on-right ~ .label,
-.feed-list .item .avatar.on-right ~ .second-label {
+.feed-list > li .avatar.on-right ~ .label,
+.feed-list .item .avatar.on-right ~ .second-label,
+.feed-list > li .avatar.on-right ~ .second-label {
   margin-left: 16px;
   margin-right: 128px;
 }
@@ -19799,12 +19797,16 @@ aside::after {
   list-style: none inside;
   border: 1px solid #dfdfdf;
 }
-.group-list .item {
+.group-list .item,
+.group-list > li {
   display: block;
   position: relative;
   padding: 4px 8px;
 }
 .group-list .item + .item {
+  border-top: 1px solid #dfdfdf;
+}
+.group-list > li + li {
   border-top: 1px solid #dfdfdf;
 }
 .button,
@@ -33309,9 +33311,7 @@ video:-webkit-full-screen {
 .navview.expand .navview-pane .item-header {
   display: block!important;
 }
-.navview.expand .navview-pane .suggest-box .input,
-.navview.expand .navview-pane .suggest-box .select,
-.navview.expand .navview-pane .suggest-box .textarea {
+.navview.expand .navview-pane .suggest-box > *:not(.holder) {
   display: -webkit-box!important;
   display: -ms-flexbox!important;
   display: flex!important;
@@ -33325,10 +33325,10 @@ video:-webkit-full-screen {
           transform: translate3d(0, 0, 0);
 }
 .navview.compacted .navview-pane .navview-menu .caption,
-.navview.compacted .navview-pane .suggest-box .input,
-.navview.compacted .navview-pane .suggest-box .select,
-.navview.compacted .navview-pane .suggest-box .textarea,
 .navview.compacted .navview-pane .item-header {
+  display: none!important;
+}
+.navview.compacted .navview-pane .suggest-box > *:not(.holder) {
   display: none!important;
 }
 .navview.compacted .navview-pane .holder {
@@ -33353,9 +33353,7 @@ video:-webkit-full-screen {
   .navview.compact-fs .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-fs .navview-pane .suggest-box .input,
-  .navview.compact-fs .navview-pane .suggest-box .select,
-  .navview.compact-fs .navview-pane .suggest-box .textarea {
+  .navview.compact-fs .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-fs .navview-pane .holder {
@@ -33373,9 +33371,7 @@ video:-webkit-full-screen {
   .navview.expanded-fs .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-fs .navview-pane .suggest-box .input,
-  .navview.expanded-fs .navview-pane .suggest-box .select,
-  .navview.expanded-fs .navview-pane .suggest-box .textarea {
+  .navview.expanded-fs .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33403,9 +33399,7 @@ video:-webkit-full-screen {
   .navview.compact-sm .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-sm .navview-pane .suggest-box .input,
-  .navview.compact-sm .navview-pane .suggest-box .select,
-  .navview.compact-sm .navview-pane .suggest-box .textarea {
+  .navview.compact-sm .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-sm .navview-pane .holder {
@@ -33423,9 +33417,7 @@ video:-webkit-full-screen {
   .navview.expanded-sm .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-sm .navview-pane .suggest-box .input,
-  .navview.expanded-sm .navview-pane .suggest-box .select,
-  .navview.expanded-sm .navview-pane .suggest-box .textarea {
+  .navview.expanded-sm .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33453,9 +33445,7 @@ video:-webkit-full-screen {
   .navview.compact-md .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-md .navview-pane .suggest-box .input,
-  .navview.compact-md .navview-pane .suggest-box .select,
-  .navview.compact-md .navview-pane .suggest-box .textarea {
+  .navview.compact-md .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-md .navview-pane .holder {
@@ -33473,9 +33463,7 @@ video:-webkit-full-screen {
   .navview.expanded-md .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-md .navview-pane .suggest-box .input,
-  .navview.expanded-md .navview-pane .suggest-box .select,
-  .navview.expanded-md .navview-pane .suggest-box .textarea {
+  .navview.expanded-md .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33503,9 +33491,7 @@ video:-webkit-full-screen {
   .navview.compact-lg .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-lg .navview-pane .suggest-box .input,
-  .navview.compact-lg .navview-pane .suggest-box .select,
-  .navview.compact-lg .navview-pane .suggest-box .textarea {
+  .navview.compact-lg .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-lg .navview-pane .holder {
@@ -33523,9 +33509,7 @@ video:-webkit-full-screen {
   .navview.expanded-lg .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-lg .navview-pane .suggest-box .input,
-  .navview.expanded-lg .navview-pane .suggest-box .select,
-  .navview.expanded-lg .navview-pane .suggest-box .textarea {
+  .navview.expanded-lg .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33553,9 +33537,7 @@ video:-webkit-full-screen {
   .navview.compact-xl .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-xl .navview-pane .suggest-box .input,
-  .navview.compact-xl .navview-pane .suggest-box .select,
-  .navview.compact-xl .navview-pane .suggest-box .textarea {
+  .navview.compact-xl .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-xl .navview-pane .holder {
@@ -33573,9 +33555,7 @@ video:-webkit-full-screen {
   .navview.expanded-xl .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-xl .navview-pane .suggest-box .input,
-  .navview.expanded-xl .navview-pane .suggest-box .select,
-  .navview.expanded-xl .navview-pane .suggest-box .textarea {
+  .navview.expanded-xl .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33603,9 +33583,7 @@ video:-webkit-full-screen {
   .navview.compact-xxl .navview-pane .item-header {
     display: none;
   }
-  .navview.compact-xxl .navview-pane .suggest-box .input,
-  .navview.compact-xxl .navview-pane .suggest-box .select,
-  .navview.compact-xxl .navview-pane .suggest-box .textarea {
+  .navview.compact-xxl .navview-pane .suggest-box > *:not(.holder) {
     display: none;
   }
   .navview.compact-xxl .navview-pane .holder {
@@ -33623,9 +33601,7 @@ video:-webkit-full-screen {
   .navview.expanded-xxl .navview-pane .item-header {
     display: block;
   }
-  .navview.expanded-xxl .navview-pane .suggest-box .input,
-  .navview.expanded-xxl .navview-pane .suggest-box .select,
-  .navview.expanded-xxl .navview-pane .suggest-box .textarea {
+  .navview.expanded-xxl .navview-pane .suggest-box > *:not(.holder) {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -33704,6 +33680,9 @@ video:-webkit-full-screen {
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
   top: 50%;
+}
+.rating .stars li.half::before {
+  content: '\2BEA';
 }
 .rating .result {
   font-size: 0.8em;

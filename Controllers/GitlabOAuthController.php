@@ -71,6 +71,11 @@ class GitlabOAuthController extends Controller {
             exit(0);
         }
 
+        if (in_array(strtolower($user->username), ["data", "temp"])) {
+            header('Location: ' . "/login");
+            exit(0);
+        }
+
         $user_model = new UserModel();
         $user_data = $user_model->UserByName($user->username);
 

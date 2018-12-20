@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.31 build @@build (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.31 build 710 (https://metroui.org.ua)
  * Copyright 2018 Sergey Pimenov
  * Licensed under MIT
  */
@@ -100,8 +100,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "@@version",
-    versionFull: "@@version.@@build @@status",
+    version: "4.2.31",
+    versionFull: "4.2.31.710 ",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -220,6 +220,7 @@ var Metro = {
 
     media_queries: {
         FS: "(min-width: 0px)",
+        XS: "(min-width: 360px)",
         SM: "(min-width: 576px)",
         MD: "(min-width: 768px)",
         LG: "(min-width: 992px)",
@@ -240,12 +241,15 @@ var Metro = {
 
     media_mode: {
         FS: "fs",
+        XS: "xs",
         SM: "sm",
         MD: "md",
         LG: "lg",
         XL: "xl",
         XXL: "xxl"
     },
+
+    media_modes: ["fs","xs","sm","md","lg","xl","xxl"],
 
     actions: {
         REMOVE: 1,
@@ -1851,17 +1855,23 @@ Array.prototype.unique = function () {
     return a;
 };
 
-if (typeof Array.from !== "function") {
-    Array.prototype.from = function() {
+if (!Array.from) {
+    Array.from = function(val) {
         var i, a = [];
-        if (Utils.isNull(this.length)) {
-            throw new Error("Value is not iterable");
+
+        if (val.length === undefined && typeof val === "object") {
+            return Object.values(val);
         }
-        for(i = 0; i < this.length; i++) {
-            a.push(this[i]);
+
+        if (val.length !== undefined) {
+            for(i = 0; i < val.length; i++) {
+                a.push(val[i]);
+            }
+            return a;
         }
-        return a;
-    }
+
+        throw new Error("Value can not be converted to array");
+    };
 }
 
 if (typeof Array.contains !== "function") {
@@ -1893,21 +1903,59 @@ String.prototype.contains = function() {
     return !!~String.prototype.indexOf.apply(this, arguments);
 };
 
-String.prototype.toDate = function(format)
-{
-    var normalized, normalizedFormat, formatItems, dateItems;
+String.prototype.toDate = function(format, locale) {
+    var result;
+    var normalized, normalizedFormat, formatItems, dateItems, checkValue;
     var monthIndex, dayIndex, yearIndex, hourIndex, minutesIndex, secondsIndex;
-    var today, year, month, day, hour, minute, second;
+    var year, month, day, hour, minute, second;
+    var parsedMonth;
 
-    if (!Utils.isValue(format)) {
-        // format = "yyyy-mm-dd";
+    locale = locale || "en-US";
+
+    var monthNameToNumber = function(month){
+        var d, months, index, i;
+
+        month = month.substr(0, 3);
+
+        if (
+               locale !== undefined
+            && locale !== "en-US"
+            && Locales !== undefined
+            && Locales[locale] !== undefined
+            && Locales[locale]['calendar'] !== undefined
+            && Locales[locale]['calendar']['months'] !== undefined
+        ) {
+            months = Locales[locale]['calendar']['months'];
+            for(i = 12; i < months.length; i++) {
+                if (months[i].toLowerCase() === month.toLowerCase()) {
+                    index = i - 12;
+                    break;
+                }
+            }
+            month = Locales["en-US"]['calendar']['months'][index];
+        }
+
+        d = Date.parse(month + " 1, 1972");
+        if(!isNaN(d)){
+            return new Date(d).getMonth() + 1;
+        }
+        return -1;
+    };
+
+    if (format === undefined || format === null || format === "") {
         return new Date(this);
     }
 
-    normalized      = this.replace(/[^a-zA-Z0-9%]/g, '-');
+    // normalized      = this.replace(/[^a-zA-Z0-9%]/g, '-');
+    normalized      = this.replace(/[\/,.:\s]/g, '-');
     normalizedFormat= format.toLowerCase().replace(/[^a-zA-Z0-9%]/g, '-');
     formatItems     = normalizedFormat.split('-');
     dateItems       = normalized.split('-');
+    checkValue      = normalized.replace(/\-/g,"");
+
+    if (checkValue.trim() === "") {
+        return "Invalid Date";
+    }
 
     monthIndex  = formatItems.indexOf("mm") > -1 ? formatItems.indexOf("mm") : formatItems.indexOf("%m");
     dayIndex    = formatItems.indexOf("dd") > -1 ? formatItems.indexOf("dd") : formatItems.indexOf("%d");
@@ -1916,17 +1964,33 @@ String.prototype.toDate = function(format)
     minutesIndex  = formatItems.indexOf("ii") > -1 ? formatItems.indexOf("ii") : formatItems.indexOf("mi") > -1 ? formatItems.indexOf("mi") : formatItems.indexOf("%i");
     secondsIndex  = formatItems.indexOf("ss") > -1 ? formatItems.indexOf("ss") : formatItems.indexOf("%s");
 
-    today = new Date();
+    if (monthIndex > -1 && dateItems[monthIndex] !== "") {
+        if (isNaN(parseInt(dateItems[monthIndex]))) {
+            dateItems[monthIndex] = monthNameToNumber(dateItems[monthIndex]);
+            if (dateItems[monthIndex] === -1) {
+                return "Invalid Date";
+            }
+        } else {
+            parsedMonth = parseInt(dateItems[monthIndex]);
+            if (parsedMonth < 1 || parsedMonth > 12) {
+                return "Invalid Date";
+            }
+        }
+    } else {
+        return "Invalid Date";
+    }
 
-    year  = yearIndex >-1 ? dateItems[yearIndex] : today.getFullYear();
-    month = monthIndex >-1 ? dateItems[monthIndex]-1 : today.getMonth()-1;
-    day   = dayIndex >-1 ? dateItems[dayIndex] : today.getDate();
+    year  = yearIndex >-1 && dateItems[yearIndex] !== "" ? dateItems[yearIndex] : null;
+    month = monthIndex >-1 && dateItems[monthIndex] !== "" ? dateItems[monthIndex] : null;
+    day   = dayIndex >-1 && dateItems[dayIndex] !== "" ? dateItems[dayIndex] : null;
 
-    hour    = hourIndex >-1 ? dateItems[hourIndex] : today.getHours();
-    minute  = minutesIndex>-1 ? dateItems[minutesIndex] : today.getMinutes();
-    second  = secondsIndex>-1 ? dateItems[secondsIndex] : today.getSeconds();
+    hour    = hourIndex >-1 && dateItems[hourIndex] !== "" ? dateItems[hourIndex] : null;
+    minute  = minutesIndex>-1 && dateItems[minutesIndex] !== "" ? dateItems[minutesIndex] : null;
+    second  = secondsIndex>-1 && dateItems[secondsIndex] !== "" ? dateItems[secondsIndex] : null;
 
-    return new Date(year,month,day,hour,minute,second);
+    result = new Date(year,month-1,day,hour,minute,second);
+
+    return result;
 };
 
 String.prototype.toArray = function(delimiter, type, format){
@@ -1990,7 +2054,7 @@ Date.prototype.format = function(format, locale){
         locale = "en-US";
     }
 
-    var cal = (Metro.locales[locale] !== undefined ? Metro.locales[locale] : Metro.locales["en-US"])['calendar'];
+    var cal = (Metro.locales !== undefined && Metro.locales[locale] !== undefined ? Metro.locales[locale] : Metro.locales["en-US"])['calendar'];
 
     var date = this;
     var nDay = date.getDay(),
@@ -5543,7 +5607,7 @@ var Calendar = {
         }
 
         if (Utils.isValue(o.excludeDay)) {
-            this.excludeDay = o.excludeDay.toArray(",", "int");
+            this.excludeDay = (""+o.excludeDay).toArray(",", "int");
         }
 
         if (Utils.isValue(o.preset)) {
@@ -18454,19 +18518,8 @@ var Table = {
     options: {
         locale: METRO_LOCALE,
 
-        crud: false,
-        crudTitle: "CRUD",
-        editButton: true,
-        delButton: true,
-        addButton: true,
-        editButtonIcon: "<span class='default-icon-pencil'></span>",
-        delButtonIcon: "<span class='default-icon-minus'></span>",
-        addButtonIcon: "<span class='default-icon-plus'></span>",
-        clsEditButton: "",
-        clsDelButton: "",
-        clsAddButton: "",
-
         horizontalScroll: false,
+        horizontalScrollStop: null,
         check: false,
         checkType: "checkbox",
         checkStyle: 1,
@@ -18688,18 +18741,6 @@ var Table = {
         var o = this.options;
 
         this.service = [
-            {
-                // CRUD
-                title: o.crudTitle,
-                format: undefined,
-                name: undefined,
-                sortable: false,
-                sortDir: undefined,
-                clsColumn: "crud-cell" + (o.crud === true ? "" : " d-none "),
-                cls: "crud-cell" + (o.crud === true ? "" : " d-none "),
-                colspan: undefined,
-                type: "button"
-            },
             {
                 // Rownum
                 title: o.rownumTitle,
@@ -19140,6 +19181,9 @@ var Table = {
         if (o.horizontalScroll === true) {
             table_container.addClass("horizontal-scroll");
         }
+        if (!Utils.isNull(o.horizontalScrollStop) && Utils.mediaExist(o.horizontalScrollStop)) {
+            table_container.removeClass("horizontal-scroll");
+        }
 
         table_component.addClass(o.clsComponent);
 
@@ -19205,9 +19249,20 @@ var Table = {
     _createEvents: function(){
         var that = this, element = this.element, o = this.options;
         var component = element.closest(".table-component");
+        var table_container = component.find(".table-container");
         var search = component.find(".table-search-block input");
         var customSearch;
         var id = element.attr("id");
+
+        $(window).on(Metro.events.resize+"-"+id, function(){
+            if (o.horizontalScroll === true) {
+                if (!Utils.isNull(o.horizontalScrollStop) && Utils.mediaExist(o.horizontalScrollStop)) {
+                    table_container.removeClass("horizontal-scroll");
+                } else {
+                    table_container.addClass("horizontal-scroll");
+                }
+            }
+        });
 
         element.on(Metro.events.click, ".sortable-column", function(){
 
@@ -19704,48 +19759,13 @@ var Table = {
             if (Utils.isValue(items[i])) {
                 tr = $("<tr>").addClass(o.clsBodyRow);
 
-                // CRUD buttons
-                td = $("<td>");
-                if (that.service[0].clsColumn !== undefined) {
-                    td.addClass(that.service[0].clsColumn);
-                }
-                var crud_container = $("<div>").addClass("crud-container").appendTo(td);
-                if (o.editButton === true) {
-                    $("<button>")
-                        .addClass("button")
-                        .addClass("js-table-crud-button js-table-crud-button-edit")
-                        .addClass(o.clsEditButton)
-                        .html(o.editButtonIcon)
-                        .data("uid", items[i][o.checkColIndex])
-                        .appendTo(crud_container);
-                }
-                if (o.addButton === true) {
-                    $("<button>")
-                        .addClass("button")
-                        .addClass("js-table-crud-button js-table-crud-button-add")
-                        .addClass(o.clsAddButton)
-                        .html(o.addButtonIcon)
-                        .data("uid", null)
-                        .appendTo(crud_container);
-                }
-                if (o.delButton === true) {
-                    $("<button>")
-                        .addClass("button")
-                        .addClass("js-table-crud-button js-table-crud-button-del")
-                        .addClass(o.clsDelButton)
-                        .html(o.delButtonIcon)
-                        .data("uid", items[i][o.checkColIndex])
-                        .appendTo(crud_container);
-                }
-                td.appendTo(tr);
-
                 // Rownum
 
                 is_even_row = i % 2 === 0;
 
                 td = $("<td>").html(i + 1);
-                if (that.service[1].clsColumn !== undefined) {
-                    td.addClass(that.service[1].clsColumn);
+                if (that.service[0].clsColumn !== undefined) {
+                    td.addClass(that.service[0].clsColumn);
                 }
                 td.appendTo(tr);
 
@@ -19764,8 +19784,8 @@ var Table = {
                 check.addClass("table-service-check");
                 Utils.exec(o.onCheckDraw, [check], check[0]);
                 check.appendTo(td);
-                if (that.service[2].clsColumn !== undefined) {
-                    td.addClass(that.service[2].clsColumn);
+                if (that.service[1].clsColumn !== undefined) {
+                    td.addClass(that.service[1].clsColumn);
                 }
                 td.appendTo(tr);
 
@@ -19827,7 +19847,7 @@ var Table = {
     _getItemContent: function(row){
         var result, col = row[this.sort.colIndex];
         var format = this.heads[this.sort.colIndex].format;
-        var formatMask = Utils.isValue(this.heads[this.sort.colIndex].formatMask) ? this.heads[this.sort.colIndex].formatMask : "%Y-%m-%d";
+        var formatMask = !Utils.isNull(this.heads) && !Utils.isNull(this.heads[this.sort.colIndex]) && Utils.isValue(this.heads[this.sort.colIndex]['formatMask']) ? this.heads[this.sort.colIndex]['formatMask'] : "%Y-%m-%d";
         var o = this.options;
 
         result = (""+col).toLowerCase().replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
@@ -23462,11 +23482,11 @@ var ValidatorFuncs = {
     url: function(val){
         return /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(val);
     },
-    date: function(val, format){
+    date: function(val, format, locale){
         if (Utils.isNull(format)) {
-            return new Date(val) !== "Invalid Date";
+            return String(new Date(val)).toLowerCase() !== "invalid date";
         } else {
-            return val.toDate(format) !== "Invalid Date";
+            return String(val.toDate(format, locale)).toLowerCase() !== "invalid date";
         }
     },
     number: function(val){
@@ -23615,7 +23635,7 @@ var ValidatorFuncs = {
             $.each(funcs, function(){
                 if (this_result === false) return;
                 var rule = this.split("=");
-                var f, a;
+                var f, a, b;
 
                 f = rule[0]; rule.shift();
                 a = rule.join("=");
@@ -23626,16 +23646,17 @@ var ValidatorFuncs = {
 
                 if (f === 'date') {
                     a = input.attr("data-value-format");
+                    b = input.attr("data-value-locale");
                 }
 
                 if (Utils.isFunc(ValidatorFuncs[f]) === false)  {
                     this_result = true;
                 } else {
                     if (required_mode === true || f === "required") {
-                        this_result = ValidatorFuncs[f](input.val(), a);
+                        this_result = ValidatorFuncs[f](input.val(), a, b);
                     } else {
                         if (input.val().trim() !== "") {
-                            this_result = ValidatorFuncs[f](input.val(), a);
+                            this_result = ValidatorFuncs[f](input.val(), a, b);
                         } else {
                             this_result = true;
                         }

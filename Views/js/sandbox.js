@@ -117,8 +117,9 @@ var Sandbox = {
             css_base: $('input[name=css_base]').val()
         };
 
-        $(".iframe_reload").show(function(){
+        $(".iframe_reload").show(0);
 
+        setTimeout(function(){
             that.sendData(data, "/code/save", null, function(response){
 
                 var data = response.data;
@@ -158,7 +159,7 @@ var Sandbox = {
                 Metro.utils.exec(cb_error, [response]);
                 $(".iframe_reload").hide();
             });
-        });
+        }, 500);
     },
 
     login: function(f){

@@ -90,6 +90,10 @@ class UserController extends Controller {
         $email = $POST['email'];
         $pass = Security::EncodePassword($POST['password']);
 
+        if (in_array(strtolower($name), ["data", "temp"])) {
+            $this->ReturnJSON(false, "USERNAME exists!", [$POST]);
+        }
+
         if ($this->model->NameExists($name)) {
             $this->ReturnJSON(false, "User name exists", ['name'=>$name]);
         }
@@ -133,6 +137,10 @@ class UserController extends Controller {
         }
 
         $user = $this->model->User($user_id);
+
+        if (in_array(strtolower($name), ["data", "temp"])) {
+            $this->ReturnJSON(false, "USERNAME exists!", [$POST]);
+        }
 
         if ($user['name'] !== $name) {
             if ($this->model->NameExists($name)) {
