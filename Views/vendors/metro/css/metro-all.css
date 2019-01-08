@@ -1,6 +1,6 @@
 /*
- * Metro 4 Components Library v4.2.31 build 710 (https://metroui.org.ua)
- * Copyright 2018 Sergey Pimenov
+ * Metro 4 Components Library v4.2.34 build 715 (https://metroui.org.ua)
+ * Copyright 2019 Sergey Pimenov
  * Licensed under MIT
  */
 html,
@@ -22463,6 +22463,7 @@ textarea {
   background-color: #ffffff;
   height: auto;
   border: 1px solid #dfdfdf;
+  z-index: 3;
 }
 .input .autocomplete-list .item {
   display: block;
@@ -41535,7 +41536,8 @@ video:-webkit-full-screen {
 .dropdown-toggle.no-marker::before {
   display: none;
 }
-.dropdown-toggle.active-toggle::before {
+.dropdown-toggle.active-toggle::before,
+.dropdown-toggle.active-container::before {
   -webkit-transform: rotate(135deg);
           transform: rotate(135deg);
   -webkit-transition: all 0.15s ease-in-out;
@@ -41549,7 +41551,8 @@ video:-webkit-full-screen {
   -webkit-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
           transform: translateX(-50%) translateY(-50%) rotate(-45deg);
 }
-.dropdown-toggle.marker-center.active-toggle::before {
+.dropdown-toggle.marker-center.active-toggle::before,
+.dropdown-toggle.marker-center.active-container::before {
   -webkit-transform: translateX(-50%) translateY(-50%) rotate(135deg);
           transform: translateX(-50%) translateY(-50%) rotate(135deg);
   -webkit-transition: all 0.15s ease-in-out;
