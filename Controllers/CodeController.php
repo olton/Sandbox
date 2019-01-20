@@ -201,7 +201,7 @@ class CodeController extends Controller {
         if (!is_file(SANDBOX_PATH . "$user/".$regular_file)) {
             $code = $this->model->Code($hash);
             if ($code === false) {
-                Url::Redirect("/");
+                Url::Redirect("/not-found");
                 exit(0);
             }
             $this->CreateFile(
