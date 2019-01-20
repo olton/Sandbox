@@ -159,7 +159,7 @@
             </li>
             <?php }?>
 
-            <?php if ($_SESSION['current'] != -1) {?>
+            <?php if ($_SESSION['current'] != -1 && $code['alien'] != 1) {?>
             <li title="Save code" class="d-none d-block-md no-hover"><a class="p-0" href="#" onclick="Sandbox.saveCode(true)"><button class="button square success"><span class="mif-floppy-disk icon"></span></button></a></li>
             <li class="d-none-md"><a href="#" onclick="Sandbox.saveCode(true)"><span>Save code</span></a></li>
             <?php }?>
