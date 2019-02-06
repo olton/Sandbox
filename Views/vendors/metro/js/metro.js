@@ -1,5 +1,5 @@
 /*
- * Metro 4 Components Library v4.2.34 build 715 (https://metroui.org.ua)
+ * Metro 4 Components Library v4.2.35 build 716 (https://metroui.org.ua)
  * Copyright 2019 Sergey Pimenov
  * Licensed under MIT
  */
@@ -100,8 +100,8 @@ var isTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (
 
 var Metro = {
 
-    version: "4.2.34",
-    versionFull: "4.2.34.715 ",
+    version: "4.2.35",
+    versionFull: "4.2.35.716 ",
     isTouchable: isTouch,
     fullScreenEnabled: document.fullscreenEnabled,
     sheet: null,
@@ -166,10 +166,10 @@ var Metro = {
 
     events: {
         click: 'click.metro',
-        start: 'touchstart.metro mousedown.metro',
-        stop: 'touchend.metro mouseup.metro',
-        move: 'touchmove.metro mousemove.metro',
-        enter: 'touchstart.metro mouseenter.metro',
+        start: isTouch ? 'touchstart.metro' : 'mousedown.metro',
+        stop: isTouch ? 'touchend.metro' : 'mouseup.metro',
+        move: isTouch ? 'touchmove.metro' : 'mousemove.metro',
+        enter: isTouch ? 'touchstart.metro' : 'mouseenter.metro',
         leave: 'mouseleave.metro',
         focus: 'focus.metro',
         blur: 'blur.metro',
@@ -3297,22 +3297,13 @@ special.scrollstop = {
 
 // Source: js/utils/storage.js
 
-var Storage = {
-    options: {
-        key: "METRO:APP",
-        storage: window.localStorage
-    },
+var Storage = function(type){
+    return new Storage.init(type);
+};
 
-    init: function( options, elem ) {
-        this.options = $.extend( {}, this.options, options );
-        this.storage = this.options.storage;
-        this.key = this.options.key;
-
-        return this;
-    },
-
+Storage.prototype = {
     setKey: function(key){
-        this.key = key;
+        this.key = key
     },
 
     getKey: function(){
@@ -3370,12 +3361,18 @@ var Storage = {
     }
 };
 
-Metro['storage'] = Object.create(Storage).init({
-    storage: localStorage
-});
-Metro['session'] = Object.create(Storage).init({
-    storage: sessionStorage
-});
+Storage.init = function(type){
+
+    this.key = "";
+    this.storage = type ? type : window.localStorage;
+
+    return this;
+};
+
+Storage.init.prototype = Storage.prototype;
+
+Metro['storage'] = Storage(window.localStorage);
+Metro['session'] = Storage(window.sessionStorage);
 
 
 // Source: js/utils/tpl.js
@@ -4522,7 +4519,7 @@ var Activity = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -4536,7 +4533,7 @@ var Activity = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var i, wrap;
 
         element
@@ -4585,7 +4582,7 @@ var Activity = {
     },
 
     destroy: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         element.html('')
             .removeClass(o.style + "-style")
@@ -6779,6 +6776,7 @@ var CalendarPicker = {
         }
 
         if (Utils.isDate(v, o.inputFormat) === true) {
+            this.calendar.data("calendar").clearSelected();
             this.value = typeof v === 'string' ? v.toDate(o.inputFormat) : v;
             element.val(this.value.format(o.format));
             element.trigger("change");
@@ -10057,14 +10055,47 @@ var Draggable = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var that = this, element = this.element, elem = this.elem, o = this.options;
         var dragArea;
-        var offset, position, shift, coords;
+        var position = {
+            x: 0,
+            y: 0
+        };
         var dragElement  = o.dragElement !== 'self' ? element.find(o.dragElement) : element;
 
         dragElement[0].ondragstart = function(){return false;};
 
         dragElement.on(Metro.events.start, function(e){
+
+            if (o.dragArea === 'document' || o.dragArea === 'window') {
+                o.dragArea = "body";
+            }
+
+            dragArea = o.dragArea === 'parent' ? element.parent() : $(o.dragArea);
+
+            var coord = o.dragArea === "body" ? element.offset() : element.position(),
+                shiftX = Utils.pageXY(e).x - coord.left,
+                shiftY = Utils.pageXY(e).y - coord.top;
+
+            var moveElement = function(e){
+                var top = Utils.pageXY(e).y - shiftY;
+                var left = Utils.pageXY(e).x - shiftX;
+
+                if (top < 0) top = 0;
+                if (left < 0) left = 0;
+
+                if (top > dragArea.outerHeight() - element.outerHeight()) top = dragArea.outerHeight() - element.outerHeight();
+                if (left > dragArea.outerWidth() - element.outerWidth()) left = dragArea.outerWidth() - element.outerWidth();
+
+                position.y = top;
+                position.x = left;
+
+                element.css({
+                    left: left,
+                    top: top
+                });
+            };
+
 
             if (element.data("canDrag") === false || Utils.exec(o.onCanDrag, [element]) !== true) {
                 return ;
@@ -10079,74 +10110,38 @@ var Draggable = {
             that.backup.cursor = element.css("cursor");
             that.backup.zIndex = element.css("z-index");
 
-            element.addClass("draggable");
+            element.css("position", "absolute").addClass("draggable");
 
-            if (o.dragArea === 'document' || o.dragArea === 'window') {
-                o.dragArea = "body";
-            }
+            element.appendTo(dragArea);
 
-            if (o.dragArea === 'parent') {
-                dragArea = element.parent();
-            } else {
-                dragArea = $(o.dragArea);
-            }
-
-            offset = {
-                left: dragArea.offset().left,
-                top:  dragArea.offset().top
-            };
-
-            position = Utils.pageXY(e);
-
-            var drg_h = element.outerHeight(),
-                drg_w = element.outerWidth(),
-                pos_y = element.offset().top + drg_h - Utils.pageXY(e).y,
-                pos_x = element.offset().left + drg_w - Utils.pageXY(e).x;
+            moveElement(e);
 
             Utils.exec(o.onDragStart, [position, element]);
 
-            $(document).on(Metro.events.move, function(e){
-                var pageX, pageY;
-
-                if (that.drag === false) {
-                    return ;
-                }
-                that.move = true;
-
-                pageX = Utils.pageXY(e).x - offset.left;
-                pageY = Utils.pageXY(e).y - offset.top;
-
-                var t = (pageY > 0) ? (pageY + pos_y - drg_h) : (0);
-                var l = (pageX > 0) ? (pageX + pos_x - drg_w) : (0);
-                var t_delta = dragArea.innerHeight() + dragArea.scrollTop() - element.outerHeight();
-                var l_delta = dragArea.innerWidth() + dragArea.scrollLeft() - element.outerWidth();
-
-                if(t >= 0 && t <= t_delta) {
-                    position.y = t;
-                    element.offset({top: t + offset.top});
-                }
-                if(l >= 0 && l <= l_delta) {
-                    position.x = l;
-                    element.offset({left: l + offset.left});
-                }
-
-                Utils.exec(o.onDragMove, [position, element]);
-
+            $(document).on(Metro.events.move+".draggable", function(e){
+                moveElement(e);
+                Utils.exec(o.onDragMove, [position], elem);
                 e.preventDefault();
             });
-        });
 
-        dragElement.on(Metro.events.stop, function(e){
-            element.css({
-                cursor: that.backup.cursor,
-                zIndex: that.backup.zIndex
-            }).removeClass("draggable");
-            that.drag = false;
-            that.move = false;
-            position = Utils.pageXY(e);
-            $(document).off(Metro.events.move);
-            //console.log(o.onDragStop);
-            Utils.exec(o.onDragStop, [position, element]);
+            $(document).on(Metro.events.stop+".draggable", function(e){
+                element.css({
+                    cursor: that.backup.cursor,
+                    zIndex: that.backup.zIndex
+                }).removeClass("draggable");
+
+                if (that.drag) {
+                    $(document).off(Metro.events.move+".draggable");
+                    $(document).off(Metro.events.stop+".draggable");
+                }
+
+                that.drag = false;
+                that.move = false;
+
+                Utils.exec(o.onDragStop, [position], elem);
+                e.preventDefault();
+                e.stopPropagation();
+            });
         });
     },
 
@@ -10360,6 +10355,7 @@ var File = {
     options: {
         mode: "input",
         buttonTitle: "Choose file(s)",
+        filesTitle: "file(s) selected",
         dropTitle: "<strong>Choose a file</strong> or drop it here",
         dropIcon: "<span class='default-icon-upload'></span>",
         prepend: "",
@@ -10373,7 +10369,7 @@ var File = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -10392,19 +10388,14 @@ var File = {
     },
 
     _createStructure: function(){
-        var that = this, element = this.element, o = this.options;
-        var prev = element.prev();
-        var parent = element.parent();
+        var element = this.element, o = this.options;
         var container = $("<label>").addClass((o.mode === "input" ? " file " : " drop-zone ") + element[0].className).addClass(o.clsComponent);
         var caption = $("<span>").addClass("caption").addClass(o.clsCaption);
+        var files = $("<span>").addClass("files").addClass(o.clsCaption);
         var icon, button;
 
-        if (prev.length === 0) {
-            parent.prepend(container);
-        } else {
-            container.insertAfter(prev);
-        }
 
+        container.insertBefore(element);
         element.appendTo(container);
 
         if (o.mode === "input") {
@@ -10425,6 +10416,7 @@ var File = {
         } else {
             icon = $(o.dropIcon).addClass("icon").appendTo(container);
             caption.html(o.dropTitle).insertAfter(icon);
+            files.html("0" + " " + o.filesTitle).insertAfter(caption);
         }
 
         element[0].className = '';
@@ -10446,6 +10438,7 @@ var File = {
         var element = this.element, o = this.options;
         var container = element.closest("label");
         var caption = container.find(".caption");
+        var files = container.find(".files");
 
         container.on(Metro.events.click, "button", function(){
             element.trigger("click");
@@ -10469,6 +10462,8 @@ var File = {
 
                 caption.html(entry);
                 caption.attr('title', entry);
+            } else {
+                files.html(element[0].files.length + " " +o.filesTitle);
             }
 
             Utils.exec(o.onSelect, [fi.files, element], element[0]);
@@ -10492,6 +10487,7 @@ var File = {
 
             container.on('drop', function(e){
                 element[0].files = e.originalEvent.dataTransfer.files;
+                files.html(element[0].files.length + " " +o.filesTitle);
                 container.removeClass("drop-on");
 
                 if (!Utils.detectChrome()) Utils.exec(o.onSelect, [element[0].files, element], element[0]);
@@ -10536,7 +10532,7 @@ var File = {
         var element = this.element;
         var parent = element.parent();
         element.off(Metro.events.change);
-        parent.off(Metro.events.click, "button, .caption");
+        parent.off(Metro.events.click, "button");
         element.insertBefore(parent);
         parent.remove();
     }
@@ -10821,7 +10817,7 @@ var HtmlContainer = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -10835,7 +10831,7 @@ var HtmlContainer = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         if (Utils.isValue(o.htmlSource)) {
             this._load();
@@ -10845,7 +10841,7 @@ var HtmlContainer = {
     },
 
     _load: function(){
-        var that = this, element = this.element, elem = this.elem, o = this.options;
+        var element = this.element, elem = this.elem, o = this.options;
         var xhttp, html;
 
         html = o.htmlSource;
@@ -10876,7 +10872,7 @@ var HtmlContainer = {
     },
 
     changeAttribute: function(attributeName){
-        var that = this, element = this.element, elem = this.elem, o = this.options;
+        var element = this.element, o = this.options;
 
         var changeHTMLSource = function(){
             var html = element.attr("data-html-source");
@@ -11677,12 +11673,13 @@ var MaterialInput = {
     },
 
     _createStructure: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var prev = element.prev();
         var parent = element.parent();
         var container = $("<div>").addClass("input-material " + element[0].className);
 
         element[0].className = "";
+        element.attr("autocomplete", "nope");
 
         if (element.attr("type") === undefined) {
             element.attr("type", "text");
@@ -11721,12 +11718,6 @@ var MaterialInput = {
         } else {
             this.enable();
         }
-    },
-
-    _createEvents: function(){
-        var that = this, element = this.element, o = this.options;
-        var container = element.closest(".input");
-
     },
 
     clear: function(){
@@ -12095,6 +12086,7 @@ var Input = {
             autocompleteList.css({
                 display: "none"
             });
+            element.trigger("change");
         });
     },
 
@@ -13472,7 +13464,7 @@ var Listview = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -13486,7 +13478,7 @@ var Listview = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         this._createView();
         this._createEvents();
@@ -13517,7 +13509,7 @@ var Listview = {
     },
 
     _createNode: function(data){
-        var that = this, element = this.element, o = this.options;
+        var that = this, o = this.options;
         var node;
 
         node = $("<li>");
@@ -13578,7 +13570,7 @@ var Listview = {
                 node.prepend(cb);
             }
 
-            if (struct_length > 0) $.each(o.structure, function(key, val){
+            if (struct_length > 0) $.each(o.structure, function(key){
                 if (node.data(key) !== undefined) {
                     $("<div>").addClass("node-data item-data-"+key).addClass(node.data(key)).html(node.data(key)).appendTo(node);
                 }
@@ -13662,14 +13654,14 @@ var Listview = {
     },
 
     toggleSelectable: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var func = o.selectable === true ? "addClass" : "removeClass";
         element[func]("selectable");
         element.find("ul")[func]("selectable");
     },
 
     add: function(node, data){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var target;
         var new_node;
         var toggle;
@@ -13706,7 +13698,7 @@ var Listview = {
     },
 
     addGroup: function(data){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var node;
 
         delete data['icon'];
@@ -13724,6 +13716,9 @@ var Listview = {
 
     insertBefore: function(node, data){
         var element = this.element, o = this.options;
+
+        if (!node.length) {return;}
+
         var new_node = this._createNode(data);
         new_node.addClass("node").insertBefore(node);
         Utils.exec(o.onNodeInsert, [new_node, element]);
@@ -13732,6 +13727,9 @@ var Listview = {
 
     insertAfter: function(node, data){
         var element = this.element, o = this.options;
+
+        if (!node.length) {return;}
+
         var new_node = this._createNode(data);
         new_node.addClass("node").insertAfter(node);
         Utils.exec(o.onNodeInsert, [new_node, element]);
@@ -13740,6 +13738,9 @@ var Listview = {
 
     del: function(node){
         var element = this.element, o = this.options;
+
+        if (!node.length) {return;}
+
         var parent_list = node.closest("ul");
         var parent_node = parent_list.closest("li");
         node.remove();
@@ -13753,6 +13754,9 @@ var Listview = {
 
     clean: function(node){
         var element = this.element, o = this.options;
+
+        if (!node.length) {return;}
+
         node.children("ul").remove();
         node.removeClass("expanded");
         node.children(".node-toggle").remove();
@@ -13760,7 +13764,7 @@ var Listview = {
     },
 
     getSelected: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
         var nodes = [];
 
         $.each(element.find(":checked"), function(){
@@ -13784,12 +13788,12 @@ var Listview = {
 
         var changeView = function(){
             var new_view = "view-"+element.attr("data-view");
-            this.view(new_view);
+            that.view(new_view);
         };
 
         var changeSelectable = function(){
             o.selectable = JSON.parse(element.attr("data-selectable")) === true;
-            this.toggleSelectable();
+            that.toggleSelectable();
         };
 
         switch (attributeName) {
@@ -14392,7 +14396,7 @@ var Notify = {
             Utils.exec(Utils.isValue(options.onAppend) ? options.onAppend : o.onAppend, null, notify[0]);
 
             notify.css({
-                marginTop: Utils.isValue(options.onAppend) ? options.distance : o.distance
+                marginTop: Utils.isValue(options.distance) ? options.distance : o.distance
             }).fadeIn(100, function(){
                 var duration = Utils.isValue(options.duration) ? options.duration : o.duration;
                 var animation = Utils.isValue(options.animation) ? options.animation : o.animation;
@@ -14816,8 +14820,10 @@ var Popover = {
 
         var changeText = function(){
             o.popoverText = element.attr("data-popover-text");
-            this.popover.find(".popover-content").html(o.popoverText);
-            that.setPosition();
+            if (that.popover) {
+                that.popover.find(".popover-content").html(o.popoverText);
+                that.setPosition();
+            }
         };
 
         var changePosition = function(){
@@ -15207,8 +15213,6 @@ var Rating = {
     _createRating: function(){
         var element = this.element, o = this.options;
 
-        var prev = element.prev();
-        var parent = element.parent();
         var id = Utils.elementId("rating");
         var rating = $("<div>").addClass("rating " + String(element[0].className).replace("d-block", "d-flex")).addClass(o.clsRating);
         var i, stars, result, li;
@@ -15218,12 +15222,7 @@ var Rating = {
 
         rating.attr("id", id);
 
-        if (prev.length === 0) {
-            parent.prepend(rating);
-        } else {
-            rating.insertAfter(prev);
-        }
-
+        rating.insertBefore(element);
         element.appendTo(rating);
 
         stars = $("<ul>").addClass("stars").addClass(o.clsStars).appendTo(rating);
@@ -15549,7 +15548,7 @@ var RibbonMenu = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -15563,7 +15562,7 @@ var RibbonMenu = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         this._createStructure();
         this._createEvents();
@@ -15572,7 +15571,7 @@ var RibbonMenu = {
     },
 
     _createStructure: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
 
         element.addClass("ribbon-menu");
 
@@ -15601,7 +15600,7 @@ var RibbonMenu = {
                 if (w > gw) gw = w;
             });
 
-            g.css("width", Math.ceil(gw * btns.length / 3) + 4);
+            g.css("width", gw * Math.ceil(btns.length / 3) + 4);
         });
     },
 
@@ -15628,7 +15627,7 @@ var RibbonMenu = {
     },
 
     open: function(tab){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var tabs = element.find(".tabs-holder li");
         var sections = element.find(".content-holder .section");
         var target = tab.children("a").attr("href");
@@ -17334,6 +17333,7 @@ var Spinner = {
     _createEvents: function(){
         var that = this, element = this.element, o = this.options;
         var spinner = element.closest(".spinner");
+        var spinner_buttons = spinner.find(".spinner-button");
 
         var spinnerButtonClick = function(plus, threshold){
             var curr = element.val();
@@ -17368,12 +17368,13 @@ var Spinner = {
             e.stopPropagation();
         });
 
-        spinner.on(Metro.events.start, ".spinner-button", function(){
+        spinner_buttons.on(Metro.events.start, function(e){
+            e.preventDefault();
             that.repeat_timer = true;
             spinnerButtonClick($(this).hasClass("spinner-button-plus"), o.repeatThreshold);
         });
 
-        spinner.on(Metro.events.stop, ".spinner-button", function(){
+        spinner_buttons.on(Metro.events.stop, function(){
             that.repeat_timer = false;
         });
 
@@ -20640,7 +20641,7 @@ var Tabs = {
     },
 
     _setOptionsFromDOM: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
 
         $.each(element.data(), function(key, value){
             if (key in o) {
@@ -20654,7 +20655,7 @@ var Tabs = {
     },
 
     _create: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
         var tab = element.find(".active").length > 0 ? $(element.find(".active")[0]) : undefined;
 
         this._createStructure();
@@ -20663,8 +20664,7 @@ var Tabs = {
     },
 
     _createStructure: function(){
-        var that = this, element = this.element, o = this.options;
-        var prev = element.prev();
+        var element = this.element, o = this.options;
         var parent = element.parent();
         var right_parent = parent.hasClass("tabs");
         var container = right_parent ? parent : $("<div>").addClass("tabs tabs-wrapper");
@@ -20781,6 +20781,8 @@ var Tabs = {
         var that = this, element = this.element;
         var tabs = element.find("li");
 
+        this._targets = [];
+
         $.each(tabs, function(){
             var target = $(this).find("a").attr("href").trim();
             if (target.length > 1 && target[0] === "#") {
@@ -20790,7 +20792,7 @@ var Tabs = {
     },
 
     _open: function(tab){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element, o = this.options;
         var tabs = element.find("li");
         var expandTitle = element.siblings(".expand-title");
 
@@ -20835,7 +20837,7 @@ var Tabs = {
     },
 
     next: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
         var next, active_tab = element.find("li.active");
 
         next = active_tab.next("li");
@@ -20845,7 +20847,7 @@ var Tabs = {
     },
 
     prev: function(){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
         var next, active_tab = element.find("li.active");
 
         next = active_tab.prev("li");
@@ -20855,7 +20857,7 @@ var Tabs = {
     },
 
     open: function(tab){
-        var that = this, element = this.element, o = this.options;
+        var element = this.element;
         var tabs = element.find("li");
 
         if (!Utils.isValue(tab)) {
@@ -23491,7 +23493,7 @@ var Treeview = {
 
     changeAttribute: function(attributeName){
         switch (attributeName) {
-            default: console.log(attributeName);
+            default: ;
         }
     }
 };
